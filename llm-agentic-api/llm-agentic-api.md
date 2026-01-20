@@ -79,7 +79,45 @@ Thought → Action → Observation → Thought → ...
 2. **Execution Phase**: 按计划执行每个步骤
 3. **Replanning**: 必要时调整计划
 
-#### 3.3 Multi-Agent Collaboration
+#### 3.3 Workflows vs Agents (Anthropic 2024)
+
+**Workflows（工作流）**：
+- LLM 和工具通过预定义代码路径编排
+- 可预测、一致性强
+- 适合明确定义的任务
+
+**Agents（智能体）**：
+- LLM 动态指导自己的流程和工具使用
+- 保持对任务完成方式的控制
+- 适合需要灵活性和模型驱动决策的场景
+
+**关键 Workflows 模式**：
+
+1. **Prompt Chaining（提示链）**
+   - 将任务分解为固定步骤序列
+   - 每步处理前一步的输出
+   - 可添加程序化检查（gate）
+
+2. **Routing（路由）**
+   - 分类输入并定向到专门的后续任务
+   - 实现关注点分离
+   - 不同类型查询使用不同模型
+
+3. **Parallelization（并行化）**
+   - **Sectioning**: 将任务分解为独立的并行子任务
+   - **Voting**: 多次运行同一任务获得不同输出
+
+4. **Orchestrator-Workers（编排器-工作者）**
+   - 中央 LLM 动态分解任务
+   - 委派给 worker LLMs
+   - 综合结果
+
+5. **Evaluator-Optimizer（评估器-优化器）**
+   - 一个 LLM 生成响应
+   - 另一个提供评估和反馈
+   - 循环迭代改进
+
+#### 3.4 Multi-Agent Collaboration
 - **Specialized Agents**: 专门化智能体分工
 - **Communication**: 智能体间通信协议
 - **Coordination**: 任务分配与同步
@@ -134,6 +172,18 @@ Thought → Action → Observation → Thought → ...
 #### API-Bank: A Benchmark for Tool-Augmented LLMs
 - **贡献**: 工具增强 LLM 的基准测试
 - **内容**: 53 个经过标注的 API 调用场景
+
+#### Small Language Models are the Future of Agentic AI (2025)
+- **作者**: P. Belcak et al.
+- **发表**: arXiv 2025
+- **引用**: 146+ (截至 2025)
+- **核心发现**:
+  - 8B 模型在 tool calling 上达到 SOTA 性能
+  - 超越 GPT-4o 和 Claude 3.5 Sonnet
+  - 小模型在 Agentic 任务上更具潜力
+  - 效率和成本优势明显
+
+**论文链接**: [arXiv:2506.02153](https://arxiv.org/abs/2506.02153)
 
 ### 4. 规划与推理
 
@@ -308,6 +358,80 @@ Thought → Action → Observation → Thought → ...
 - Llama 3.1 支持工具使用
 - 开源生态
 
+#### GLM-4.5 (智谱 AI, 2025)
+- **发布**: 2025年7月
+- **特点**:
+  - Tool calling 成功率 90.6%（最高）
+  - 超越 Claude-4-Sonnet (89.5%)
+  - 超越 Kimi-K2 (86.2%)
+  - 专注 Agentic coding 任务效率
+
+---
+
+## 最佳实践与设计原则
+
+### Anthropic 2024 官方建议
+
+基于数十个团队的实践经验，Anthropic 提出构建有效 Agent 的三个核心原则：
+
+#### 1. 保持简单性 (Simplicity)
+- 从简单的 prompt 开始
+- 仅在更简单的方案失败时才增加复杂性
+- 用基本组件构建，避免过度抽象
+
+#### 2. 优先考虑透明度 (Transparency)
+- 明确显示 Agent 的规划步骤
+- 让决策过程可见
+- 便于调试和信任建立
+
+#### 3. 精心设计 ACI (Agent-Computer Interface)
+- **工具文档**: 像给初级开发者写文档一样
+- **参数设计**: 避免格式化开销（如 JSON 转义）
+- **测试迭代**: 在 workbench 中测试模型如何使用工具
+- **Poka-yoke**: 设计让工具难以被误用
+
+### 何时使用 Agentic 系统
+
+| 场景 | 推荐方案 | 原因 |
+|------|---------|------|
+| 简单任务 | 优化单个 LLM 调用 | 最低延迟和成本 |
+| 固定流程 | Workflows | 可预测、一致 |
+| 复杂决策 | Agents | 需要灵活性 |
+| 可预测子任务 | Prompt Chaining | 用延迟换准确度 |
+| 分类任务 | Routing | 关注点分离 |
+| 独立子任务 | Parallelization | 加速执行 |
+| 动态子任务 | Orchestrator-Workers | 灵活性 |
+| 需要迭代 | Evaluator-Optimizer | 持续改进 |
+| 开放式问题 | Autonomous Agents | 无法预测步骤 |
+
+### 框架使用建议
+
+**推荐做法**：
+- 先直接使用 LLM API
+- 许多模式只需几行代码
+- 如果使用框架，确保理解底层代码
+
+**常见陷阱**：
+- 框架创建额外抽象层
+- 难以调试（掩盖底层 prompt 和响应）
+- 过早增加复杂性
+
+### 成功应用领域
+
+#### 1. 客户支持
+- 对话 + 行动结合
+- 工具集成获取数据
+- 明确的成功标准
+- 反馈循环
+- 人工监督
+
+#### 2. 编程 Agent
+- 代码可验证（自动化测试）
+- 测试结果作为反馈
+- 问题空间结构化
+- 输出质量可客观测量
+- 实例：SWE-bench Verified 基准
+
 ---
 
 ## 应用场景
@@ -476,6 +600,10 @@ Thought → Action → Observation → Thought → ...
 
 6. **Voyager**: Wang et al. (2023) - [Voyager: An Open-Ended Embodied Agent with Large Language Models](https://arxiv.org/abs/2305.16291)
 
+7. **Small Language Models are the Future of Agentic AI**: Belcak et al. (2025) - [arXiv:2506.02153](https://arxiv.org/abs/2506.02153)
+   - 高引用论文（146+）
+   - 证明小模型在 Agentic AI 上的潜力
+
 ### 官方文档
 
 1. **OpenAI Function Calling**: [https://platform.openai.com/docs/guides/function-calling](https://platform.openai.com/docs/guides/function-calling)
@@ -512,21 +640,35 @@ Thought → Action → Observation → Thought → ...
 
 #### 博客与文章
 
-1. **LangChain Blog**: [https://blog.langchain.dev/](https://blog.langchain.dev/)
+1. **Anthropic - Building Effective AI Agents** (2024年12月)
+   - 链接: [https://www.anthropic.com/engineering/building-effective-agents](https://www.anthropic.com/engineering/building-effective-agents)
+   - 基于数十个团队实践经验的官方指南
+   - Workflows vs Agents 区分
+   - 核心设计原则
+
+2. **LangChain Blog**: [https://blog.langchain.dev/](https://blog.langchain.dev/)
    - 定期发布 Agentic AI 相关文章和教程
 
-2. **Lilian Weng's Blog - LLM Powered Autonomous Agents**
+3. **Lilian Weng's Blog - LLM Powered Autonomous Agents**
    - 链接: [https://lilianweng.github.io/posts/2023-06-23-agent/](https://lilianweng.github.io/posts/2023-06-23-agent/)
    - 经典的 Agent 概念综述
 
-3. **OpenAI Research**: [https://openai.com/research](https://openai.com/research)
+4. **OpenAI Research**: [https://openai.com/research](https://openai.com/research)
    - 官方研究成果发布
 
-4. **Anthropic Blog**: [https://www.anthropic.com/news](https://www.anthropic.com/news)
+5. **Anthropic Blog**: [https://www.anthropic.com/news](https://www.anthropic.com/news)
    - Claude 相关更新和最佳实践
 
-5. **Google DeepMind Blog**: [https://deepmind.google/discover/blog/](https://deepmind.google/discover/blog/)
+6. **Google DeepMind Blog**: [https://deepmind.google/discover/blog/](https://deepmind.google/discover/blog/)
    - 前沿研究论文解读
+
+7. **Agentic LLMs in 2025** - Data Science Dojo
+   - 链接: [https://datasciencedojo.com/blog/agentic-llm-in-2025/](https://datasciencedojo.com/blog/agentic-llm-in-2025/)
+   - 2025年 Agentic LLM 发展趋势
+
+8. **How Tools Are Called in AI Agents: Complete 2025 Guide** - Medium
+   - 链接: [Medium Article](https://medium.com/@sayalisureshkumbhar/how-tools-are-called-in-ai-agents-complete-2025-guide-with-examples-42dcdfe6ba38)
+   - 2025年工具调用完整指南
 
 #### 在线课程
 
@@ -724,15 +866,25 @@ LLM Agentic API 代表了 AI 应用开发的新范式。从简单的文本生成
 3. **持续演进**: 厂商快速迭代，新能力不断涌现
 4. **实践驱动**: 应用场景广泛，但需要解决可靠性和成本问题
 5. **未来可期**: 多模态、具身智能、大规模协作是发展方向
+6. **简单优先**: Anthropic 2024 实践指南强调从简单开始，逐步增加复杂性
+7. **小模型崛起**: 2025 年研究显示小模型在 Agentic 任务上表现优异
+
+**2024-2025 年重要进展**:
+- Anthropic Computer Use API (2024年10月)
+- Anthropic 官方 Agent 实践指南 (2024年12月)
+- 小模型 Agentic AI 研究突破 (2025)
+- GLM-4.5 达到最高 tool calling 成功率 (2025)
+- 84% 开发者使用或计划使用 AI 工具 (2025)
 
 **建议**:
 
-- 开发者：掌握至少一个主流框架（LangChain/LlamaIndex）
+- 开发者：掌握至少一个主流框架（LangChain/LlamaIndex），但优先理解底层 API
 - 企业：关注成本控制和安全性，建立评估体系
 - 研究者：关注可解释性、泛化性和效率优化
 
 ---
 
-**文档版本**: v1.0
+**文档版本**: v2.0
 **最后更新**: 2026-01-20
 **作者**: Claude (Sonnet 4.5)
+**更新内容**: 添加 2024-2025 年最新实践、论文和厂商动态
