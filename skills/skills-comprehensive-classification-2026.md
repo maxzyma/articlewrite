@@ -15,10 +15,6 @@
 | **skill-writer** | 96k | ⭐⭐⭐ | [skillsmp.com](https://skillsmp.com) | 手把手教你写SKILL.md，从0到1创建自己的技能 |
 | **mcp-builder** | - | ⭐⭐⭐ | [官方文档](https://platform.claude.com/docs) | 构建MCP服务器，让Claude能调用外部API和工具 |
 
-**复杂度说明**：
-- ⭐⭐⭐ 需要编写代码或深度定制，适合高级用户
-- 需要配置团队规范、设计架构或理解技能规范
-
 ---
 
 ### 2. 软件开发工作流增强 💻
@@ -31,10 +27,6 @@
 | **component-refactoring** | 126.3k | ⭐ | [skillsmp.com](https://skillsmp.com) | 安全拆分React组件，把臃肿的组件整理得井井有条 |
 | **github-code-review** | 126.3k | ⭐ | [skillsmp.com](https://skillsmp.com) | 多个AI协同审查代码，比自己review快3-5倍 |
 | **planning-with-files** | 10k | ⭐ | [OthmanAdi/planning-with-files](https://github.com/OthmanAdi/planning-with-files) | 改代码前先写规划文档，避免改到一半跑偏 |
-
-**复杂度说明**：
-- ⭐ 开箱即用，无需配置，官方维护
-- 安装后自动触发，无需额外设置
 
 ---
 
@@ -52,10 +44,6 @@
 - **pptx**: 说"帮我做个PPT"，自动生成带图表的幻灯片
 - **xlsx**: 自动生成Excel公式、图表、透视表，数据分析不用手写公式
 
-**复杂度说明**：
-- ⭐ 开箱即用：官方Skills（docx/pdf/pptx/xlsx/doc-coauthoring）
-- ⭐⭐ 配置后使用：notebooklm需要Google账号配置
-
 ---
 
 ### 4. 前端设计与UI/UX 🎨
@@ -69,9 +57,6 @@
 | **theme-factory** | - | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/theme-factory) | 10种预设主题，一键切换暗色/亮色/品牌色 |
 | **algorithmic-art** | - | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/algorithmic-art) | 用p5.js生成算法艺术，让AI帮你做创意设计 |
 
-**复杂度说明**：
-- ⭐ 开箱即用，官方维护，直接使用即可
-
 ---
 
 ### 5. 专业领域与平台集成 🔧
@@ -82,11 +67,6 @@
 | **electron-chromium-upgrade** | 119.6k | ⭐ | [skillsmp.com](https://skillsmp.com) | 升级Electron的Chromium版本，从老版本一键迁移 |
 | **dify-frontend-testing** | 124.9k | ⭐ | [skillsmp.com](https://skillsmp.com) | 专为Dify平台优化的前端测试，自动化测试没烦恼 |
 | **zig-syscalls-bun** | 86k | ⭐⭐⭐ | [skillsmp.com](https://skillsmp.com) | Bun运行时底层开发，系统调用级别的性能优化 |
-
-**复杂度说明**：
-- ⭐ 开箱即用：electron-chromium-upgrade、dify-frontend-testing
-- ⭐⭐ 配置后使用：cloudflare-skill需要Cloudflare API
-- ⭐⭐⭐ 需要二次开发：zig-syscalls-bun需要底层开发知识
 
 ---
 
@@ -99,10 +79,6 @@
 | **confidence-check** | 19.8k | ⭐ | [skillsmp.com](https://skillsmp.com) | 让Claude自己评估"这题我有几成把握"，避免瞎答 |
 | **context-engineering** | 5.5k | ⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/context-engineering) | 优化Prompt设计，用更少的Token办更多的事 |
 | **llm-project-methodology** | 5.5k | ⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/llm-project-methodology) | AI项目最佳实践，从立项到上线的完整指南 |
-
-**复杂度说明**：
-- ⭐ 开箱即用：confidence-check
-- ⭐⭐ 配置后使用：cache-components-expert、opus-4.5-migration、context-engineering、llm-project-methodology需要LLM领域知识
 
 ---
 
@@ -118,113 +94,6 @@
 | **pdf** | 官方 | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/pdf) | 批量提取PDF文字和表格，100份报告1分钟处理完 |
 | **pptx** | 官方 | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/pptx) | 说"帮我做个PPT"，自动生成带图表的幻灯片 |
 | **docx** | 官方 | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/docx) | 批量处理Word文档，填表单、改格式、合并文件 |
-
-**复杂度说明**：
-- ⭐ 开箱即用：internal-comms、slack-gif-creator、webapp-testing、xlsx、pdf、pptx、docx
-- ⭐⭐ 配置后使用：image-generator使用DALL-E需要OpenAI API
-
----
-
-## 复杂度说明
-
-### ⭐ 开箱即用
-**特点**：无需配置，官方维护，适合新手快速上手
-
-**典型Skills**：
-- anthropics/skills (docx/pdf/pptx/xlsx)
-- create-pr、skill-lookup、frontend-code-review
-- internal-comms、webapp-testing
-
-**学习路径**：
-```
-Week 1: 安装官方skills，熟悉基本操作
-Week 2: 尝试create-pr等高频技能
-Week 3: 探索awesome-claude-skills列表
-Week 4: 根据需求选择进阶技能
-```
-
----
-
-### ⭐⭐ 配置后使用
-**特点**：需要API密钥或领域知识，中等复杂度
-
-**典型Skills**：
-- cloudflare-skill（Cloudflare API）
-- notebooklm（Google账号）
-- image-generator DALL-E（OpenAI API）
-- cache-components-expert（LLM缓存知识）
-- opus-4.5-migration（Claude版本迁移）
-
-**配置示例**：
-```bash
-# cloudflare-skill配置
-1. 获取Cloudflare API Token
-2. 配置环境变量：CLOUDFLARE_API_TOKEN
-3. 在SKILL.md中添加账号信息
-4. 测试连接
-```
-
----
-
-### ⭐⭐⭐ 需要二次开发
-**特点**：需要编写代码或深度定制，适合高级用户
-
-**典型Skills**：
-- superpowers（配置团队规范）
-- multi-agent-patterns（设计架构）
-- mcp-builder（开发MCP服务器）
-- skill-creator（编写SKILL.md）
-- skill-writer（理解技能规范）
-
-**二次开发示例**：
-```markdown
-# 自定义团队TDD规范
-基于superpowers/test-driven-development：
-1. Fork项目
-2. 修改SKILL.md中的测试框架（改为Jest）
-3. 添加团队特定的代码风格规则
-4. 发布到私有仓库
-5. 团队成员安装使用
-```
-
----
-
-### ⭐⭐⭐⭐ 从零创建
-**特点**：完全自定义，最大化灵活性
-
-**创建流程**（基于skills-github-toolbox-standalone.md）：
-
-```
-步骤1: 选择GitHub开源项目
-   ↓
-步骤2: 使用skill-creator打包
-   - 分析项目结构
-   - 提取核心功能
-   - 生成SKILL.md
-   ↓
-步骤3: 测试与优化
-   - 验证功能完整性
-   - 测试边界情况
-   - 优化提示词
-   ↓
-步骤4: 迭代改进
-   - 收集用户反馈
-   - 持续优化
-   - 版本管理
-```
-
-**成功案例**：
-```
-案例1: 视频下载工具包
-原始项目: yt-dlp (143k stars)
-打包后: 几句话就能批量下载视频
-时间成本: 从学习CLI到10秒完成
-
-案例2: Web转桌面APP
-原始项目: Pake (45k stars)
-打包后: "把这个网站做成桌面应用"
-节省时间: 从2小时到5分钟
-```
 
 ---
 
