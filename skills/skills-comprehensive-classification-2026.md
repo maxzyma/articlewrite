@@ -11,9 +11,9 @@
 |-----------|-------|--------|-------------|----------|
 | **Superpowers** | 29.2k | ⭐⭐⭐ | [obra/superpowers](https://github.com/obra/superpowers) | 让Claude按TDD流程开发，先写测试再实现，2小时不跑偏 |
 | **skill-creator** | 38.5k | ⭐⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/skill-creator) | 把GitHub项目一键打包成Skill，几句命令就能封装工具 |
-| **skill-writer** | 96k | ⭐⭐⭐ | [skillsmp.com](https://skillsmp.com) | 手把手教你写SKILL.md，从0到1创建自己的技能 |
+| **skill-writer** | 96k | ⭐⭐⭐ | [pytorch/pytorch](https://github.com/pytorch/pytorch/tree/main/claude-skills/skill-writer) | 手把手教你写SKILL.md，从0到1创建自己的技能 |
 | **mcp-builder** | - | ⭐⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/mcp-builder) | 构建MCP服务器，让Claude能调用外部API和工具 |
-| **cache-components-expert** | 137.2k | ⭐⭐ | [skillsmp.com](https://skillsmp.com) | 优化LLM应用缓存，成本从$0.5降到$0.05，省90% |
+| **cache-components-expert** | 137.2k | ⭐⭐ | [vercel/next.js](https://github.com/vercel/next.js/tree/main/claude-plugin/plugins/cache-components/skills) | 优化LLM应用缓存，成本从$0.5降到$0.05，省90% |
 | **opus-4.5-migration** | 47.2k | ⭐⭐ | [skillsmp.com](https://skillsmp.com) | 升级到Claude Opus 4.5，API代码平滑迁移不踩坑 |
 | **confidence-check** | 19.8k | ⭐ | [skillsmp.com](https://skillsmp.com) | 让Claude自己评估"这题我有几成把握"，避免瞎答 |
 | **context-engineering** | 5.5k | ⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/context-engineering) | 优化Prompt设计，用更少的Token办更多的事 |
@@ -67,7 +67,7 @@
 
 | Skill名称 | 热度 | 复杂度 | GitHub/官网 | 核心能力 |
 |-----------|------|--------|-------------|----------|
-| **cloudflare-skill** | 2.8k | ⭐⭐ | [skillsmp.com](https://skillsmp.com) | 60+Cloudflare产品一本通，Workers还是Pages它帮你选 |
+| **cloudflare-skill** | 2.8k | ⭐⭐ | [cloudflare/cloudflare-docs](https://github.com/cloudflare/cloudflare-docs/tree/main/public/well-known/skills) | 60+Cloudflare产品一本通，Workers还是Pages它帮你选 |
 | **electron-chromium-upgrade** | 119.6k | ⭐ | [skillsmp.com](https://skillsmp.com) | 升级Electron的Chromium版本，从老版本一键迁移 |
 | **dify-frontend-testing** | 124.9k | ⭐ | [skillsmp.com](https://skillsmp.com) | 专为Dify平台优化的前端测试，自动化测试没烦恼 |
 | **zig-syscalls-bun** | 86k | ⭐⭐⭐ | [skillsmp.com](https://skillsmp.com) | Bun运行时底层开发，系统调用级别的性能优化 |
