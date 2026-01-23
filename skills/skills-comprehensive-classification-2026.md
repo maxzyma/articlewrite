@@ -211,4 +211,4 @@ $ skills trending
 
 ---
 
-*数据来源：GitHub API 实际验证（2026-01-23）+ SkillsMP 聚合平台*
+*数据来源：业界最佳实践 + 个人实战经验*
