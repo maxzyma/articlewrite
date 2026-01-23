@@ -1,6 +1,6 @@
 ---
 name: image-generator
-description: Generate AI images using multiple services (Pollinations.ai, OpenAI DALL-E, Stability AI). Supports custom prompts, multiple aspect ratios (16:9, 1:1, 4:3, 9:16), and automatic local saving. Use when user requests image generation, creating covers, visual content for articles/presentations, social media images, or any task requiring AI-generated visuals. Pollinations.ai is free and requires no API key.
+description: Generate AI images using multiple services (Gemini 2.0 Flash Exp as first choice, also supports Pollinations.ai, OpenAI DALL-E, Stability AI). Supports custom prompts, multiple aspect ratios (16:9, 1:1, 4:3, 9:16), and automatic local saving. Use when user requests image generation, creating covers, visual content for articles/presentations, social media images, or any task requiring AI-generated visuals. Gemini 2.0 Flash Exp is recommended as the first choice for best quality and speed.
 ---
 
 # Image Generator
@@ -12,19 +12,28 @@ Generate AI images using multiple services with custom prompts and aspect ratios
 Generate images using the `scripts/generate.py` script:
 
 ```bash
+# Recommended: Gemini 2.0 Flash (best quality)
+python3 scripts/generate.py "A cute cat playing in sunlight" --service gemini
+
 # Free service (no API key needed)
 python3 scripts/generate.py "A cute cat playing in sunlight" --service pollinations
 
 # Specify output path
-python3 scripts/generate.py "Futuristic city" --service pollinations --output ./cover.png
+python3 scripts/generate.py "Futuristic city" --service gemini --output ./cover.png
 
 # Custom size (16:9 for covers)
-python3 scripts/generate.py "Abstract tech art" --service pollinations --width 1920 --height 1080
+python3 scripts/generate.py "Abstract tech art" --service gemini --width 1920 --height 1080
 ```
 
 ## Supported Services
 
-### Pollinations.ai (FREE - Recommended)
+### Gemini 2.0 Flash Exp Image Generation (Recommended - First Choice)
+- Requires `GEMINI_API_KEY` environment variable
+- Excellent quality with Google's latest model
+- Fast generation with good prompt understanding
+- **Use for**: All image generation needs (recommended as first choice)
+
+### Pollinations.ai (FREE)
 - No API key required
 - High quality (FLUX model)
 - Fast generation
@@ -59,7 +68,7 @@ positional arguments:
 
 optional arguments:
   -h, --help            Show help message
-  -s, --service         Service: pollinations, openai, stability (default: pollinations)
+  -s, --service         Service: gemini, pollinations, openai, stability (default: gemini)
   -o, --output          Output path (default: ./generated_image.png)
   --width               Image width (default: 1920)
   --height              Image height (default: 1080)
@@ -71,7 +80,7 @@ optional arguments:
 ```bash
 python3 scripts/generate.py \
   "Abstract three-layer evolution diagram, modern tech style, gradient blue and purple" \
-  --service pollinations \
+  --service gemini \
   --width 1920 --height 1080 \
   --output ./article-cover.png
 ```
@@ -80,7 +89,7 @@ python3 scripts/generate.py \
 ```bash
 python3 scripts/generate.py \
   "Professional portrait, modern office background" \
-  --service pollinations \
+  --service gemini \
   --width 1024 --height 1024 \
   --output ./avatar.png
 ```
@@ -98,6 +107,9 @@ python3 scripts/generate.py \
 For paid services, set API keys in your shell or project `.env`:
 
 ```bash
+# Gemini 2.0 Flash (Recommended)
+export GEMINI_API_KEY="AI..."
+
 # OpenAI DALL-E
 export OPENAI_API_KEY="sk-..."
 
@@ -106,6 +118,7 @@ export STABILITY_API_KEY="sk-..."
 ```
 
 Get API keys:
+- Gemini: https://aistudio.google.com/app/apikey
 - OpenAI: https://platform.openai.com/api-keys
 - Stability AI: https://platform.stability.ai/account/keys
 

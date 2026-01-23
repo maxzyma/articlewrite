@@ -31,8 +31,55 @@ class ImageGenerator:
     """Universal image generator supporting multiple services."""
 
     def __init__(self):
+        self.gemini_key = os.getenv("GEMINI_API_KEY")
         self.openai_key = os.getenv("OPENAI_API_KEY")
         self.stability_key = os.getenv("STABILITY_API_KEY")
+
+    def generate_with_gemini(
+        self, prompt: str, width: int = 1920, height: int = 1080
+    ) -> bytes:
+        """Generate image using Gemini 2.0 Flash Exp (recommended, requires API key).
+
+        Args:
+            prompt: Image description
+            width: Image width
+            height: Image height
+
+        Returns:
+            Image bytes
+        """
+        if not self.gemini_key:
+            raise ValueError("❌ GEMINI_API_KEY not found in environment")
+
+        print(f"🎨 Generating with Gemini 2.0 Flash Exp...")
+        print(f"📝 Prompt: {prompt[:100]}...")
+
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp-image-generation:generateImage?key={self.gemini_key}"
+        headers = {"Content-Type": "application/json"}
+
+        data = {
+            "contents": [
+                {
+                    "parts": [
+                        {"text": prompt}
+                    ]
+                }
+            ],
+            "generationConfig": {
+                "responseMimeType": "image/png"
+            }
+        }
+
+        response = requests.post(url, headers=headers, json=data, timeout=120, proxies={"http": None, "https": None})
+        response.raise_for_status()
+
+        # Parse response to get image data
+        result = response.json()
+        image_data = result['candidates'][0]['content']['parts'][0]['inlineData']['data']
+        image_bytes = base64.b64decode(image_data)
+
+        print("✅ Image generated successfully!")
+        return image_bytes
 
     def generate_with_pollinations(
         self, prompt: str, width: int = 1920, height: int = 1080
@@ -172,11 +219,15 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Services:
-  pollinations    Free, no API key needed (recommended)
+  gemini          Gemini 2.0 Flash Exp (recommended first choice)
+  pollinations    Free, no API key needed
   openai          Requires OPENAI_API_KEY
   stability       Requires STABILITY_API_KEY
 
 Examples:
+  # Gemini (recommended)
+  %(prog)s "A cute cat" --service gemini
+
   # Free service
   %(prog)s "A cute cat" --service pollinations
 
@@ -184,16 +235,16 @@ Examples:
   %(prog)s "Cyberpunk city" --service openai --output cover.png
 
   # Custom size
-  %(prog)s "Abstract art" --service pollinations --width 1920 --height 1080
+  %(prog)s "Abstract art" --service gemini --width 1920 --height 1080
         """
     )
 
     parser.add_argument("prompt", help="Image generation prompt")
     parser.add_argument(
         "-s", "--service",
-        default="pollinations",
-        choices=["pollinations", "openai", "stability"],
-        help="Service to use (default: pollinations, FREE)"
+        default="gemini",
+        choices=["gemini", "pollinations", "openai", "stability"],
+        help="Service to use (default: gemini, recommended)"
     )
     parser.add_argument(
         "-o", "--output",
@@ -219,7 +270,11 @@ Examples:
         generator = ImageGenerator()
 
         # Generate based on service
-        if args.service == "pollinations":
+        if args.service == "gemini":
+            image_data = generator.generate_with_gemini(
+                args.prompt, args.width, args.height
+            )
+        elif args.service == "pollinations":
             image_data = generator.generate_with_pollinations(
                 args.prompt, args.width, args.height
             )

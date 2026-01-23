@@ -2,7 +2,45 @@
 
 Complete guide for each supported image generation service.
 
-## Pollinations.ai (FREE - Recommended)
+## Gemini 2.0 Flash Exp Image Generation (Recommended - First Choice)
+
+**API Key Required**: Yes - `GEMINI_API_KEY`
+
+**Getting API Key**:
+1. Visit [Google AI Studio](https://aistudio.google.com/app/apikey)
+2. Create account or sign in
+3. Click "Create API Key"
+4. Set environment variable:
+   ```bash
+   export GEMINI_API_KEY="AI..."
+   ```
+
+**Features**:
+- ✅ Excellent image quality
+- ✅ Google's latest 2.0 Flash model
+- ✅ Fast generation speed
+- ✅ Great prompt understanding
+- ✅ Multiple aspect ratios supported
+
+**Best for**:
+- All image generation needs (recommended as first choice)
+- Professional projects
+- High-quality covers
+- Complex scenes
+
+**Pricing** (as of 2025):
+- Very competitive pricing
+- Free tier available for testing
+- Pay-per-use after free tier
+
+**Usage**:
+```bash
+python3 scripts/generate.py "your prompt" --service gemini
+```
+
+---
+
+## Pollinations.ai (FREE)
 
 **API Key Required**: No - completely free!
 
@@ -114,6 +152,12 @@ python3 scripts/generate.py "your prompt" --service stability
 ---
 
 ## Choosing a Service
+
+**Use Gemini when**:
+- You want the best overall experience (recommended first choice)
+- Quality and speed are both important
+- You need reliable results
+- Professional or personal projects
 
 **Use Pollinations.ai when**:
 - You want to test ideas quickly
