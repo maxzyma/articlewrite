@@ -200,7 +200,133 @@ skill-writer                 # 理解技能规范
 
 ---
 
-## 五、参考资源
+## 六、Skills聚合平台 🌐
+
+### SkillsMP - 最大的Skills市场
+
+**基本信息**：
+- **网址**：[skillsmp.com](https://skillsmp.com)
+- **Skills数量**：84,192+
+- **定位**：Agent Skills市场生态聚合平台
+
+**核心功能**：
+```
+$ search --ai
+智能搜索：用自然语言描述需求，AI帮你找到合适的Skill
+
+$ cd /categories
+分类浏览：12大分类（Tools/Development/Data-AI/Business等）
+
+$ watch stats
+趋势分析：查看24小时热门和增长趋势
+```
+
+**特色亮点**：
+- 🤖 **AI语义搜索**：说"帮我找交易相关的skill"，它理解你想要什么
+- 📊 **热度排行**：实时追踪Skill流行度（create-pr 170.6k热度排第一）
+- 🏷️ **分类清晰**：Tools(28,400)、Development(24,633)、Data&AI(16,250)
+- 🔗 **一键安装**：每个Skill都有GitHub源链接，复制即用
+- 📈 **趋势图表**：可视化展示Skills增长趋势（2025年11月至今）
+
+**适用场景**：
+- 想找某个特定功能的Skill，但不知道叫什么名字
+- 看看最近流行什么新Skill
+- 按分类浏览某个领域的所有Skills
+- 查看Skill的热度和安装量，判断质量
+
+---
+
+### skills.sh - 安装排行榜
+
+**基本信息**：
+- **网址**：[skills.sh](https://skills.sh)
+- **定位**：Skills安装排行榜和命令行工具
+- **安装命令**：`npx skills add <owner/repo>`
+
+**核心功能**：
+```
+$ skills leaderboard
+查看安装排行：TOP 200 Skills按安装量排序
+
+$ npx skills add vercel-labs/agent-skills
+一键安装：从GitHub直接安装Skill到你的Agent
+
+$ skills trending
+查看24小时热门：发现新晋热门Skills
+```
+
+**排行榜TOP 5**：
+| 排名 | Skill | 安装量 | 来源仓库 |
+|------|-------|--------|----------|
+| 1 | vercel-react-best-practices | 33.1K | vercel-labs/agent-skills |
+| 2 | web-design-guidelines | 25.1K | vercel-labs/agent-skills |
+| 3 | remotion-best-practices | 13.3K | remotion-dev/skills |
+| 4 | frontend-design | 4.3K | anthropics/skills |
+| 5 | skill-creator | 2.7K | anthropics/skills |
+
+**支持的Agent平台**：
+- Claude Code、Cursor、GitHub Copilot
+- OpenAI Codex、Gemini、Windsurf
+- Cline、Roo、Droid等16+平台
+
+**特色亮点**：
+- 📦 **一键安装**：`npx skills add <repo>` 命令行直接安装
+- 🏆 **安装排行**：按实际安装量统计，反映真实使用情况
+- 🔄 **多Agent兼容**：同一个Skill可用于多个AI平台
+- 📈 **Trending榜单**：发现新晋热门Skills
+
+---
+
+### awesome-claude-skills - 精选列表
+
+**基本信息**：
+- **网址**：[github.com/ComposioHQ/awesome-claude-skills](https://github.com/ComposioHQ/awesome-claude-skills)
+- **Stars**：21.6k
+- **定位**：人工精选的Skills资源列表
+
+**核心价值**：
+```
+不是简单的聚合，而是经过验证的高质量Skills集合
+
+✅ 每个Skill都经过人工审核
+✅ 按功能分类（测试/调试/协作/文档等）
+✅ 提供使用场景说明
+✅ 持续更新，收录最新优质Skills
+```
+
+**分类结构**：
+- **测试与质量**：TDD、代码覆盖率检查、测试驱动开发
+- **调试与排障**：系统化调试、日志分析
+- **协作与工作流**：Git提交、PR创建、代码审查
+- **文档处理**：Word/PDF/PPT/Excel自动化
+
+**特色亮点**：
+- 👨‍🔬 **人工精选**：质量把关，避开低质量Skill
+- 📚 **分类清晰**：快速找到你需要的类型
+- 💡 **使用说明**：每个Skill都有使用场景说明
+- 🔄 **持续更新**：跟踪社区最新优秀Skills
+
+---
+
+### 三大平台对比
+
+| 平台 | Skills数量 | 核心价值 | 适合场景 |
+|------|-----------|----------|----------|
+| **SkillsMP** | 84,192+ | 市场聚合+AI搜索 | 搜索发现、查看热度、浏览分类 |
+| **skills.sh** | 排行榜形式 | 安装排行+一键安装 | 看流行度、命令行安装 |
+| **awesome-list** | 50+精选 | 人工精选+质量保证 | 找高质量Skill、学习参考 |
+
+**使用建议**：
+```
+1. 探索发现 → 去 SkillsMP 用AI搜索
+2. 看什么火 → 去 skills.sh 查看排行榜
+3. 找精品 → 去 awesome-list 看精选推荐
+4. 安装使用 → 三者都提供GitHub源链接
+```
+
+---
+
+## 七、参考资源
 
 | 类型 | 链接 |
 |------|------|
