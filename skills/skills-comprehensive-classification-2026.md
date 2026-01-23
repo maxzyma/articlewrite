@@ -10,20 +10,20 @@
 | Skill名称 | Stars | GitHub/官网 | 核心能力 |
 |-----------|-------|-------------|----------|
 | **Superpowers** | 29.2k | [obra/superpowers](https://github.com/obra/superpowers) | TDD+YAGNI+DRY方法论全套 |
-| **multi-agent-patterns** | 5.5k | SkillsMP | 多Agent架构模式设计 |
-| **skill-creator** | 38.5k | 官方 | Skill创建向导 |
-| **skill-writer** | 96k | SkillsMP | 生成高质量SKILL.md |
+| **multi-agent-patterns** | 5.5k | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/multi-agent-patterns) | 多Agent架构模式设计 |
+| **skill-creator** | 38.5k | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/skill-creator) | Skill创建向导 |
+| **skill-writer** | 96k | [skillsmp.com](https://skillsmp.com) | 生成高质量SKILL.md |
 | **mcp-builder** | - | [官方文档](https://platform.claude.com/docs) | MCP服务器开发指南 |
 
 ### 2. 软件开发工作流增强 💻
 
 | Skill名称 | 热度 | GitHub/官网 | 核心能力 |
 |-----------|------|-------------|----------|
-| **create-pr** | 169.7k | SkillsMP | 自动创建GitHub PR，格式化标题，CI校验 |
-| **skill-lookup** | 142.6k | SkillsMP | 技能查找与安装 |
-| **frontend-code-review** | 126.3k | SkillsMP | 前端代码审查（tsx/ts/js） |
-| **component-refactoring** | 126.3k | SkillsMP | React组件重构 |
-| **github-code-review** | 48.2k | SkillsMP | GitHub代码审查+AI协调 |
+| **create-pr** | 169.7k | [skillsmp.com](https://skillsmp.com) | 自动创建GitHub PR，格式化标题，CI校验 |
+| **skill-lookup** | 142.6k | [skillsmp.com](https://skillsmp.com) | 技能查找与安装 |
+| **frontend-code-review** | 126.3k | [skillsmp.com](https://skillsmp.com) | 前端代码审查（tsx/ts/js） |
+| **component-refactoring** | 126.3k | [skillsmp.com](https://skillsmp.com) | React组件重构 |
+| **github-code-review** | 48.2k | [skillsmp.com](https://skillsmp.com) | GitHub代码审查+AI协调 |
 | **planning-with-files** | 10k | [OthmanAdi/planning-with-files](https://github.com/OthmanAdi/planning-with-files) | 多文件任务持久化规划 |
 
 ### 3. 文档与知识管理 📚
@@ -32,7 +32,7 @@
 |-----------|-------|-------------|----------|
 | **anthropics/skills** | 45.1k | [anthropics/skills](https://github.com/anthropics/skills) | 官方Skills集合（docx/pdf/pptx/xlsx） |
 | **notebooklm** | - | [PleasePrompto/notebooklm-skill](https://github.com/PleasePrompto/notebooklm-skill) | 连接Google NotebookLM，带引用问答 |
-| **doc-coauthoring** | - | 官方 | 文档协作工作流 |
+| **doc-coauthoring** | - | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/doc-coauthoring) | 文档协作工作流 |
 
 **官方Skills详解**：
 - **docx**: Word文档创建、编辑、追踪修改
@@ -45,43 +45,43 @@
 | Skill名称 | Stars | GitHub/官网 | 核心能力 |
 |-----------|-------|-------------|----------|
 | **UI-UX-Pro-Max-Skill** | 17.8k | [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | UI/UX设计智能 |
-| **web-artifacts-builder** | - | 官方 | 构建复杂Web组件（React+Tailwind+shadcn/ui） |
-| **frontend-design** | - | 官方 | 高质量前端界面生成 |
-| **brand-guidelines** | - | 官方 | Anthropic品牌规范应用 |
-| **theme-factory** | - | 官方 | 10种预设主题系统 |
-| **algorithmic-art** | - | 官方 | 算法艺术创作（p5.js） |
+| **web-artifacts-builder** | - | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/web-artifacts-builder) | 构建复杂Web组件（React+Tailwind+shadcn/ui） |
+| **frontend-design** | - | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/frontend-design) | 高质量前端界面生成 |
+| **brand-guidelines** | - | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/brand-guidelines) | Anthropic品牌规范应用 |
+| **theme-factory** | - | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/theme-factory) | 10种预设主题系统 |
+| **algorithmic-art** | - | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/algorithmic-art) | 算法艺术创作（p5.js） |
 
 ### 5. 专业领域与平台集成 🔧
 
 | Skill名称 | 热度 | GitHub/官网 | 覆盖范围 |
 |-----------|------|-------------|----------|
-| **cloudflare-skill** | 2.8k | SkillsMP | 60+ Cloudflare产品 |
-| **electron-chromium-upgrade** | 119.6k | SkillsMP | Electron Chromium版本迁移 |
-| **dify-frontend-testing** | 124.9k | SkillsMP | Dify平台前端测试 |
-| **zig-syscalls-bun** | 86k | SkillsMP | Bun运行时底层开发 |
+| **cloudflare-skill** | 2.8k | [skillsmp.com](https://skillsmp.com) | 60+ Cloudflare产品 |
+| **electron-chromium-upgrade** | 119.6k | [skillsmp.com](https://skillsmp.com) | Electron Chromium版本迁移 |
+| **dify-frontend-testing** | 124.9k | [skillsmp.com](https://skillsmp.com) | Dify平台前端测试 |
+| **zig-syscalls-bun** | 86k | [skillsmp.com](https://skillsmp.com) | Bun运行时底层开发 |
 
 ### 6. AI/LLM开发优化 🧠
 
 | Skill名称 | 热度 | GitHub/官网 | 核心能力 |
 |-----------|------|-------------|----------|
-| **cache-components-expert** | 137.2k | SkillsMP | LLM应用缓存策略优化 |
-| **opus-4.5-migration** | 47.2k | SkillsMP | 升级到Claude Opus 4.5 |
-| **confidence-check** | 19.8k | SkillsMP | 评估Claude回答可靠性 |
-| **context-engineering** | 5.5k | SkillsMP | 优化Prompt设计 |
-| **llm-project-methodology** | 5.5k | SkillsMP | AI项目最佳实践 |
+| **cache-components-expert** | 137.2k | [skillsmp.com](https://skillsmp.com) | LLM应用缓存策略优化 |
+| **opus-4.5-migration** | 47.2k | [skillsmp.com](https://skillsmp.com) | 升级到Claude Opus 4.5 |
+| **confidence-check** | 19.8k | [skillsmp.com](https://skillsmp.com) | 评估Claude回答可靠性 |
+| **context-engineering** | 5.5k | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/context-engineering) | 优化Prompt设计 |
+| **llm-project-methodology** | 5.5k | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/llm-project-methodology) | AI项目最佳实践 |
 
 ### 7. 日常生产力工具 🛠️
 
 | Skill名称 | 来源 | GitHub/官网 | 核心能力 |
 |-----------|------|-------------|----------|
-| **image-generator** | 官方 | 官方 | AI图片生成（Pollinations.ai/DALL-E） |
-| **internal-comms** | 官方 | 官方 | 企业内部沟通模板 |
-| **slack-gif-creator** | 官方 | 官方 | Slack GIF创作 |
-| **webapp-testing** | 官方 | 官方 | Playwright Web应用测试 |
-| **xlsx** | 官方 | [anthropics/skills](https://github.com/anthropics/skills) | Excel处理 |
-| **pdf** | 官方 | [anthropics/skills](https://github.com/anthropics/skills) | PDF处理 |
-| **pptx** | 官方 | [anthropics/skills](https://github.com/anthropics/skills) | PPT处理 |
-| **docx** | 官方 | [anthropics/skills](https://github.com/anthropics/skills) | Word处理 |
+| **image-generator** | 官方 | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/image-generator) | AI图片生成（Pollinations.ai/DALL-E） |
+| **internal-comms** | 官方 | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/internal-comms) | 企业内部沟通模板 |
+| **slack-gif-creator** | 官方 | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/slack-gif-creator) | Slack GIF创作 |
+| **webapp-testing** | 官方 | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/webapp-testing) | Playwright Web应用测试 |
+| **xlsx** | 官方 | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/xlsx) | Excel处理 |
+| **pdf** | 官方 | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/pdf) | PDF处理 |
+| **pptx** | 官方 | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/pptx) | PPT处理 |
+| **docx** | 官方 | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/docx) | Word处理 |
 
 ---
 
@@ -187,14 +187,14 @@ skill-writer                 # 理解技能规范
 |------|-----------|-----------|-------------|
 | 快速上手 | anthropics/skills | 45.1k | [GitHub](https://github.com/anthropics/skills) |
 | 规范化开发 | obra/superpowers | 29.2k | [GitHub](https://github.com/obra/superpowers) |
-| PR自动化 | create-pr | 169.7k | SkillsMP |
-| 查找Skills | skill-lookup | 142.6k | SkillsMP |
+| PR自动化 | create-pr | 169.7k | [SkillsMP](https://skillsmp.com) |
+| 查找Skills | skill-lookup | 142.6k | [SkillsMP](https://skillsmp.com) |
 | 前端设计 | ui-ux-pro-max-skill | 17.8k | [GitHub](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) |
 | 文档处理 | anthropics/skills | 45.1k | [GitHub](https://github.com/anthropics/skills) |
-| Cloudflare | cloudflare-skill | 2.8k | SkillsMP |
-| LLM优化 | cache-components-expert | 137.2k | SkillsMP |
-| 学习参考 | awesome-claude-skills | 21.6k | [ComposioHQ/awesome-claude-skills](https://github.com/ComposioHQ/awesome-claude-skills) |
-| 创建Skill | skill-writer | 96k | SkillsMP |
+| Cloudflare | cloudflare-skill | 2.8k | [SkillsMP](https://skillsmp.com) |
+| LLM优化 | cache-components-expert | 137.2k | [SkillsMP](https://skillsmp.com) |
+| 学习参考 | awesome-claude-skills | 21.6k | [GitHub](https://github.com/ComposioHQ/awesome-claude-skills) |
+| 创建Skill | skill-writer | 96k | [SkillsMP](https://skillsmp.com) |
 | 知识库 | notebooklm-skill | 2.1k | [GitHub](https://github.com/PleasePrompto/notebooklm-skill) |
 | 任务规划 | planning-with-files | 10k | [GitHub](https://github.com/OthmanAdi/planning-with-files) |
 
