@@ -8,12 +8,11 @@
 ### 1. Agent框架与技能开发 🤖
 
 | Skill名称 | 仓库Stars | 复杂度 | 仓库地址 | 核心能力 |
-|-----------|-------|--------|-------------|----------|
-| **skill-creator** | 38.5k | ⭐⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/skill-creator) | 把GitHub项目一键打包成Skill，几句命令就能封装工具 |
-| **skill-writer** | 96k | ⭐⭐⭐ | [pytorch/pytorch](https://github.com/pytorch/pytorch/tree/main/claude-skills/skill-writer) | 手把手教你写SKILL.md，从0到1创建自己的技能 |
-| **mcp-builder** | - | ⭐⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/mcp-builder) | 构建MCP服务器，让Claude能调用外部API和工具 |
-| **confidence-check** | 19.8k | ⭐ | [SuperClaude-Org/SuperClaude_Framework](https://github.com/SuperClaude-Org/SuperClaude_Framework/tree/master/.claude/skills/confidence-check) | 让Claude自己评估"这题我有几成把握"，避免瞎答 |
-| **context-engineering** | - | ⭐⭐ | [muratcankoylan/Agent-Skills-for-Context-Engineering](https://github.com/muratcankoylan/Agent-Skills-for-Context-Engineering) | 优化Prompt设计，用更少的Token办更多的事 |
+|-----------|----------|--------|-------------|----------|
+| **skill-creator** | 50.6k | ⭐⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/skill-creator) | 把GitHub项目一键打包成Skill，几句命令就能封装工具 |
+| **mcp-builder** | 50.6k | ⭐⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/mcp-builder) | 构建MCP服务器，让Claude能调用外部API和工具 |
+| **confidence-check** | 20.4k | ⭐ | [SuperClaude-Org/SuperClaude_Framework](https://github.com/SuperClaude-Org/SuperClaude_Framework/tree/master/.claude/skills/confidence-check) | 让Claude自己评估"这题我有几成把握"，避免瞎答 |
+| **context-engineering** | 7.7k | ⭐⭐ | [muratcankoylan/Agent-Skills-for-Context-Engineering](https://github.com/muratcankoylan/Agent-Skills-for-Context-Engineering) | 优化Prompt设计，用更少的Token办更多的事 |
 
 ---
 
@@ -21,23 +20,22 @@
 
 | Skill名称 | 仓库Stars | 复杂度 | 仓库地址 | 核心能力 |
 |-----------|----------|--------|-------------|----------|
-| **Superpowers** | 29.2k | ⭐⭐⭐ | [obra/superpowers](https://github.com/obra/superpowers) | 让Claude按TDD流程开发，先写测试再实现，2小时不跑偏 |
-| **create-pr** | 169.7k | ⭐ | [n8n-io/n8n](https://github.com/n8n-io/n8n) | 说"帮我提交这个功能"，自动跑测试、写标题、检查CI、建PR |
-| **skill-lookup** | 142.6k | ⭐ | [f/awesome-chatgpt-prompts](https://github.com/f/awesome-chatgpt-prompts) | 像搜索引擎一样找Skill，"有没有xxx技能"一问就知道 |
-| **frontend-code-review** | 126.3k | ⭐ | [langgenius/dify](https://github.com/langgenius/dify) | 审查前端代码，检查Hooks用对没、性能咋样、有无bug |
-| **component-refactoring** | 126.3k | ⭐ | [langgenius/dify](https://github.com/langgenius/dify) | 安全拆分React组件，把臃肿的组件整理得井井有条 |
-| **github-code-review** | 126.3k | ⭐ | [langgenius/dify](https://github.com/langgenius/dify) | 多个AI协同审查代码，比自己review快3-5倍 |
-| **planning-with-files** | 10k | ⭐ | [OthmanAdi/planning-with-files](https://github.com/OthmanAdi/planning-with-files) | 改代码前先写规划文档，避免改到一半跑偏 |
+| **Superpowers** | 34.2k | ⭐⭐⭐ | [obra/superpowers](https://github.com/obra/superpowers) | 让Claude按TDD流程开发，先写测试再实现，2小时不跑偏 |
+| **create-pr** | 170.8k | ⭐ | [n8n-io/n8n](https://github.com/n8n-io/n8n/tree/master/.claude/skills/create-pr) | 说"帮我提交这个功能"，自动跑测试、写标题、检查CI、建PR |
+| **skill-lookup** | 143.3k | ⭐ | [f/awesome-chatgpt-prompts](https://github.com/f/awesome-chatgpt-prompts) | 像搜索引擎一样找Skill，"有没有xxx技能"一问就知道 |
+| **frontend-code-review** | 127k | ⭐ | [langgenius/dify](https://github.com/langgenius/dify/tree/main/.claude/skills/frontend-code-review) | 审查前端代码，检查Hooks用对没、性能咋样、有无bug |
+| **component-refactoring** | 127k | ⭐ | [langgenius/dify](https://github.com/langgenius/dify/tree/main/.claude/skills/component-refactoring) | 安全拆分React组件，把臃肿的组件整理得井井有条 |
+| **planning-with-files** | 11k | ⭐ | [OthmanAdi/planning-with-files](https://github.com/OthmanAdi/planning-with-files) | 改代码前先写规划文档，避免改到一半跑偏 |
 
 ---
 
 ### 3. 文档与知识管理 📚
 
 | Skill名称 | 仓库Stars | 复杂度 | 仓库地址 | 核心能力 |
-|-----------|-------|--------|-------------|----------|
-| **anthropics/skills** | 45.1k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills) | 官方文档工具箱，Word/PDF/Excel/PPT一把梭 |
-| **notebooklm** | - | ⭐⭐ | [PleasePrompto/notebooklm-skill](https://github.com/PleasePrompto/notebooklm-skill) | 给AI喂论文和报告，它带引用地回答问题 |
-| **doc-coauthoring** | - | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/doc-coauthoring) | 像找个写作助手，从大纲到成稿全程辅助 |
+|-----------|----------|--------|-------------|----------|
+| **anthropics/skills** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills) | 官方文档工具箱，Word/PDF/Excel/PPT一把梭 |
+| **notebooklm** | 2.5k | ⭐⭐ | [PleasePrompto/notebooklm-skill](https://github.com/PleasePrompto/notebooklm-skill) | 给AI喂论文和报告，它带引用地回答问题 |
+| **doc-coauthoring** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/doc-coauthoring) | 像找个写作助手，从大纲到成稿全程辅助 |
 
 **官方Skills详解**：
 - **docx**: 批量处理Word文档，填表单、改格式、合并文件
@@ -50,39 +48,37 @@
 ### 4. 前端设计与UI/UX 🎨
 
 | Skill名称 | 仓库Stars | 复杂度 | 仓库地址 | 核心能力 |
-|-----------|-------|--------|-------------|----------|
-| **UI-UX-Pro-Max-Skill** | 17.8k | ⭐ | [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | 描述需求，它给出布局建议、组件选择、交互细节 |
-| **web-artifacts-builder** | - | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/web-artifacts-builder) | 快速构建复杂Web组件，带状态管理的完整功能 |
-| **frontend-design** | - | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/frontend-design) | 生成高质量前端代码，避开AI同质化的审美 |
-| **brand-guidelines** | - | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/brand-guidelines) | 应用企业品牌规范，颜色字体统一不跑偏 |
-| **theme-factory** | - | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/theme-factory) | 10种预设主题，一键切换暗色/亮色/品牌色 |
-| **algorithmic-art** | - | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/algorithmic-art) | 用p5.js生成算法艺术，让AI帮你做创意设计 |
+|-----------|----------|--------|-------------|----------|
+| **UI-UX-Pro-Max-Skill** | 21.6k | ⭐ | [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | 描述需求，它给出布局建议、组件选择、交互细节 |
+| **web-artifacts-builder** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/web-artifacts-builder) | 快速构建复杂Web组件，带状态管理的完整功能 |
+| **frontend-design** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/frontend-design) | 生成高质量前端代码，避开AI同质化的审美 |
+| **brand-guidelines** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/brand-guidelines) | 应用企业品牌规范，颜色字体统一不跑偏 |
+| **theme-factory** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/theme-factory) | 10种预设主题，一键切换暗色/亮色/品牌色 |
+| **algorithmic-art** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/algorithmic-art) | 用p5.js生成算法艺术，让AI帮你做创意设计 |
 
 ---
 
 ### 5. 专业领域与平台集成 🔧
 
 | Skill名称 | 仓库Stars | 复杂度 | 仓库地址 | 核心能力 |
-|-----------|------|--------|-------------|----------|
-| **cloudflare-skill** | 2.8k | ⭐⭐ | [cloudflare/cloudflare-docs](https://github.com/cloudflare/cloudflare-docs/tree/main/public/well-known/skills) | 60+Cloudflare产品一本通，Workers还是Pages它帮你选 |
-| **electron-chromium-upgrade** | 119.6k | ⭐ | [skillsmp.com](https://skillsmp.com) | 升级Electron的Chromium版本，从老版本一键迁移 |
-| **dify-frontend-testing** | 124.9k | ⭐ | [langgenius/dify](https://github.com/langgenius/dify/tree/main/agents/skills) | 专为Dify平台优化的前端测试，自动化测试没烦恼 |
-| **zig-syscalls-bun** | 86k | ⭐⭐⭐ | [skillsmp.com](https://skillsmp.com) | Bun运行时底层开发，系统调用级别的性能优化 |
+|-----------|----------|--------|-------------|----------|
+| **cloudflare-skill** | 4.3k | ⭐⭐ | [cloudflare/cloudflare-docs](https://github.com/cloudflare/cloudflare-docs/tree/main/public/well-known/skills) | 60+Cloudflare产品一本通，Workers还是Pages它帮你选 |
+| **dify-frontend-testing** | 127k | ⭐ | [langgenius/dify](https://github.com/langgenius/dify/tree/main/.claude/skills/frontend-testing) | 专为Dify平台优化的前端测试，自动化测试没烦恼 |
 
 ---
 
 ### 6. 日常生产力工具 🛠️
 
-| Skill名称 | 来源 | 复杂度 | GitHub/官网 | 核心能力 |
-|-----------|------|--------|-------------|----------|
-| **image-generator** | 官方 | ⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/image-generator) | AI生成图片，免费用Pollinations或付费DALL-E |
-| **internal-comms** | 官方 | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/internal-comms) | 自动生成企业内部沟通邮件、状态更新、周报 |
-| **slack-gif-creator** | 官方 | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/slack-gif-creator) | 制作Slack GIF动图，团队沟通更生动 |
-| **webapp-testing** | 官方 | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/webapp-testing) | 用Playwright自动测试Web应用，点点点就能测 |
-| **xlsx** | 官方 | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/xlsx) | 批量处理Excel，自动生成公式图表透视表 |
-| **pdf** | 官方 | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/pdf) | 批量提取PDF文字和表格，100份报告1分钟处理完 |
-| **pptx** | 官方 | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/pptx) | 说"帮我做个PPT"，自动生成带图表的幻灯片 |
-| **docx** | 官方 | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/docx) | 批量处理Word文档，填表单、改格式、合并文件 |
+| Skill名称 | 仓库Stars | 复杂度 | GitHub/官网 | 核心能力 |
+|-----------|----------|--------|-------------|----------|
+| **image-generator** | 50.6k | ⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/image-generator) | AI生成图片，免费用Pollinations或付费DALL-E |
+| **internal-comms** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/internal-comms) | 自动生成企业内部沟通邮件、状态更新、周报 |
+| **slack-gif-creator** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/slack-gif-creator) | 制作Slack GIF动图，团队沟通更生动 |
+| **webapp-testing** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/webapp-testing) | 用Playwright自动测试Web应用，点点点就能测 |
+| **xlsx** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/xlsx) | 批量处理Excel，自动生成公式图表透视表 |
+| **pdf** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/pdf) | 批量提取PDF文字和表格，100份报告1分钟处理完 |
+| **pptx** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/pptx) | 说"帮我做个PPT"，自动生成带图表的幻灯片 |
+| **docx** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/docx) | 批量处理Word文档，填表单、改格式、合并文件 |
 
 ---
 
@@ -171,7 +167,7 @@ $ skills trending
 
 **基本信息**：
 - **网址**：[github.com/ComposioHQ/awesome-claude-skills](https://github.com/ComposioHQ/awesome-claude-skills)
-- **Stars**：21.6k
+- **Stars**：24.6k
 - **定位**：人工精选的Skills资源列表
 
 **核心价值**：
