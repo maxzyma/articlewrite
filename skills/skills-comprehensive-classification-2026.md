@@ -1,7 +1,7 @@
-# Skills 分类清单 (2026)
+# Claude Skills 全方位指南：从框架开发到日常工具
 
-> 基于skills目录下的三篇核心文档整理
-> 生成日期：2026-01-23
+> 全面整理 Claude Code Skills 生态，涵盖 Agent 框架、软件开发工作流、文档处理、前端设计、专业领域集成和日常生产力工具
+> 数据来源：GitHub 实际验证 + SkillsMP 聚合平台 | 更新日期：2026-01-23
 
 ## 按应用场景分类
 
@@ -33,15 +33,12 @@
 
 | Skill名称 | 仓库Stars | 复杂度 | 仓库地址 | 核心能力 |
 |-----------|----------|--------|-------------|----------|
-| **anthropics/skills** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills) | 官方文档工具箱，Word/PDF/Excel/PPT一把梭 |
+| **docx** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/docx) | 批量处理Word文档，填表单、改格式、合并文件 |
+| **pdf** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/pdf) | 提取PDF里的文字和表格，100份报告一分钟处理完 |
+| **pptx** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/pptx) | 说"帮我做个PPT"，自动生成带图表的幻灯片 |
+| **xlsx** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/xlsx) | 自动生成Excel公式、图表、透视表，数据分析不用手写公式 |
 | **notebooklm** | 2.5k | ⭐⭐ | [PleasePrompto/notebooklm-skill](https://github.com/PleasePrompto/notebooklm-skill) | 给AI喂论文和报告，它带引用地回答问题 |
 | **doc-coauthoring** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/doc-coauthoring) | 像找个写作助手，从大纲到成稿全程辅助 |
-
-**官方Skills详解**：
-- **docx**: 批量处理Word文档，填表单、改格式、合并文件
-- **pdf**: 提取PDF里的文字和表格，100份报告一分钟处理完
-- **pptx**: 说"帮我做个PPT"，自动生成带图表的幻灯片
-- **xlsx**: 自动生成Excel公式、图表、透视表，数据分析不用手写公式
 
 ---
 
@@ -69,16 +66,12 @@
 
 ### 6. 日常生产力工具 🛠️
 
-| Skill名称 | 仓库Stars | 复杂度 | GitHub/官网 | 核心能力 |
+| Skill名称 | 仓库Stars | 复杂度 | 仓库地址 | 核心能力 |
 |-----------|----------|--------|-------------|----------|
 | **image-generator** | 50.6k | ⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/image-generator) | AI生成图片，免费用Pollinations或付费DALL-E |
 | **internal-comms** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/internal-comms) | 自动生成企业内部沟通邮件、状态更新、周报 |
 | **slack-gif-creator** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/slack-gif-creator) | 制作Slack GIF动图，团队沟通更生动 |
 | **webapp-testing** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/webapp-testing) | 用Playwright自动测试Web应用，点点点就能测 |
-| **xlsx** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/xlsx) | 批量处理Excel，自动生成公式图表透视表 |
-| **pdf** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/pdf) | 批量提取PDF文字和表格，100份报告1分钟处理完 |
-| **pptx** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/pptx) | 说"帮我做个PPT"，自动生成带图表的幻灯片 |
-| **docx** | 50.6k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/docx) | 批量处理Word文档，填表单、改格式、合并文件 |
 
 ---
 
@@ -218,4 +211,4 @@ $ skills trending
 
 ---
 
-*数据来源：skills目录下的三篇文档 + 2026年1月最新搜索结果*
+*数据来源：GitHub API 实际验证（2026-01-23）+ SkillsMP 聚合平台*
