@@ -2,7 +2,7 @@
 
 Complete guide for each supported image generation service.
 
-## Gemini 2.0 Flash Exp Image Generation (Recommended - First Choice)
+## Gemini 3 Pro Image Preview (Recommended - First Choice)
 
 **API Key Required**: Yes - `GEMINI_API_KEY`
 
@@ -17,7 +17,7 @@ Complete guide for each supported image generation service.
 
 **Features**:
 - ✅ Excellent image quality
-- ✅ Google's latest 2.0 Flash model
+- ✅ Google's latest Gemini 3 Pro model
 - ✅ Fast generation speed
 - ✅ Great prompt understanding
 - ✅ Multiple aspect ratios supported

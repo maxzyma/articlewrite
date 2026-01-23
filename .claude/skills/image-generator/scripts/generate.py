@@ -38,7 +38,7 @@ class ImageGenerator:
     def generate_with_gemini(
         self, prompt: str, width: int = 1920, height: int = 1080
     ) -> bytes:
-        """Generate image using Gemini 2.0 Flash Exp (recommended, requires API key).
+        """Generate image using Gemini 3 Pro Image Preview (recommended, requires API key).
 
         Args:
             prompt: Image description
@@ -51,10 +51,10 @@ class ImageGenerator:
         if not self.gemini_key:
             raise ValueError("❌ GEMINI_API_KEY not found in environment")
 
-        print(f"🎨 Generating with Gemini 2.0 Flash Exp...")
+        print(f"🎨 Generating with Gemini 3 Pro Image Preview...")
         print(f"📝 Prompt: {prompt[:100]}...")
 
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp-image-generation:generateImage?key={self.gemini_key}"
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image-preview:generateImage?key={self.gemini_key}"
         headers = {"Content-Type": "application/json"}
 
         data = {
@@ -219,7 +219,7 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Services:
-  gemini          Gemini 2.0 Flash Exp (recommended first choice)
+  gemini          Gemini 3 Pro Image Preview (recommended first choice)
   pollinations    Free, no API key needed
   openai          Requires OPENAI_API_KEY
   stability       Requires STABILITY_API_KEY

@@ -1,6 +1,6 @@
 ---
 name: image-generator
-description: Generate AI images using multiple services (Gemini 2.0 Flash Exp as first choice, also supports Pollinations.ai, OpenAI DALL-E, Stability AI). Supports custom prompts, multiple aspect ratios (16:9, 1:1, 4:3, 9:16), and automatic local saving. Use when user requests image generation, creating covers, visual content for articles/presentations, social media images, or any task requiring AI-generated visuals. Gemini 2.0 Flash Exp is recommended as the first choice for best quality and speed.
+description: Generate AI images using multiple services (Gemini 3 Pro Image Preview as first choice, also supports Pollinations.ai, OpenAI DALL-E, Stability AI). Supports custom prompts, multiple aspect ratios (16:9, 1:1, 4:3, 9:16), and automatic local saving. Use when user requests image generation, creating covers, visual content for articles/presentations, social media images, or any task requiring AI-generated visuals. Gemini 3 Pro Image Preview is recommended as the first choice for best quality and speed.
 ---
 
 # Image Generator
@@ -12,7 +12,7 @@ Generate AI images using multiple services with custom prompts and aspect ratios
 Generate images using the `scripts/generate.py` script:
 
 ```bash
-# Recommended: Gemini 2.0 Flash (best quality)
+# Recommended: Gemini 3 Pro (best quality)
 python3 scripts/generate.py "A cute cat playing in sunlight" --service gemini
 
 # Free service (no API key needed)
@@ -27,7 +27,7 @@ python3 scripts/generate.py "Abstract tech art" --service gemini --width 1920 --
 
 ## Supported Services
 
-### Gemini 2.0 Flash Exp Image Generation (Recommended - First Choice)
+### Gemini 3 Pro Image Preview (Recommended - First Choice)
 - Requires `GEMINI_API_KEY` environment variable
 - Excellent quality with Google's latest model
 - Fast generation with good prompt understanding
@@ -107,7 +107,7 @@ python3 scripts/generate.py \
 For paid services, set API keys in your shell or project `.env`:
 
 ```bash
-# Gemini 2.0 Flash (Recommended)
+# Gemini 3 Pro (Recommended)
 export GEMINI_API_KEY="AI..."
 
 # OpenAI DALL-E
