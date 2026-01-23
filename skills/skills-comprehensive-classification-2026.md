@@ -69,7 +69,7 @@
 |-----------|------|--------|-------------|----------|
 | **cloudflare-skill** | 2.8k | ⭐⭐ | [cloudflare/cloudflare-docs](https://github.com/cloudflare/cloudflare-docs/tree/main/public/well-known/skills) | 60+Cloudflare产品一本通，Workers还是Pages它帮你选 |
 | **electron-chromium-upgrade** | 119.6k | ⭐ | [skillsmp.com](https://skillsmp.com) | 升级Electron的Chromium版本，从老版本一键迁移 |
-| **dify-frontend-testing** | 124.9k | ⭐ | [skillsmp.com](https://skillsmp.com) | 专为Dify平台优化的前端测试，自动化测试没烦恼 |
+| **dify-frontend-testing** | 124.9k | ⭐ | [langgenius/dify](https://github.com/langgenius/dify/tree/main/agents/skills) | 专为Dify平台优化的前端测试，自动化测试没烦恼 |
 | **zig-syscalls-bun** | 86k | ⭐⭐⭐ | [skillsmp.com](https://skillsmp.com) | Bun运行时底层开发，系统调用级别的性能优化 |
 
 ---
