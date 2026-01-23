@@ -12,6 +12,12 @@ from pathlib import Path
 try:
     import requests
     from dotenv import load_dotenv
+
+    # Disable proxy
+    import urllib3
+    import requests as req_module
+    # Disable proxy by setting session proxies to empty
+    req_module.Session.proxies = {"http": None, "https": None}
 except ImportError as e:
     print(f"❌ Missing dependencies: {e}")
     print("\nInstall with: pip install requests python-dotenv")
@@ -48,7 +54,7 @@ class ImageGenerator:
         url = f"https://image.pollinations.ai/prompt/{encoded_prompt}"
         params = {"width": width, "height": height, "nologo": True, "enhance": True}
 
-        response = requests.get(url, params=params, timeout=120)
+        response = requests.get(url, params=params, timeout=120, proxies={"http": None, "https": None})
         response.raise_for_status()
 
         print("✅ Image generated successfully!")
@@ -85,11 +91,11 @@ class ImageGenerator:
             "quality": "hd"
         }
 
-        response = requests.post(url, headers=headers, json=data, timeout=60)
+        response = requests.post(url, headers=headers, json=data, timeout=60, proxies={"http": None, "https": None})
         response.raise_for_status()
 
         image_url = response.json()["data"][0]["url"]
-        img_response = requests.get(image_url, timeout=30)
+        img_response = requests.get(image_url, timeout=30, proxies={"http": None, "https": None})
         img_response.raise_for_status()
 
         print("✅ Image generated successfully!")
@@ -131,7 +137,7 @@ class ImageGenerator:
             "samples": 1
         }
 
-        response = requests.post(url, headers=headers, json=data, timeout=60)
+        response = requests.post(url, headers=headers, json=data, timeout=60, proxies={"http": None, "https": None})
         response.raise_for_status()
 
         image_b64 = response.json()["artifacts"][0]["base64"]
