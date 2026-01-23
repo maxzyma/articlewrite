@@ -7,7 +7,7 @@
 
 ### 1. Agent框架与应用开发 🤖
 
-| Skill名称 | Stars | 复杂度 | GitHub/官网 | 核心能力 |
+| Skill名称 | 仓库Stars | 复杂度 | 仓库地址 | 核心能力 |
 |-----------|-------|--------|-------------|----------|
 | **Superpowers** | 29.2k | ⭐⭐⭐ | [obra/superpowers](https://github.com/obra/superpowers) | 让Claude按TDD流程开发，先写测试再实现，2小时不跑偏 |
 | **skill-creator** | 38.5k | ⭐⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/skill-creator) | 把GitHub项目一键打包成Skill，几句命令就能封装工具 |
@@ -21,7 +21,7 @@
 
 ### 2. 软件开发工作流增强 💻
 
-| Skill名称 | 热度 | 复杂度 | GitHub/官网 | 核心能力 |
+| Skill名称 | 仓库Stars | 复杂度 | 仓库地址 | 核心能力 |
 |-----------|------|--------|-------------|----------|
 | **create-pr** | 169.7k | ⭐ | [n8n-io/n8n](https://github.com/n8n-io/n8n) | 说"帮我提交这个功能"，自动跑测试、写标题、检查CI、建PR |
 | **skill-lookup** | 142.6k | ⭐ | [f/awesome-chatgpt-prompts](https://github.com/f/awesome-chatgpt-prompts) | 像搜索引擎一样找Skill，"有没有xxx技能"一问就知道 |
@@ -34,7 +34,7 @@
 
 ### 3. 文档与知识管理 📚
 
-| Skill名称 | Stars | 复杂度 | GitHub/官网 | 核心能力 |
+| Skill名称 | 仓库Stars | 复杂度 | 仓库地址 | 核心能力 |
 |-----------|-------|--------|-------------|----------|
 | **anthropics/skills** | 45.1k | ⭐ | [anthropics/skills](https://github.com/anthropics/skills) | 官方文档工具箱，Word/PDF/Excel/PPT一把梭 |
 | **notebooklm** | - | ⭐⭐ | [PleasePrompto/notebooklm-skill](https://github.com/PleasePrompto/notebooklm-skill) | 给AI喂论文和报告，它带引用地回答问题 |
@@ -50,7 +50,7 @@
 
 ### 4. 前端设计与UI/UX 🎨
 
-| Skill名称 | Stars | 复杂度 | GitHub/官网 | 核心能力 |
+| Skill名称 | 仓库Stars | 复杂度 | 仓库地址 | 核心能力 |
 |-----------|-------|--------|-------------|----------|
 | **UI-UX-Pro-Max-Skill** | 17.8k | ⭐ | [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | 描述需求，它给出布局建议、组件选择、交互细节 |
 | **web-artifacts-builder** | - | ⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/web-artifacts-builder) | 快速构建复杂Web组件，带状态管理的完整功能 |
@@ -63,7 +63,7 @@
 
 ### 5. 专业领域与平台集成 🔧
 
-| Skill名称 | 热度 | 复杂度 | GitHub/官网 | 核心能力 |
+| Skill名称 | 仓库Stars | 复杂度 | 仓库地址 | 核心能力 |
 |-----------|------|--------|-------------|----------|
 | **cloudflare-skill** | 2.8k | ⭐⭐ | [cloudflare/cloudflare-docs](https://github.com/cloudflare/cloudflare-docs/tree/main/public/well-known/skills) | 60+Cloudflare产品一本通，Workers还是Pages它帮你选 |
 | **electron-chromium-upgrade** | 119.6k | ⭐ | [skillsmp.com](https://skillsmp.com) | 升级Electron的Chromium版本，从老版本一键迁移 |
