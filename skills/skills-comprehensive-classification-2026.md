@@ -5,24 +5,23 @@
 
 ## 按应用场景分类
 
-### 1. Agent框架与应用开发 🤖
+### 1. Agent框架与技能开发 🤖
 
 | Skill名称 | 仓库Stars | 复杂度 | 仓库地址 | 核心能力 |
 |-----------|-------|--------|-------------|----------|
-| **Superpowers** | 29.2k | ⭐⭐⭐ | [obra/superpowers](https://github.com/obra/superpowers) | 让Claude按TDD流程开发，先写测试再实现，2小时不跑偏 |
 | **skill-creator** | 38.5k | ⭐⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/skill-creator) | 把GitHub项目一键打包成Skill，几句命令就能封装工具 |
 | **skill-writer** | 96k | ⭐⭐⭐ | [pytorch/pytorch](https://github.com/pytorch/pytorch/tree/main/claude-skills/skill-writer) | 手把手教你写SKILL.md，从0到1创建自己的技能 |
 | **mcp-builder** | - | ⭐⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/mcp-builder) | 构建MCP服务器，让Claude能调用外部API和工具 |
 | **confidence-check** | 19.8k | ⭐ | [SuperClaude-Org/SuperClaude_Framework](https://github.com/SuperClaude-Org/SuperClaude_Framework/tree/master/.claude/skills/confidence-check) | 让Claude自己评估"这题我有几成把握"，避免瞎答 |
 | **context-engineering** | - | ⭐⭐ | [muratcankoylan/Agent-Skills-for-Context-Engineering](https://github.com/muratcankoylan/Agent-Skills-for-Context-Engineering) | 优化Prompt设计，用更少的Token办更多的事 |
-| **llm-project-methodology** | 5.5k | ⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/llm-project-methodology) | AI项目最佳实践，从立项到上线的完整指南 |
 
 ---
 
 ### 2. 软件开发工作流增强 💻
 
 | Skill名称 | 仓库Stars | 复杂度 | 仓库地址 | 核心能力 |
-|-----------|------|--------|-------------|----------|
+|-----------|----------|--------|-------------|----------|
+| **Superpowers** | 29.2k | ⭐⭐⭐ | [obra/superpowers](https://github.com/obra/superpowers) | 让Claude按TDD流程开发，先写测试再实现，2小时不跑偏 |
 | **create-pr** | 169.7k | ⭐ | [n8n-io/n8n](https://github.com/n8n-io/n8n) | 说"帮我提交这个功能"，自动跑测试、写标题、检查CI、建PR |
 | **skill-lookup** | 142.6k | ⭐ | [f/awesome-chatgpt-prompts](https://github.com/f/awesome-chatgpt-prompts) | 像搜索引擎一样找Skill，"有没有xxx技能"一问就知道 |
 | **frontend-code-review** | 126.3k | ⭐ | [langgenius/dify](https://github.com/langgenius/dify) | 审查前端代码，检查Hooks用对没、性能咋样、有无bug |
