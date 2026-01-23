@@ -20,11 +20,11 @@
 
 | Skill名称 | 热度 | 复杂度 | GitHub/官网 | 核心能力 |
 |-----------|------|--------|-------------|----------|
-| **create-pr** | 169.7k | ⭐ | [skillsmp.com](https://skillsmp.com) | 说"帮我提交这个功能"，自动跑测试、写标题、检查CI、建PR |
-| **skill-lookup** | 142.6k | ⭐ | [skillsmp.com](https://skillsmp.com) | 像搜索引擎一样找Skill，"有没有xxx技能"一问就知道 |
-| **frontend-code-review** | 126.3k | ⭐ | [skillsmp.com](https://skillsmp.com) | 审查前端代码，检查Hooks用对没、性能咋样、有无bug |
-| **component-refactoring** | 126.3k | ⭐ | [skillsmp.com](https://skillsmp.com) | 安全拆分React组件，把臃肿的组件整理得井井有条 |
-| **github-code-review** | 126.3k | ⭐ | [skillsmp.com](https://skillsmp.com) | 多个AI协同审查代码，比自己review快3-5倍 |
+| **create-pr** | 169.7k | ⭐ | [n8n-io/n8n](https://github.com/n8n-io/n8n) | 说"帮我提交这个功能"，自动跑测试、写标题、检查CI、建PR |
+| **skill-lookup** | 142.6k | ⭐ | [f/awesome-chatgpt-prompts](https://github.com/f/awesome-chatgpt-prompts) | 像搜索引擎一样找Skill，"有没有xxx技能"一问就知道 |
+| **frontend-code-review** | 126.3k | ⭐ | [langgenius/dify](https://github.com/langgenius/dify) | 审查前端代码，检查Hooks用对没、性能咋样、有无bug |
+| **component-refactoring** | 126.3k | ⭐ | [langgenius/dify](https://github.com/langgenius/dify) | 安全拆分React组件，把臃肿的组件整理得井井有条 |
+| **github-code-review** | 126.3k | ⭐ | [langgenius/dify](https://github.com/langgenius/dify) | 多个AI协同审查代码，比自己review快3-5倍 |
 | **planning-with-files** | 10k | ⭐ | [OthmanAdi/planning-with-files](https://github.com/OthmanAdi/planning-with-files) | 改代码前先写规划文档，避免改到一半跑偏 |
 
 ---
