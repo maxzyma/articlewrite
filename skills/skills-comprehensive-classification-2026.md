@@ -13,7 +13,7 @@
 | **skill-creator** | 38.5k | ⭐⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/skill-creator) | 把GitHub项目一键打包成Skill，几句命令就能封装工具 |
 | **skill-writer** | 96k | ⭐⭐⭐ | [pytorch/pytorch](https://github.com/pytorch/pytorch/tree/main/claude-skills/skill-writer) | 手把手教你写SKILL.md，从0到1创建自己的技能 |
 | **mcp-builder** | - | ⭐⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/mcp-builder) | 构建MCP服务器，让Claude能调用外部API和工具 |
-| **confidence-check** | 19.8k | ⭐ | [skillsmp.com](https://skillsmp.com) | 让Claude自己评估"这题我有几成把握"，避免瞎答 |
+| **confidence-check** | 19.8k | ⭐ | [SuperClaude-Org/SuperClaude_Framework](https://github.com/SuperClaude-Org/SuperClaude_Framework/tree/master/.claude/skills/confidence-check) | 让Claude自己评估"这题我有几成把握"，避免瞎答 |
 | **context-engineering** | 5.5k | ⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/context-engineering) | 优化Prompt设计，用更少的Token办更多的事 |
 | **llm-project-methodology** | 5.5k | ⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/llm-project-methodology) | AI项目最佳实践，从立项到上线的完整指南 |
 
