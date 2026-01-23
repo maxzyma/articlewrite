@@ -1,0 +1,77 @@
+#!/bin/bash
+# Image Generator Wrapper - Direct pollinations access
+# Works without Python proxy issues
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )"
+
+# Parse arguments
+PROMPT=""
+SERVICE="pollinations"
+WIDTH="1920"
+HEIGHT="1080"
+OUTPUT="./generated_image.png"
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --service)
+            SERVICE="$2"
+            shift 2
+            ;;
+        --output)
+            OUTPUT="$2"
+            shift 2
+            ;;
+        --width)
+            WIDTH="$2"
+            shift 2
+            ;;
+        --height)
+            HEIGHT="$2"
+            shift 2
+            ;;
+        *)
+            if [[ -z "$PROMPT" ]]; then
+                PROMPT="$1"
+            fi
+            shift
+            ;;
+    esac
+done
+
+if [[ -z "$PROMPT" ]]; then
+    echo "❌ Error: No prompt provided"
+    echo "Usage: $0 \"your prompt\" [--service pollinations] [--width 1920] [--height 1080] [--output path]"
+    exit 1
+fi
+
+# For now, only support pollinations via curl
+if [[ "$SERVICE" != "pollinations" ]]; then
+    echo "❌ Error: Only pollinations service is supported via this shell wrapper"
+    echo "   For other services (gemini, openai, stability), please set up your Python environment:"
+    echo "   pip install requests python-dotenv"
+    exit 1
+fi
+
+echo "🎨 Generating with Pollinations.ai..."
+echo "📝 Prompt: ${PROMPT:0:100}..."
+
+# URL encode the prompt
+ENCODED_PROMPT=$(python3 -c "import urllib.parse; print(urllib.parse.quote('''$PROMPT'''))")
+
+# Download image
+curl -G "https://image.pollinations.ai/prompt/$ENCODED_PROMPT" \
+    --data-urlencode "width=$WIDTH" \
+    --data-urlencode "height=$HEIGHT" \
+    --data-urlencode "nologo=True" \
+    --data-urlencode "enhance=True" \
+    -o "$OUTPUT" \
+    --max-time 120 \
+    --silent --show-error
+
+if [[ $? -eq 0 ]]; then
+    echo "✅ Image generated successfully!"
+    echo "💾 Saved to: $(cd "$(dirname "$OUTPUT")" && pwd)/$(basename "$OUTPUT")"
+else
+    echo "❌ Error: Failed to generate image"
+    exit 1
+fi

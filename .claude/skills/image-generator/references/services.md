@@ -35,7 +35,7 @@ Complete guide for each supported image generation service.
 
 **Usage**:
 ```bash
-python3 scripts/generate.py "your prompt" --service gemini
+./.claude/skills/image-generator/bin/generate "your prompt" --service gemini
 ```
 
 ---
@@ -63,7 +63,7 @@ python3 scripts/generate.py "your prompt" --service gemini
 
 **Usage**:
 ```bash
-python3 scripts/generate.py "your prompt" --service pollinations
+./.claude/skills/image-generator/bin/generate "your prompt" --service pollinations
 ```
 
 ---
@@ -99,7 +99,7 @@ python3 scripts/generate.py "your prompt" --service pollinations
 
 **Usage**:
 ```bash
-python3 scripts/generate.py "your prompt" --service openai
+./.claude/skills/image-generator/bin/generate "your prompt" --service openai
 ```
 
 ---
@@ -134,7 +134,7 @@ python3 scripts/generate.py "your prompt" --service openai
 
 **Usage**:
 ```bash
-python3 scripts/generate.py "your prompt" --service stability
+./.claude/skills/image-generator/bin/generate "your prompt" --service stability
 ```
 
 ---

@@ -9,20 +9,27 @@ Generate AI images using multiple services with custom prompts and aspect ratios
 
 ## Quick Start
 
-Generate images using the `scripts/generate.py` script:
+Generate images using the `bin/generate` wrapper script (works from any directory):
 
 ```bash
 # Recommended: Gemini 3 Pro (best quality)
-python3 scripts/generate.py "A cute cat playing in sunlight" --service gemini
+./.claude/skills/image-generator/bin/generate "A cute cat playing in sunlight" --service gemini
 
 # Free service (no API key needed)
-python3 scripts/generate.py "A cute cat playing in sunlight" --service pollinations
+./.claude/skills/image-generator/bin/generate "A cute cat playing in sunlight" --service pollinations
 
 # Specify output path
-python3 scripts/generate.py "Futuristic city" --service gemini --output ./cover.png
+./.claude/skills/image-generator/bin/generate "Futuristic city" --service gemini --output ./cover.png
 
 # Custom size (16:9 for covers)
-python3 scripts/generate.py "Abstract tech art" --service gemini --width 1920 --height 1080
+./.claude/skills/image-generator/bin/generate "Abstract tech art" --service gemini --width 1920 --height 1080
+```
+
+**Or use the script directly from the skill directory:**
+
+```bash
+cd .claude/skills/image-generator
+./bin/generate "your prompt" --service gemini
 ```
 
 ## Supported Services
@@ -78,7 +85,7 @@ optional arguments:
 
 ### Article Cover (16:9)
 ```bash
-python3 scripts/generate.py \
+./.claude/skills/image-generator/bin/generate \
   "Abstract three-layer evolution diagram, modern tech style, gradient blue and purple" \
   --service gemini \
   --width 1920 --height 1080 \
@@ -87,7 +94,7 @@ python3 scripts/generate.py \
 
 ### Social Media (1:1)
 ```bash
-python3 scripts/generate.py \
+./.claude/skills/image-generator/bin/generate \
   "Professional portrait, modern office background" \
   --service gemini \
   --width 1024 --height 1024 \
@@ -96,7 +103,7 @@ python3 scripts/generate.py \
 
 ### Using OpenAI DALL-E
 ```bash
-python3 scripts/generate.py \
+./.claude/skills/image-generator/bin/generate \
   "Cyberpunk city at night, neon lights, detailed" \
   --service openai \
   --output ./cyberpunk.png
