@@ -10,10 +10,9 @@
 | Skill名称 | Stars | 复杂度 | GitHub/官网 | 核心能力 |
 |-----------|-------|--------|-------------|----------|
 | **Superpowers** | 29.2k | ⭐⭐⭐ | [obra/superpowers](https://github.com/obra/superpowers) | 让Claude按TDD流程开发，先写测试再实现，2小时不跑偏 |
-| **multi-agent-patterns** | 5.5k | ⭐⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/multi-agent-patterns) | 设计多Agent协作系统，让AI们分工合作完成任务 |
 | **skill-creator** | 38.5k | ⭐⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/skill-creator) | 把GitHub项目一键打包成Skill，几句命令就能封装工具 |
 | **skill-writer** | 96k | ⭐⭐⭐ | [skillsmp.com](https://skillsmp.com) | 手把手教你写SKILL.md，从0到1创建自己的技能 |
-| **mcp-builder** | - | ⭐⭐⭐ | [官方文档](https://platform.claude.com/docs) | 构建MCP服务器，让Claude能调用外部API和工具 |
+| **mcp-builder** | - | ⭐⭐⭐ | [anthropics/skills](https://github.com/anthropics/skills/tree/main/skills/mcp-builder) | 构建MCP服务器，让Claude能调用外部API和工具 |
 
 ---
 
