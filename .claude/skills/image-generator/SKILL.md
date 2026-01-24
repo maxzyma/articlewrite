@@ -1,6 +1,6 @@
 ---
 name: image-generator
-description: Generate AI images using multiple services (Gemini 3 Pro Image Preview as first choice, also supports Pollinations.ai, OpenAI DALL-E, Stability AI). Supports custom prompts, multiple aspect ratios (16:9, 1:1, 4:3, 9:16), and automatic local saving. Use when user requests image generation, creating covers, visual content for articles/presentations, social media images, or any task requiring AI-generated visuals. Gemini 3 Pro Image Preview is recommended as the first choice for best quality and speed.
+description: Generate AI images using multiple services (Gemini 3 Pro Image Preview via Vertex AI as first choice, also supports Pollinations.ai, OpenAI DALL-E, Stability AI). Supports custom prompts, multiple aspect ratios (16:9, 1:1, 4:3, 9:16), and automatic local saving. Use when user requests image generation, creating covers, visual content for articles/presentations, social media images, or any task requiring AI-generated visuals. Gemini 3 Pro Image Preview via Vertex AI is recommended as the first choice.
 ---
 
 # Image Generator
@@ -9,36 +9,54 @@ Generate AI images using multiple services with custom prompts and aspect ratios
 
 ## Quick Start
 
-Generate images using the `bin/generate` wrapper script (works from any directory):
+### Gemini 3 Pro Image Preview (Recommended - First Choice)
 
 ```bash
-# Recommended: Gemini 3 Pro (best quality)
-./.claude/skills/image-generator/bin/generate "A cute cat playing in sunlight" --service gemini
+# Set up Google Cloud project and authentication
+export GOOGLE_PROJECT_ID=your-project-id
+gcloud auth application-default login
 
-# Free service (no API key needed)
-./.claude/skills/image-generator/bin/generate "A cute cat playing in sunlight" --service pollinations
-
-# Specify output path
-./.claude/skills/image-generator/bin/generate "Futuristic city" --service gemini --output ./cover.png
-
-# Custom size (16:9 for covers)
-./.claude/skills/image-generator/bin/generate "Abstract tech art" --service gemini --width 1920 --height 1080
+# Generate image (recommended)
+./.claude/skills/image-generator/bin/generate "your prompt" --service gemini
 ```
 
-**Or use the script directly from the skill directory:**
+### Pollinations.ai (Free, No API Key)
 
 ```bash
-cd .claude/skills/image-generator
-./bin/generate "your prompt" --service gemini
+./.claude/skills/image-generator/bin/generate "your prompt" --service pollinations
+```
+
+### OpenAI DALL-E 3
+
+```bash
+export OPENAI_API_KEY=sk-...
+./.claude/skills/image-generator/bin/generate "your prompt" --service openai
 ```
 
 ## Supported Services
 
 ### Gemini 3 Pro Image Preview (Recommended - First Choice)
-- Requires `GEMINI_API_KEY` environment variable
-- Excellent quality with Google's latest model
-- Fast generation with good prompt understanding
-- **Use for**: All image generation needs (recommended as first choice)
+
+**Authentication**: Requires Google Cloud credentials
+
+**Setup**:
+1. Install Google Cloud SDK: https://cloud.google.com/sdk/docs/install
+2. Set project ID:
+   ```bash
+   export GOOGLE_PROJECT_ID=your-project-id
+   # Or: gcloud config set project YOUR_PROJECT_ID
+   ```
+3. Authenticate:
+   ```bash
+   gcloud auth application-default login
+   ```
+
+**Alternative authentication**:
+- Access token: `export GOOGLE_ACCESS_TOKEN=ya29.xxx...`
+- Service account: `export GOOGLE_APPLICATION_CREDENTIALS=/path/to/key.json`
+
+**API**: Uses Vertex AI endpoint based on official documentation
+- Reference: https://console.cloud.google.com/vertex-ai/publishers/google/model-garden/gemini-3-pro-image-preview
 
 ### Pollinations.ai (FREE)
 - No API key required
@@ -96,7 +114,7 @@ optional arguments:
 ```bash
 ./.claude/skills/image-generator/bin/generate \
   "Professional portrait, modern office background" \
-  --service gemini \
+  --service pollinations \
   --width 1024 --height 1024 \
   --output ./avatar.png
 ```
@@ -109,23 +127,53 @@ optional arguments:
   --output ./cyberpunk.png
 ```
 
-## Environment Variables (Optional)
+## Environment Variables
 
-For paid services, set API keys in your shell or project `.env`:
-
+### For Gemini (Vertex AI)
 ```bash
-# Gemini 3 Pro (Recommended)
-export GEMINI_API_KEY="AI..."
+# Required
+export GOOGLE_PROJECT_ID=your-project-id
 
-# OpenAI DALL-E
+# Authentication (choose one)
+export GOOGLE_ACCESS_TOKEN=ya29.xxx...           # Direct token
+export GOOGLE_APPLICATION_CREDENTIALS=/path/key.json  # Service account
+# Or use: gcloud auth application-default login
+```
+
+### For Other Services
+```bash
 export OPENAI_API_KEY="sk-..."
-
-# Stability AI
 export STABILITY_API_KEY="sk-..."
 ```
 
-Get API keys:
-- Gemini: https://aistudio.google.com/app/apikey
+## Setup Guide
+
+### Google Cloud Setup (for Gemini)
+
+1. **Create a Google Cloud project**:
+   - Visit: https://console.cloud.google.com/
+   - Click "New Project"
+
+2. **Enable Vertex AI API**:
+   - Go to: https://console.cloud.google.com/apis/library/aiplatform.googleapis.com
+   - Select your project and enable
+
+3. **Authenticate**:
+   ```bash
+   # Install gcloud
+   curl https://sdk.cloud.google.com | bash
+   exec $SHELL
+
+   # Login
+   gcloud auth login
+   gcloud auth application-default login
+
+   # Set project
+   gcloud config set project YOUR_PROJECT_ID
+   ```
+
+### Get API Keys
+- Gemini: Via Google Cloud Console (no separate key needed)
 - OpenAI: https://platform.openai.com/api-keys
 - Stability AI: https://platform.stability.ai/account/keys
 

@@ -1,44 +1,89 @@
 #!/usr/bin/env python3
 """
 Universal Image Generator
-Supports multiple AI image generation services.
+Supports multiple AI image generation services including Gemini 3 Pro (Vertex AI).
+
+Usage:
+    # Gemini via Vertex AI (Recommended - First Choice)
+    # Requires: gcloud CLI and authentication
+    export GOOGLE_PROJECT_ID=your-project-id
+    gcloud auth application-default login
+    python3 scripts/generate.py "prompt" --service gemini --width 1920 --height 1080
+
+    # Or with access token directly
+    export GOOGLE_ACCESS_TOKEN=ya29.xxx...
+    export GOOGLE_PROJECT_ID=your-project-id
+    python3 scripts/generate.py "prompt" --service gemini
+
+    # Pollinations.ai (Free, no API key)
+    python3 scripts/generate.py "prompt" --service pollinations
+
+    # OpenAI DALL-E 3
+    export OPENAI_API_KEY=sk-...
+    python3 scripts/generate.py "prompt" --service openai
 """
 import os
 import sys
-import argparse
+import json
 import base64
+import argparse
+import subprocess
+import urllib.request
+import urllib.error
+
 from pathlib import Path
-
-try:
-    import requests
-    from dotenv import load_dotenv
-
-    # Disable proxy
-    import urllib3
-    import requests as req_module
-    # Disable proxy by setting session proxies to empty
-    req_module.Session.proxies = {"http": None, "https": None}
-except ImportError as e:
-    print(f"❌ Missing dependencies: {e}")
-    print("\nInstall with: pip install requests python-dotenv")
-    sys.exit(1)
-
-# Load environment variables from project root
-load_dotenv()
 
 
 class ImageGenerator:
     """Universal image generator supporting multiple services."""
 
     def __init__(self):
-        self.gemini_key = os.getenv("GEMINI_API_KEY")
+        self.gemini_project_id = os.getenv("GOOGLE_PROJECT_ID")
+        self.gemini_access_token = os.getenv("GOOGLE_ACCESS_TOKEN")
+        self.gemini_credentials = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
         self.openai_key = os.getenv("OPENAI_API_KEY")
         self.stability_key = os.getenv("STABILITY_API_KEY")
+
+    def _get_gemini_token(self) -> str:
+        """Get access token for Vertex AI."""
+        # Check if already set
+        if self.gemini_access_token:
+            return self.gemini_access_token
+
+        # Try gcloud
+        try:
+            result = subprocess.run(
+                ["gcloud", "auth", "application-default", "print-access-token"],
+                capture_output=True, text=True, timeout=30
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                return result.stdout.strip()
+        except FileNotFoundError:
+            pass
+
+        # Try service account
+        if self.gemini_credentials and os.path.exists(self.gemini_credentials):
+            try:
+                from google.auth.transport.requests import Request
+                from google.oauth2 import service_account
+
+                credentials = service_account.Credentials.from_service_account_file(
+                    self.gemini_credentials,
+                    scopes=['https://www.googleapis.com/auth/cloud-platform']
+                )
+                credentials.refresh(Request())
+                return credentials.token
+            except Exception as e:
+                print(f"⚠️  Service account error: {e}")
+
+        return None
 
     def generate_with_gemini(
         self, prompt: str, width: int = 1920, height: int = 1080
     ) -> bytes:
-        """Generate image using Gemini 3 Pro Image Preview (recommended, requires API key).
+        """Generate image using Gemini 3 Pro Image Preview via Vertex AI API.
+
+        Based on: https://console.cloud.google.com/vertex-ai/publishers/google/model-garden/gemini-3-pro-image-preview
 
         Args:
             prompt: Image description
@@ -48,38 +93,77 @@ class ImageGenerator:
         Returns:
             Image bytes
         """
-        if not self.gemini_key:
-            raise ValueError("❌ GEMINI_API_KEY not found in environment")
+        # Check project ID
+        if not self.gemini_project_id:
+            raise ValueError(
+                "❌ GOOGLE_PROJECT_ID not set\n"
+                "Set with: export GOOGLE_PROJECT_ID=your-project-id\n"
+                "Or run: gcloud config set project YOUR_PROJECT_ID"
+            )
 
-        print(f"🎨 Generating with Gemini 3 Pro Image Preview...")
+        # Get access token
+        access_token = self._get_gemini_token()
+        if not access_token:
+            raise ValueError(
+                "❌ No access token available\n"
+                "Options:\n"
+                "1. Install gcloud and run: gcloud auth application-default login\n"
+                "2. Set: export GOOGLE_ACCESS_TOKEN=ya29.xxx...\n"
+                "3. Set: export GOOGLE_APPLICATION_CREDENTIALS=/path/to/key.json"
+            )
+
+        print(f"🎨 Generating with Gemini 3 Pro Image Preview (Vertex AI)...")
         print(f"📝 Prompt: {prompt[:100]}...")
 
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image-preview:generateImage?key={self.gemini_key}"
-        headers = {"Content-Type": "application/json"}
+        # Vertex AI API endpoint
+        url = (
+            f"https://aiplatform.googleapis.com/v1/projects/{self.gemini_project_id}"
+            f"/locations/global/publishers/google/models/gemini-3-pro-image-preview:generateContent"
+        )
 
-        data = {
-            "contents": [
-                {
-                    "parts": [
-                        {"text": prompt}
-                    ]
-                }
-            ],
-            "generationConfig": {
-                "responseMimeType": "image/png"
+        headers = {
+            "Authorization": f"Bearer {access_token}",
+            "Content-Type": "application/json"
+        }
+
+        payload = {
+            "contents": {
+                "role": "user",
+                "parts": {"text": prompt}
+            },
+            "generation_config": {
+                "response_modalities": ["TEXT", "IMAGE"]
             }
         }
 
-        response = requests.post(url, headers=headers, json=data, timeout=120, proxies={"http": None, "https": None})
-        response.raise_for_status()
+        try:
+            data = json.dumps(payload).encode('utf-8')
+            req = urllib.request.Request(url, data=data, headers=headers)
 
-        # Parse response to get image data
-        result = response.json()
-        image_data = result['candidates'][0]['content']['parts'][0]['inlineData']['data']
-        image_bytes = base64.b64decode(image_data)
+            with urllib.request.urlopen(req, timeout=120) as response:
+                result = json.loads(response.read().decode('utf-8'))
 
-        print("✅ Image generated successfully!")
-        return image_bytes
+            # Parse response
+            if 'candidates' in result and len(result['candidates']) > 0:
+                candidate = result['candidates'][0]
+                content = candidate.get('content', {})
+
+                if 'parts' in content and len(content['parts']) > 0:
+                    for part in content['parts']:
+                        if 'inline_data' in part:
+                            image_b64 = part['inline_data']['data']
+                            print("✅ Image generated successfully!")
+                            return base64.b64decode(image_b64)
+                        elif 'text' in part:
+                            print(f"⚠️  Got text response: {part['text'][:100]}...")
+
+                raise ValueError("No image found in response")
+            else:
+                raise ValueError(f"Unexpected response format: {result}")
+
+        except urllib.error.HTTPError as e:
+            error_body = e.read().decode('utf-8') if e.headers.get('content-length') else str(e)
+            raise ValueError(f"HTTP Error {e.code}: {error_body}")
 
     def generate_with_pollinations(
         self, prompt: str, width: int = 1920, height: int = 1080
@@ -97,15 +181,16 @@ class ImageGenerator:
         print(f"🎨 Generating with Pollinations.ai...")
         print(f"📝 Prompt: {prompt[:100]}...")
 
-        encoded_prompt = requests.utils.quote(prompt)
-        url = f"https://image.pollinations.ai/prompt/{encoded_prompt}"
-        params = {"width": width, "height": height, "nologo": True, "enhance": True}
+        import urllib.parse
+        encoded_prompt = urllib.parse.quote(prompt)
+        url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width={width}&height={height}&nologo=True&enhance=True"
 
-        response = requests.get(url, params=params, timeout=120, proxies={"http": None, "https": None})
-        response.raise_for_status()
-
-        print("✅ Image generated successfully!")
-        return response.content
+        try:
+            with urllib.request.urlopen(url, timeout=120) as response:
+                print("✅ Image generated successfully!")
+                return response.read()
+        except Exception as e:
+            raise ValueError(f"Pollinations API error: {e}")
 
     def generate_with_openai(
         self, prompt: str, size: str = "1792x1024"
@@ -138,15 +223,14 @@ class ImageGenerator:
             "quality": "hd"
         }
 
-        response = requests.post(url, headers=headers, json=data, timeout=60, proxies={"http": None, "https": None})
-        response.raise_for_status()
+        req = urllib.request.Request(url, data=json.dumps(data).encode('utf-8'), headers=headers)
+        with urllib.request.urlopen(req, timeout=60) as response:
+            result = json.loads(response.read().decode('utf-8'))
 
-        image_url = response.json()["data"][0]["url"]
-        img_response = requests.get(image_url, timeout=30, proxies={"http": None, "https": None})
-        img_response.raise_for_status()
-
-        print("✅ Image generated successfully!")
-        return img_response.content
+        image_url = result["data"][0]["url"]
+        with urllib.request.urlopen(image_url, timeout=30) as img_response:
+            print("✅ Image generated successfully!")
+            return img_response.read()
 
     def generate_with_stability(
         self, prompt: str, width: int = 1344, height: int = 768
@@ -175,19 +259,20 @@ class ImageGenerator:
             "Content-Type": "application/json"
         }
 
-        data = {
+        data = json.dumps({
             "text_prompts": [{"text": prompt}],
             "cfg_scale": 7,
             "height": height,
             "width": width,
             "steps": 30,
             "samples": 1
-        }
+        }).encode('utf-8')
 
-        response = requests.post(url, headers=headers, json=data, timeout=60, proxies={"http": None, "https": None})
-        response.raise_for_status()
+        req = urllib.request.Request(url, data=data, headers=headers)
+        with urllib.request.urlopen(req, timeout=60) as response:
+            result = json.loads(response.read().decode('utf-8'))
 
-        image_b64 = response.json()["artifacts"][0]["base64"]
+        image_b64 = result["artifacts"][0]["base64"]
         image_bytes = base64.b64decode(image_b64)
 
         print("✅ Image generated successfully!")

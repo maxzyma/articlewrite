@@ -4,34 +4,71 @@ Complete guide for each supported image generation service.
 
 ## Gemini 3 Pro Image Preview (Recommended - First Choice)
 
-**API Key Required**: Yes - `GEMINI_API_KEY`
+**Based on**: https://console.cloud.google.com/vertex-ai/publishers/google/model-garden/gemini-3-pro-image-preview
 
-**Getting API Key**:
-1. Visit [Google AI Studio](https://aistudio.google.com/app/apikey)
-2. Create account or sign in
-3. Click "Create API Key"
-4. Set environment variable:
-   ```bash
-   export GEMINI_API_KEY="AI..."
-   ```
+**API Endpoint**:
+```
+https://aiplatform.googleapis.com/v1/projects/{project_id}/locations/global/publishers/google/models/gemini-3-pro-image-preview:generateContent
+```
+
+**Authentication**: Requires Google Cloud credentials
+
+### Setup Options
+
+#### Option 1: Using gcloud CLI (Recommended)
+```bash
+# 1. Install Google Cloud SDK
+curl https://sdk.cloud.google.com | bash
+exec $SHELL
+
+# 2. Login and set up credentials
+gcloud auth login
+gcloud auth application-default login
+
+# 3. Set your project
+gcloud config set project YOUR_PROJECT_ID
+# Or: export GOOGLE_PROJECT_ID=your-project-id
+```
+
+#### Option 2: Using Access Token Directly
+```bash
+export GOOGLE_PROJECT_ID=your-project-id
+export GOOGLE_ACCESS_TOKEN=ya29.xxx...
+```
+
+#### Option 3: Using Service Account
+```bash
+export GOOGLE_PROJECT_ID=your-project-id
+export GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
+```
+
+**Request Format**:
+```bash
+curl -X POST \
+  -H "Authorization: Bearer $(gcloud auth application-default print-access-token)" \
+  -H "Content-Type: application/json" \
+  "https://aiplatform.googleapis.com/v1/projects/{project_id}/locations/global/publishers/google/models/gemini-3-pro-image-preview:generateContent" \
+  -d '{
+    "contents": {
+      "role": "user",
+      "parts": {"text": "your prompt here"}
+    },
+    "generation_config": {
+      "response_modalities": ["TEXT", "IMAGE"]
+    }
+  }'
+```
 
 **Features**:
-- ✅ Excellent image quality
-- ✅ Google's latest Gemini 3 Pro model
+- ✅ Excellent image quality (Google's latest model)
+- ✅ Native text and image generation
 - ✅ Fast generation speed
 - ✅ Great prompt understanding
-- ✅ Multiple aspect ratios supported
 
 **Best for**:
-- All image generation needs (recommended as first choice)
-- Professional projects
-- High-quality covers
-- Complex scenes
-
-**Pricing** (as of 2025):
-- Very competitive pricing
-- Free tier available for testing
-- Pay-per-use after free tier
+- All image generation needs (recommended first choice)
+- Professional projects requiring high quality
+- Complex scenes with multiple elements
 
 **Usage**:
 ```bash
@@ -153,26 +190,64 @@ Complete guide for each supported image generation service.
 
 ## Choosing a Service
 
-**Use Gemini when**:
-- You want the best overall experience (recommended first choice)
+### Use Gemini (Vertex AI) when:
+- You want the best overall quality (recommended first choice)
+- You have Google Cloud access set up
 - Quality and speed are both important
-- You need reliable results
-- Professional or personal projects
+- You need reliable, production-ready results
 
-**Use Pollinations.ai when**:
+### Use Pollinations.ai when:
 - You want to test ideas quickly
-- You don't have API keys
+- You don't have API keys set up
 - Cost is a concern
 - Quality requirements are moderate
 
-**Use DALL-E when**:
+### Use DALL-E when:
 - You need highest quality
 - Text rendering is important
 - Budget allows ($0.04-0.08/image)
 - Professional use
 
-**Use Stability AI when**:
+### Use Stability AI when:
 - You want artistic styles
 - Need batch generation
 - Want fine-tuned control
 - Cost-sensitive (cheaper than DALL-E)
+
+---
+
+## Troubleshooting
+
+### Gemini/Vertex AI Issues
+
+**"GOOGLE_PROJECT_ID not set"**:
+```bash
+export GOOGLE_PROJECT_ID=your-project-id
+# Or: gcloud config set project YOUR_PROJECT_ID
+```
+
+**"No access token available"**:
+```bash
+# Install and login with gcloud
+gcloud auth application-default login
+
+# Or set token directly
+export GOOGLE_ACCESS_TOKEN=ya29.xxx...
+```
+
+**HTTP 404 or 403 errors**:
+- Ensure Vertex AI API is enabled in your Google Cloud project
+- Check that your project has billing enabled
+- Verify you have access to the model
+
+### Pollinations Issues
+
+**Slow generation**:
+- Try again later during off-peak hours
+- Reduce image size for faster results
+
+### General Issues
+
+**Proxy errors**:
+- The scripts use urllib directly which should work with most proxy configurations
+- If issues persist, check your system proxy settings
