@@ -3,13 +3,12 @@
 Image Generator - Quality-focused AI image generation.
 
 Supports:
-  - Gemini 3 Pro Image Preview (Vertex AI) — Recommended first choice
+  - Gemini (via AI Studio API Key) — Recommended first choice
   - OpenAI DALL-E 3 — Highest quality, best text rendering
 
 Usage:
-    # Gemini via Vertex AI (Recommended)
-    export GOOGLE_PROJECT_ID=your-project-id
-    gcloud auth application-default login
+    # Gemini (Recommended)
+    export GEMINI_API_KEY=AIza...
     python3 scripts/generate.py "prompt" --service gemini
 
     # OpenAI DALL-E 3
@@ -21,7 +20,6 @@ import sys
 import json
 import base64
 import argparse
-import subprocess
 import urllib.request
 import urllib.error
 
@@ -32,82 +30,39 @@ class ImageGenerator:
     """Quality-focused image generator: Gemini + DALL-E."""
 
     def __init__(self):
-        self.gemini_project_id = os.getenv("GOOGLE_PROJECT_ID")
-        self.gemini_access_token = os.getenv("GOOGLE_ACCESS_TOKEN")
-        self.gemini_credentials = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+        self.gemini_api_key = os.getenv("GEMINI_API_KEY")
         self.openai_key = os.getenv("OPENAI_API_KEY")
-
-    def _get_gemini_token(self) -> str:
-        """Get access token for Vertex AI."""
-        if self.gemini_access_token:
-            return self.gemini_access_token
-
-        try:
-            result = subprocess.run(
-                ["gcloud", "auth", "application-default", "print-access-token"],
-                capture_output=True, text=True, timeout=30
-            )
-            if result.returncode == 0 and result.stdout.strip():
-                return result.stdout.strip()
-        except FileNotFoundError:
-            pass
-
-        if self.gemini_credentials and os.path.exists(self.gemini_credentials):
-            try:
-                from google.auth.transport.requests import Request
-                from google.oauth2 import service_account
-
-                credentials = service_account.Credentials.from_service_account_file(
-                    self.gemini_credentials,
-                    scopes=['https://www.googleapis.com/auth/cloud-platform']
-                )
-                credentials.refresh(Request())
-                return credentials.token
-            except Exception as e:
-                print(f"Service account error: {e}", file=sys.stderr)
-
-        return None
 
     def generate_with_gemini(
         self, prompt: str, width: int = 1920, height: int = 1080
     ) -> bytes:
-        """Generate image using Gemini 3 Pro Image Preview via Vertex AI."""
-        if not self.gemini_project_id:
+        """Generate image using Gemini via AI Studio API.
+
+        API docs: https://ai.google.dev/gemini-api/docs/image-generation
+        """
+        if not self.gemini_api_key:
             raise ValueError(
-                "GOOGLE_PROJECT_ID not set\n"
-                "Set with: export GOOGLE_PROJECT_ID=your-project-id"
+                "GEMINI_API_KEY not set\n"
+                "Get your key at: https://aistudio.google.com/apikey\n"
+                "Set with: export GEMINI_API_KEY=AIza..."
             )
 
-        access_token = self._get_gemini_token()
-        if not access_token:
-            raise ValueError(
-                "No access token available\n"
-                "Options:\n"
-                "1. gcloud auth application-default login\n"
-                "2. export GOOGLE_ACCESS_TOKEN=ya29.xxx...\n"
-                "3. export GOOGLE_APPLICATION_CREDENTIALS=/path/to/key.json"
-            )
-
-        print(f"Generating with Gemini 3 Pro Image Preview...")
+        print(f"Generating with Gemini...")
         print(f"Prompt: {prompt[:100]}...")
 
         url = (
-            f"https://aiplatform.googleapis.com/v1/projects/{self.gemini_project_id}"
-            f"/locations/global/publishers/google/models/gemini-3-pro-image-preview:generateContent"
+            "https://generativelanguage.googleapis.com/v1beta/models/"
+            f"gemini-2.0-flash-exp:generateContent?key={self.gemini_api_key}"
         )
 
-        headers = {
-            "Authorization": f"Bearer {access_token}",
-            "Content-Type": "application/json"
-        }
+        headers = {"Content-Type": "application/json"}
 
         payload = {
-            "contents": {
-                "role": "user",
-                "parts": {"text": prompt}
-            },
-            "generation_config": {
-                "response_modalities": ["TEXT", "IMAGE"]
+            "contents": [{
+                "parts": [{"text": prompt}]
+            }],
+            "generationConfig": {
+                "responseModalities": ["TEXT", "IMAGE"]
             }
         }
 
@@ -124,8 +79,8 @@ class ImageGenerator:
 
                 if 'parts' in content and len(content['parts']) > 0:
                     for part in content['parts']:
-                        if 'inline_data' in part:
-                            image_b64 = part['inline_data']['data']
+                        if 'inlineData' in part:
+                            image_b64 = part['inlineData']['data']
                             print("Image generated successfully!")
                             return base64.b64decode(image_b64)
                         elif 'text' in part:
@@ -133,7 +88,7 @@ class ImageGenerator:
 
                 raise ValueError("No image found in response")
             else:
-                raise ValueError(f"Unexpected response format: {result}")
+                raise ValueError(f"Unexpected response format: {json.dumps(result)[:500]}")
 
         except urllib.error.HTTPError as e:
             error_body = e.read().decode('utf-8') if e.headers.get('content-length') else str(e)
@@ -144,7 +99,11 @@ class ImageGenerator:
     ) -> bytes:
         """Generate image using OpenAI DALL-E 3."""
         if not self.openai_key:
-            raise ValueError("OPENAI_API_KEY not found in environment")
+            raise ValueError(
+                "OPENAI_API_KEY not set\n"
+                "Get your key at: https://platform.openai.com/api-keys\n"
+                "Set with: export OPENAI_API_KEY=sk-..."
+            )
 
         print(f"Generating with DALL-E 3...")
         print(f"Prompt: {prompt[:100]}...")
@@ -189,7 +148,7 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Services:
-  gemini    Gemini 3 Pro Image Preview via Vertex AI (recommended)
+  gemini    Gemini via AI Studio API Key (recommended)
   openai    DALL-E 3 - highest quality, best text rendering
 
 Examples:

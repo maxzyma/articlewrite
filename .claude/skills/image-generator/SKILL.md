@@ -1,6 +1,6 @@
 ---
 name: image-generator
-description: Generate high-quality AI images using Gemini 3 Pro Image Preview (Vertex AI, recommended) or OpenAI DALL-E 3. Supports custom prompts, multiple aspect ratios (16:9, 1:1, 4:3, 9:16), and automatic local saving. Use when user requests image generation, creating covers, visual content for articles/presentations, or any task requiring AI-generated visuals.
+description: Generate high-quality AI images using Gemini (AI Studio API Key, recommended) or OpenAI DALL-E 3. Supports custom prompts, multiple aspect ratios (16:9, 1:1, 4:3, 9:16), and automatic local saving. Use when user requests image generation, creating covers, visual content for articles/presentations, or any task requiring AI-generated visuals.
 ---
 
 # Image Generator
@@ -9,12 +9,10 @@ Quality-focused AI image generation: Gemini + DALL-E.
 
 ## Quick Start
 
-### Gemini 3 Pro Image Preview (Recommended)
+### Gemini (Recommended)
 
 ```bash
-export GOOGLE_PROJECT_ID=your-project-id
-gcloud auth application-default login
-
+export GEMINI_API_KEY=AIza...  # https://aistudio.google.com/apikey
 ./.claude/skills/image-generator/bin/generate "your prompt" --service gemini
 ```
 
@@ -29,7 +27,7 @@ export OPENAI_API_KEY=sk-...
 
 | Service | Quality | Cost | Best For |
 |---------|---------|------|----------|
-| **Gemini 3 Pro** | Excellent | Google Cloud billing | General use, complex scenes, first choice |
+| **Gemini** | Excellent | Free tier available | General use, complex scenes, first choice |
 | **DALL-E 3** | Highest | $0.04-0.08/image | Text rendering, professional materials |
 
 ## Aspect Ratios

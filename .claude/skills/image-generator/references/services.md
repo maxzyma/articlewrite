@@ -1,36 +1,16 @@
 # Image Generation Services
 
-## Gemini 3 Pro Image Preview (Recommended)
+## Gemini (Recommended)
 
-**API Endpoint**:
-```
-https://aiplatform.googleapis.com/v1/projects/{project_id}/locations/global/publishers/google/models/gemini-3-pro-image-preview:generateContent
-```
+**API Key**: https://aistudio.google.com/apikey
 
-**Reference**: https://console.cloud.google.com/vertex-ai/publishers/google/model-garden/gemini-3-pro-image-preview
-
-### Setup
-
-#### Option 1: gcloud CLI (Recommended)
 ```bash
-gcloud auth login
-gcloud auth application-default login
-gcloud config set project YOUR_PROJECT_ID
+export GEMINI_API_KEY="AIza..."
 ```
 
-#### Option 2: Access Token
-```bash
-export GOOGLE_PROJECT_ID=your-project-id
-export GOOGLE_ACCESS_TOKEN=ya29.xxx...
-```
+**Endpoint**: `generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent`
 
-#### Option 3: Service Account
-```bash
-export GOOGLE_PROJECT_ID=your-project-id
-export GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
-```
-
-**Strengths**: Excellent quality, fast generation, great prompt understanding, complex multi-element scenes.
+**Strengths**: Excellent quality, fast generation, great prompt understanding, complex multi-element scenes, free tier available.
 
 ---
 
@@ -58,7 +38,8 @@ export OPENAI_API_KEY="sk-..."
 | Text rendering | Good | Best |
 | Speed | Fast | Moderate |
 | Complex scenes | Excellent | Good |
-| Cost | GCP billing | $0.04-0.08 |
+| Cost | Free tier | $0.04-0.08 |
+| Setup | 1 API Key | 1 API Key |
 
 **Default**: Use Gemini. Switch to DALL-E when text rendering or maximum quality matters.
 
@@ -68,11 +49,11 @@ export OPENAI_API_KEY="sk-..."
 
 ### Gemini
 
-**"GOOGLE_PROJECT_ID not set"**: `export GOOGLE_PROJECT_ID=your-project-id`
+**"GEMINI_API_KEY not set"**: Get key at https://aistudio.google.com/apikey
 
-**"No access token"**: `gcloud auth application-default login`
+**HTTP 429**: Rate limit exceeded. Wait and retry.
 
-**HTTP 403/404**: Ensure Vertex AI API is enabled and billing is active.
+**HTTP 400**: Check prompt for policy violations.
 
 ### DALL-E
 
