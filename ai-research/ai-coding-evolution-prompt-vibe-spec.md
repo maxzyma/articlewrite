@@ -241,45 +241,114 @@ Spec Coding 的出现是对 Vibe Coding 缺陷的直接回应。当人们发现 
 
 ---
 
-## 五、演化背后的深层逻辑
+## 五、演化背后的深层逻辑：延长 AI 的自主回合，减少人的碎片消耗
 
-为什么 AI 编程会沿着这条路径演化？因为背后有一个更深的驱动力：**随着 AI 能力的增强，人类可以委托的粒度越来越大，但对约束机制的需求也随之增加。**
+为什么 AI 编程会沿着 Prompt → Vibe → Spec 这条路径演化？
 
-### 委托粒度的扩大
+表面上看，是工具在迭代。但如果抽出一条贯穿三个阶段的主线，答案是：**每一次范式跃迁，都在做同一件事——延长 AI 可以自主工作的时长，缩短人类需要介入的频率。**
 
-- Prompt Coding：委托的是**行级**和**函数级**的代码生成
-- Vibe Coding：委托的是**功能级**和**页面级**的实现
-- Spec Coding：委托的是**模块级**和**系统级**的工程落地
+这不是本文的独创观点。从 METR 的量化研究到 Anthropic 的产品设计，从 Karpathy 的"Autonomy Slider"到 Addy Osmani 的"Conductor → Orchestrator"框架，业界已在多个维度形成了共识。
 
-### 约束机制的升级
+### 数据：AI 自主工作时长正在指数增长
 
-委托粒度变大，失控的风险也变大。每一次跃迁都需要新的约束机制来保证质量：
+METR（Model Evaluation and Threat Research）定义了一个关键指标——**"50% time horizon"**：AI agent 能以 50% 成功率完成的任务长度（以人类专家完成同等任务所需时间衡量）。
 
-- Prompt Coding 的约束机制：**人工 code review**
-- Vibe Coding 的约束机制：**运行时验证**（跑起来看）
-- Spec Coding 的约束机制：**形式化规格 + 自动化测试**
+这个指标正在指数增长，**每 7 个月翻倍**：
 
-这和软件工程的历史是同构的：从汇编到高级语言，从手工测试到自动化测试，从瀑布到敏捷——每一次抽象层级的提升，都伴随着新的约束机制的建立。AI 编程只是在重复这个模式，只不过这次被抽象掉的不是机器细节，而是代码本身。
+| 时间节点 | 模型 | 50% Time Horizon |
+|---------|------|-----------------|
+| 2019 | GPT-2 | ~2 秒 |
+| 2025 年初 | Claude 3.7 Sonnet | ~50 分钟 |
+| 2025 年末 | Claude Opus 4.5 | ~289 小时 |
+| 2026 年初 | Claude Opus 4.6 | ~870 小时 |
+
+> "If these results generalize to real-world software tasks, extrapolation of this trend predicts that within 5 years, AI systems will be capable of automating many software tasks that currently take humans a month."
+> — METR, *Measuring AI Ability to Complete Long Software Tasks*, 2025
+
+与此同时，Anthropic 的实测数据显示：Claude Code 用户允许 AI 无打断运行的时长，在三个月内（2025-10 至 2026-01）从不足 25 分钟增长到超过 45 分钟——**几乎翻倍**。新用户约 20% 的时间使用全自动批准模式，到 750 次会话后，这一比例超过 40%。
+
+最极端的案例来自 Rakuten：工程师将 Claude Code 指向 vLLM 的 1250 万行代码库，AI **自主工作了 7 小时**，达到 99.9% 的数值精度，全程无人类代码贡献。
+
+### 问题：监督本身正在成为瓶颈
+
+为什么要延长 AI 的自主回合？因为**频繁的人类介入不是免费的，它本身是一种隐性成本**。
+
+AWS CTO Werner Vogels 在 re:Invent 2025 上提出了一个精确的概念——**"Verification Debt"（验证债务）**：
+
+> "You will write less code, 'cause generation is so fast. You will review more code, because understanding it takes time. When you write code yourself, comprehension comes with the act of creation. When the machine writes it, you'll have to rebuild that comprehension during review. That's verification debt."
+
+这个概念揭示了一个反直觉的现实：**AI 加速了代码生成，却在人类端创造了对等的验证负担。** 如果范式不演进，开发者只是从"写代码"转变为"审代码"——总工时并未减少，只是重新分配了。
+
+数据支持了这一判断：
+
+- METR 2025 年 7 月的 RCT 实验发现：资深开发者使用 AI 工具后实际**慢了 19%**，尽管他们认为自己快了 20%——一个 40 个百分点的感知差距。核心原因是"编排开销"：开发者需要在"指导 AI"和"思考真正的问题"之间不断切换认知模式
+- Sonar 2026 年报告：开发者**每周 24% 的时间**花在检查和修复 AI 输出上；38% 的人认为审查 AI 代码比审查人工代码需要**更多**精力
+- LinearB 数据：Copilot 重度参与的 PR，review 时间**增加了 26%**
+- 学术研究（arXiv:2512.14012）发现：即便面对 70 步以上的计划，职业开发者平均每 **2.1 步**就要介入一次——他们会明确告诉 AI："Please do just step 1 now."
+
+这就是当前范式的核心矛盾：**AI 的能力在指数增长，但人类的监督模式还停留在逐步审批阶段。**
+
+### 三个阶段如何分别回应这个矛盾
+
+理解了"延长自主回合、减少碎片消耗"这一驱动力，三个阶段的演进逻辑就变得非常清晰：
+
+**Prompt Coding 的问题：高频中断，注意力碎片化。** 每个补全都需要即时评估：接受还是拒绝？改一下还是重写？AI 补全触发大脑的"新奇响应"，开发者在"编码模式"和"审阅模式"之间每小时切换数十次。研究表明，进入 flow 状态需要约 52 分钟不间断工作，被打断后需要 10-45 分钟恢复上下文。Prompt Coding 的本质是**interrupt-driven work**——它用 AI 加速了每个片段，却碎片化了整体节奏。
+
+**Vibe Coding 的回应：降低审阅频率，但把成本后移。** Vibe Coding 通过"不看代码"大幅降低了人类的中间审阅频率——你不需要逐行 review，只需要看运行效果。这确实让开发者的注意力更连贯了。但代价是：试错循环替代了 code review。66% 的开发者面临"差一点但不完全对"的生产力税，调试自己不理解的代码比写出来更耗时。Karpathy 本人在 2026 年初也承认 Vibe Coding"已过时"，他新提出的"agentic engineering"恰恰强调"更多监督和审查，而非更少"。
+
+**Spec Coding 的解法：前置成本，换取后续的批量化自主。** Spec Coding 的核心洞察是——**与其在 AI 工作过程中频繁打断、逐步审批，不如在开始之前一次性定义清楚规则，然后让 AI 在规则内自主运行更长时间。** 前置写 spec 的时间投入，换来的是后续 AI 可以连续执行 20 个、200 个甚至更多步骤而不需要人类干预。人类的注意力从"高频低质的逐行 approve"转向"低频高质的架构级 review"。
+
+Addy Osmani 将这个转变精确地描述为从**指挥家（Conductor）**到**编排家（Orchestrator）**：
+
+> 指挥家模式：每步同步参与，委托粒度是函数/片段级，人类"actively engaged nearly 100% of the time"。
+> 编排家模式：前置任务规格说明，后置代码审查，中间完全委托给 AI 并行执行，"trading off fine-grained control for breadth of throughput"。
+
+快手的工程实践提供了量化印证：他们将开发模式分为 L1（AI 辅助，人拆任务分配给 AI 再审核）、L2（AI 协同，完全用自然语言交互）、L3（AI 自主，人只定义需求和验收）。**当 L2 和 L3 级需求占比达到 20.34% 时，需求交付周期下降了 58%。**
+
+### 委托粒度与约束机制：一体两面
+
+"延长自主回合"的前提是"委托粒度"必须同步扩大，而"约束机制"必须同步升级——三者是一体的：
+
+| 阶段 | 委托粒度 | AI 自主回合 | 约束机制 | 人类介入模式 |
+|------|---------|-----------|---------|------------|
+| Prompt Coding | 行级 / 函数级 | 秒级（每个补全） | 人工 code review | 每步审批（HITL） |
+| Vibe Coding | 功能级 / 页面级 | 分钟级（每轮对话） | 运行时验证 | 试错后纠正 |
+| Spec Coding | 模块级 / 系统级 | 小时级（整个任务） | 形式化规格 + 自动测试 | 战略检查点（HOTL） |
+
+这里有一个关键的架构演化——**从 Human-in-the-Loop（HITL）到 Human-on-the-Loop（HOTL）**。HITL 要求每步人工批准，这在 Prompt Coding 阶段是必须的（因为没有其他约束）；HOTL 则允许 AI 在边界内自主运行，人类只在异常或关键节点介入。Spec 就是这个"边界"的形式化表达。
+
+Anthropic Research 在其 2026 年报告中明确了这一方向：
+
+> "Effective oversight of agents will require new forms of post-deployment monitoring infrastructure and new human-AI interaction paradigms that help both the human and the AI manage autonomy and risk together."
+
+即：不应要求逐步审批（这会无谓增加摩擦），应建立"监控式监督"而非"批准式监督"。
 
 ### 与其他分析框架的关系
 
-需要指出的是，本文的"Prompt → Vibe → Spec"并非唯一的切分方式。不同的分析维度会产出不同的框架：
+"延长自主回合 + 减少碎片消耗"这一主线，与业界的其他分析框架高度兼容：
 
-- **36 氪用"补全范式 vs Agent 范式"**——这是从**技术架构**角度切的。补全范式受时延约束，模型规模和上下文长度受限；Agent 范式则"直接接管任务，从需求分析到代码生成、工具调用到结果验证"。
-- **IBM Research 的 Ismael Faro 提出 "Objective-Validation Protocol"**——用户定义目标并验证，Agent 集群自主执行，在关键检查点请求人类批准。这是从**人机交互协议**角度切的。
-- **Martin Fowler 在 Spec Coding 内部又分出三层**——spec-first / spec-anchored / spec-as-source，这是对 Spec 阶段本身的纵深拆解。
+- **Gene Kim & Steve Yegge 的三循环理论**将开发者工作分为 Inner Loop（编写代码）、Outer Loop（CI/CD、PR、部署）、及更外层的产品循环。他们指出 AI 已占领内循环，正在向外循环扩张——"Github estimates that 92% of U.S.-based developers are already using AI coding tools... By contrast, the outer loop has been left to struggle"。
+- **Karpathy 的 "Autonomy Slider"** 概念（Tab → cmd+K → Cmd+L → Agent mode）直接可视化了自主度的连续谱。他用 Tesla Autopilot 类比：12 年持续演进的方向始终是"减少人类需要介入的频率"。
+- **36 氪的"补全范式 vs Agent 范式"**从技术架构角度解释了同一个现象：补全范式受时延约束，模型必须在毫秒内响应，天然只能做行级委托；Agent 范式解除了时延约束，才使得分钟级、小时级的自主工作成为可能。
+- **IBM Research 的 "Objective-Validation Protocol"** 和 **Martin Fowler 的 SDD 三层模型**（spec-first / spec-anchored / spec-as-source）则在更细的粒度上描述了"检查点间隔"和"spec 的持久性"如何共同演化。
 
-这些框架不矛盾，而是**互补**的。本文选择"主对象变了"这一轴，是因为它最直接地解释了**开发者日常体验的变化**——你到底在看什么、在改什么、在对什么负责。技术架构的变化（补全 vs Agent）是底层驱动力，人机协议的演化（prompt vs spec）是上层表现，而"主对象迁移"恰好在中间，连接了两者。
+这些框架不矛盾，而是互补的。本文用"主对象变了"来描述**开发者体验**的变化，用"自主回合在延长"来描述**驱动力**，用"约束机制在升级"来描述**保障条件**——三者共同构成了一个完整的解释框架。
 
 ### 终极方向：Code as Artifact
 
-如果延续这条演化线，一个可能的终局是：**代码完全变成一种中间制品（artifact）**——就像今天的字节码、IL 代码、编译产物一样，人类不再直接阅读和编写它。
+如果延续这条演化线——自主回合持续延长，人类检查点持续后移——一个可能的终局是：**代码完全变成一种中间制品（artifact）**，就像今天的字节码、IL 代码、编译产物一样，人类不再直接阅读和编写它。
 
-人类的工作将完全发生在 spec 层：定义需求、设计约束、验收标准。AI 负责从 spec 到 code 的全部转换，并通过自动化测试保证一致性。
+人类的工作将完全发生在 spec 层：定义需求、设计约束、验收标准。AI 负责从 spec 到 code 的全部转换，并通过自动化测试保证一致性。人类的"检查点"从"逐行审阅代码"简化为"验收 spec 是否被正确实现"。
 
-这正是 Martin Fowler 所说的"spec-as-source"——spec 不只是参考文档，而是**唯一的源头**，代码可以从 spec 重新生成。虽然 Fowler 认为这在当下仍有些理想化，但行业正在加速向这个方向收敛。
+这正是 Martin Fowler 所说的"spec-as-source"——spec 不只是参考文档，而是**唯一的源头**，代码可以从 spec 重新生成。
 
-这不是科幻。这就是 Spec Coding 正在走向的方向。
+Dario Amodei 在《Machines of Loving Grace》中描绘的正是这幅图景：
+
+> "It can be given tasks that take hours, days, or weeks to complete, and then goes off and does those tasks autonomously, in the way a smart employee would, asking for clarification as necessary."
+
+Sam Altman 的预测更加直接：AI agent 将"potentially working for days without interruption"。
+
+这不是科幻。METR 的数据表明，按当前每 7 个月翻倍的速度，5 年内 AI 将能自主完成人类需要一个月才能完成的软件任务。Spec Coding 正是为这个未来提前建立的约束框架——**当 AI 可以连续工作数天时，你用什么来保证它走在正确的方向上？答案是 spec。**
 
 ---
 
@@ -319,17 +388,48 @@ Spec Coding 的出现是对 Vibe Coding 缺陷的直接回应。当人们发现 
 
 ## 参考与延伸阅读
 
+**演化框架与定义**
 - Andrej Karpathy, ["Vibe Coding" 原始推文](https://x.com/karpathy/status/1886192184808149383), 2025-02-02
+- Andrej Karpathy, [Software 3.0 & Autonomy Slider](https://www.latent.space/p/s3), Y Combinator AI Startup School, 2025-06
 - Martin Fowler, [Exploring Gen AI: Spec-Driven Development](https://martinfowler.com/articles/exploring-gen-ai.html), 2025
-- AWS, [Introducing Kiro: Agentic AI development from prototype to production](https://kiro.dev/blog/introducing-kiro/), 2025
-- InfoQ, [Beyond Vibe Coding: Amazon Introduces Kiro, the Spec-Driven Agentic AI IDE](https://www.infoq.com/news/2025/08/aws-kiro-spec-driven-agent/), 2025
+- Martin Fowler, [How far can we push AI autonomy in code generation?](https://martinfowler.com/articles/pushing-ai-autonomy.html), 2025
+- Addy Osmani, [The Future of Agentic Coding: Conductors to Orchestrators](https://addyosmani.com/blog/future-agentic-coding/), O'Reilly Radar
+- Gene Kim & Steve Yegge, [The Three Developer Loops: A New Framework for AI-Assisted Coding](https://itrevolution.com/articles/the-three-developer-loops-a-new-framework-for-ai-assisted-coding/), IT Revolution
+
+**AI 自主能力与量化研究**
+- METR, [Measuring AI Ability to Complete Long Software Tasks](https://arxiv.org/abs/2503.14499), arXiv, 2025-03
+- METR, [Task-Completion Time Horizons](https://metr.org/time-horizons/), 实时追踪页
+- METR, [Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/), 2025-07
+- Anthropic Research, [Measuring AI Agent Autonomy in Practice](https://www.anthropic.com/research/measuring-agent-autonomy), 2026-02
+- Anthropic, [Enabling Claude Code to Work More Autonomously](https://www.anthropic.com/news/enabling-claude-code-to-work-more-autonomously), 2026
+- Anthropic, [2026 Agentic Coding Trends Report](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf), 2026
+- arXiv, [Professional Software Developers Don't Vibe, They Control](https://arxiv.org/abs/2512.14012), 2025-12
+- arXiv, [SWE-Bench Pro: Can AI Agents Solve Long-Horizon Software Engineering Tasks?](https://arxiv.org/abs/2509.16941), 2025
+
+**人类时间成本与监督开销**
+- Sonar, [Critical Verification Gap in AI Coding](https://www.sonarsource.com/company/press-releases/sonar-data-reveals-critical-verification-gap-in-ai-coding/), 2026-01
+- LinearB, [Is GitHub Copilot Worth It?](https://linearb.io/blog/is-github-copilot-worth-it), 2025
+- Stack Overflow, [2025 Developer Survey – AI Section](https://survey.stackoverflow.co/2025/ai), 2025
+- Werner Vogels (AWS CTO), [Verification Debt](https://www.kevinbrowne.ca/verification-debt-is-the-ai-eras-technical-debt/), re:Invent 2025
+
+**Spec-Driven Development**
+- AWS, [Introducing Kiro](https://kiro.dev/blog/introducing-kiro/), 2025
+- InfoQ, [Beyond Vibe Coding: Amazon Introduces Kiro](https://www.infoq.com/news/2025/08/aws-kiro-spec-driven-agent/), 2025
 - Red Hat Developer, [How spec-driven development improves AI coding quality](https://developers.redhat.com/articles/2025/10/22/how-spec-driven-development-improves-ai-coding-quality), 2025
 - Atlassian, [Spec-Driven Development with Rovo Dev](https://www.atlassian.com/blog/developer/spec-driven-development-with-rovo-dev), 2025
-- Daniel Sogl, [Spec Driven Development (SDD): The Evolution Beyond Vibe Coding](https://danielsogl.medium.com/spec-driven-development-sdd-the-evolution-beyond-vibe-coding-1e431ae7d47b), Medium
-- arXiv, [Spec-Driven Development: From Code to Contract in the Age of AI Coding Assistants](https://arxiv.org/html/2602.00180v1), 2026-01
+- Thoughtworks, [Spec-driven development — Unpacking 2025's key new AI-assisted engineering practices](https://www.thoughtworks.com/en-us/insights/blog/agile-engineering-practices/spec-driven-development-unpacking-2025-new-engineering-practices), 2025
+- arXiv, [Spec-Driven Development: From Code to Contract](https://arxiv.org/html/2602.00180v1), 2026-01
+
+**行业领袖观点**
+- Dario Amodei, [Machines of Loving Grace](https://www.darioamodei.com/essay/machines-of-loving-grace), 2024
+- Sam Altman, [AI Agents Will Enter Workforce](https://www.axios.com/2025/01/10/ai-agents-sam-altman-workers), Axios, 2025-01
+- The New Stack, [Vibe Coding is Passé: Karpathy Has a New Name](https://thenewstack.io/vibe-coding-is-passe/), 2026
+
+**中文社区实践**
 - 36 氪 / InfoQ, [AI Coding 年终盘点：Spec 正在蚕食人类编码](https://36kr.com/p/3617659484013831), 2025
+- 腾讯新闻, [快手 AI Coding 三级开发模式（L1/L2/L3）](https://news.qq.com/rain/a/20260211A03JZX00), 2026-02
 - xkcoding, [从 Vibe 到 Spec：我的 AI Coding 工作流](https://xkcoding.com/2026-01-22-vibe-to-spec-ai-coding-workflow.html), 2026-01
-- Bobm, [Prompt Coding vs. Vibe Coding: Navigating the Future of AI-Assisted Development](https://medium.com/@bobm67/prompt-coding-vs-vibe-coding-navigating-the-future-of-ai-assisted-development-039d6946308c), Medium
+- Bobm, [Prompt Coding vs. Vibe Coding](https://medium.com/@bobm67/prompt-coding-vs-vibe-coding-navigating-the-future-of-ai-assisted-development-039d6946308c), Medium
 - Wikipedia, [Vibe coding](https://en.wikipedia.org/wiki/Vibe_coding)
 
 ---
