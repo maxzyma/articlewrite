@@ -12,7 +12,9 @@
 
 这三种方式不是个人偏好的差异——它们代表了 AI 编程的三个演化阶段，背后是**人与 AI 协作方式的根本性变化**。
 
-如果要把这条演化链说清楚，我认为最准确的命名是：
+业界对此并非没有讨论。从 Vibe Coding 到 Spec Coding 的跃迁，已经是 2025 下半年以来的行业叙事主线——AWS 推出 Kiro 定位"Beyond Vibe Coding"，Martin Fowler 撰文探讨 Spec-Driven Development，Red Hat 将 SDD 与 Vibe Coding 做了系统对比。但大多数讨论要么聚焦于两两对比（Prompt vs Vibe，或 Vibe vs Spec），要么使用不同的切分维度（如 36 氪用"补全范式 vs Agent 范式"从技术架构层面划分）。
+
+本文试图做的事情是：**将三者串成一条完整的演化链，并给出一个统一的分析轴——"主对象"变了。**
 
 **Prompt Coding → Vibe Coding → Spec Coding**
 
@@ -38,7 +40,7 @@
 
 **Prompt Coding** 抓住了第一阶段最核心的特征：**人开始通过 prompt 驱动代码生成，但代码仍然是第一工作对象，工程控制权仍主要在人手里。**
 
-这不是一个已经被社区广泛使用但边界模糊的词，而是一个可以明确定义、精确指向那个阶段的术语。
+需要说明的是，"Prompt Coding"并非本文首创的术语——已有开发者在博客中使用过这个词来描述与 Vibe Coding 相对的编程方式。但它尚未形成行业共识级别的术语地位，也没有被放进一条三阶段演化链中使用。本文选择它，不是因为它新，而是因为它**精确**——它指向的是那个"人用 prompt 驱动 AI，但代码仍是第一现场"的阶段，不多不少。
 
 ---
 
@@ -88,9 +90,11 @@
 
 #### 起源
 
-这个词由 Andrej Karpathy 在 2025 年 2 月 6 日提出。他在 X 上写道：
+这个词由 Andrej Karpathy 在 2025 年 2 月 2 日首次提出。他在 X 上描述了自己的编程状态：几乎不碰键盘，全程用语音对 Cursor Composer 描述需求，接受所有建议而不逐行审查 diff，遇到 bug 就把错误信息粘贴给 AI——代码不断增长，已经超出他个人的理解范围，但"它能跑"。随后他正式定义：
 
 > There's a new kind of coding I call "vibe coding", where you fully give in to the vibes, embrace exponentials, and forget that the code even exists.
+
+这条推文迅速走红。2025 年 3 月 Merriam-Webster 将"vibe coding"收录为俚语词条，Google Trends 显示相关搜索量增长了 2400%，Collins 英语词典更将其评为 2025 年度词汇。
 
 Simon Willison 后续多次强调：Vibe Coding 不是泛指 AI 辅助编程，而是"生成代码但并不在意代码本身"的那种方式。
 
@@ -139,7 +143,16 @@ Spec Coding 的出现是对 Vibe Coding 缺陷的直接回应。当人们发现 
 
 答案是：**靠 spec。**
 
-2025 年中，AWS 推出 Kiro（一款 spec-driven 的 AI IDE），Martin Fowler 发文讨论"Spec-Driven Development"，社区开始涌现各种 spec-first 的工作流工具。这不是偶然——这是整个行业在"vibe 不够用"之后的集体回应。
+这个方向在 2025 下半年迅速获得了行业级的认可：
+
+- **AWS 推出 Kiro**——一款 spec-driven 的 AI IDE，其名字取自日语"岐路"（きろ），象征传统开发与 AI 加速的交叉点。Kiro 将 SDD 工作流拆为三个支柱：Requirements（定义做什么）→ Design（设计怎么做）→ Tasks（分解执行计划），每一步都有结构化产出。InfoQ 的报道标题直接用了"Beyond Vibe Coding"。
+- **Martin Fowler 发表 *Exploring Gen AI: Spec-Driven Development***——他将 SDD 进一步细分为三种模式：**spec-first**（先写 spec，实现后丢弃 spec）、**spec-anchored**（spec 保留供参考）、**spec-as-source**（spec 成为源头，代码可从 spec 重新生成）。Fowler 认为 spec-as-source 目前仍有些理想化，但行业正在向 spec-anchored 和 spec-as-source 之间收敛。
+- **Red Hat Developer** 将 Vibe Coding 比作"爵士即兴——当时精彩，但撑不起一场巡演"，而 SDD 是让 AI 编码达到"95% 以上准确度"的工程化路径。
+- **Atlassian** 在推出 Rovo Dev 时引用了 Fowler 关于"语义扩散"的警告，强调 SDD 的定义仍在快速漂移，需要警惕概念被滥用。
+- **学术界** 也开始跟进——arXiv 上出现了题为 *Spec-Driven Development: From Code to Contract in the Age of AI Coding Assistants* 的论文（2026 年 1 月）。
+- **中文社区** 同样活跃：36 氪/InfoQ 的年终盘点提出"Spec 正在蚕食人类编码"；独立开发者博客出现了"发散靠 Vibe，收敛靠 Spec"的两阶段工作流实践。
+
+这不是偶然——这是整个行业在"vibe 不够用"之后的集体回应。
 
 #### 典型状态
 
@@ -166,6 +179,8 @@ Spec Coding 的出现是对 Vibe Coding 缺陷的直接回应。当人们发现 
 #### 典型风险
 
 **前置成本高，流程更重。** 写 spec 需要时间和思考，这对于快速原型和探索性开发来说是一种负担。如果 spec 本身有误，AI 会忠实地实现一个错误的系统。此外，spec 的维护也是一个问题——系统演进时，spec 必须同步更新，否则就会变成误导性文档。
+
+值得注意的是，36 氪的年终盘点对此有一个重要的澄清：**Spec 不等同于上下文工程（Context Engineering）**。Spec 是上下文中最关键的稳定部分——"一切用于指导代码生成的契约总和"，而 Context Engineering 是更广义的动态上下文管理。Spec 应被理解为"活的契约"，在 Plan-Execute 闭环中动态校准，而非前置的静态文档——"这反而比传统开发更接近工程真实状态"。
 
 ---
 
@@ -246,11 +261,23 @@ Spec Coding 的出现是对 Vibe Coding 缺陷的直接回应。当人们发现 
 
 这和软件工程的历史是同构的：从汇编到高级语言，从手工测试到自动化测试，从瀑布到敏捷——每一次抽象层级的提升，都伴随着新的约束机制的建立。AI 编程只是在重复这个模式，只不过这次被抽象掉的不是机器细节，而是代码本身。
 
+### 与其他分析框架的关系
+
+需要指出的是，本文的"Prompt → Vibe → Spec"并非唯一的切分方式。不同的分析维度会产出不同的框架：
+
+- **36 氪用"补全范式 vs Agent 范式"**——这是从**技术架构**角度切的。补全范式受时延约束，模型规模和上下文长度受限；Agent 范式则"直接接管任务，从需求分析到代码生成、工具调用到结果验证"。
+- **IBM Research 的 Ismael Faro 提出 "Objective-Validation Protocol"**——用户定义目标并验证，Agent 集群自主执行，在关键检查点请求人类批准。这是从**人机交互协议**角度切的。
+- **Martin Fowler 在 Spec Coding 内部又分出三层**——spec-first / spec-anchored / spec-as-source，这是对 Spec 阶段本身的纵深拆解。
+
+这些框架不矛盾，而是**互补**的。本文选择"主对象变了"这一轴，是因为它最直接地解释了**开发者日常体验的变化**——你到底在看什么、在改什么、在对什么负责。技术架构的变化（补全 vs Agent）是底层驱动力，人机协议的演化（prompt vs spec）是上层表现，而"主对象迁移"恰好在中间，连接了两者。
+
 ### 终极方向：Code as Artifact
 
 如果延续这条演化线，一个可能的终局是：**代码完全变成一种中间制品（artifact）**——就像今天的字节码、IL 代码、编译产物一样，人类不再直接阅读和编写它。
 
 人类的工作将完全发生在 spec 层：定义需求、设计约束、验收标准。AI 负责从 spec 到 code 的全部转换，并通过自动化测试保证一致性。
+
+这正是 Martin Fowler 所说的"spec-as-source"——spec 不只是参考文档，而是**唯一的源头**，代码可以从 spec 重新生成。虽然 Fowler 认为这在当下仍有些理想化，但行业正在加速向这个方向收敛。
 
 这不是科幻。这就是 Spec Coding 正在走向的方向。
 
@@ -287,6 +314,23 @@ Spec Coding 的出现是对 Vibe Coding 缺陷的直接回应。当人们发现 
 代码正在从"开发者的作品"变成"AI 的输出物"。在这个转变中，**定义"什么是对的"**比"怎么写代码"更加重要。
 
 这不是代码的消亡。这是代码的归位——回到它本来就应该在的位置：一种实现手段，而非最终目的。
+
+---
+
+## 参考与延伸阅读
+
+- Andrej Karpathy, ["Vibe Coding" 原始推文](https://x.com/karpathy/status/1886192184808149383), 2025-02-02
+- Martin Fowler, [Exploring Gen AI: Spec-Driven Development](https://martinfowler.com/articles/exploring-gen-ai.html), 2025
+- AWS, [Introducing Kiro: Agentic AI development from prototype to production](https://kiro.dev/blog/introducing-kiro/), 2025
+- InfoQ, [Beyond Vibe Coding: Amazon Introduces Kiro, the Spec-Driven Agentic AI IDE](https://www.infoq.com/news/2025/08/aws-kiro-spec-driven-agent/), 2025
+- Red Hat Developer, [How spec-driven development improves AI coding quality](https://developers.redhat.com/articles/2025/10/22/how-spec-driven-development-improves-ai-coding-quality), 2025
+- Atlassian, [Spec-Driven Development with Rovo Dev](https://www.atlassian.com/blog/developer/spec-driven-development-with-rovo-dev), 2025
+- Daniel Sogl, [Spec Driven Development (SDD): The Evolution Beyond Vibe Coding](https://danielsogl.medium.com/spec-driven-development-sdd-the-evolution-beyond-vibe-coding-1e431ae7d47b), Medium
+- arXiv, [Spec-Driven Development: From Code to Contract in the Age of AI Coding Assistants](https://arxiv.org/html/2602.00180v1), 2026-01
+- 36 氪 / InfoQ, [AI Coding 年终盘点：Spec 正在蚕食人类编码](https://36kr.com/p/3617659484013831), 2025
+- xkcoding, [从 Vibe 到 Spec：我的 AI Coding 工作流](https://xkcoding.com/2026-01-22-vibe-to-spec-ai-coding-workflow.html), 2026-01
+- Bobm, [Prompt Coding vs. Vibe Coding: Navigating the Future of AI-Assisted Development](https://medium.com/@bobm67/prompt-coding-vs-vibe-coding-navigating-the-future-of-ai-assisted-development-039d6946308c), Medium
+- Wikipedia, [Vibe coding](https://en.wikipedia.org/wiki/Vibe_coding)
 
 ---
 
