@@ -52,7 +52,7 @@ class ImageGenerator:
 
         url = (
             "https://generativelanguage.googleapis.com/v1beta/models/"
-            f"gemini-2.0-flash-exp:generateContent?key={self.gemini_api_key}"
+            f"gemini-3.1-flash-image-preview:generateContent?key={self.gemini_api_key}"
         )
 
         headers = {"Content-Type": "application/json"}
