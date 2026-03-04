@@ -1,5 +1,5 @@
 ---
-name: tech-article
+name: article-writing
 description: End-to-end workflow for writing and illustrating technical blog posts. Covers article structuring, industry research/deduplication, evidence-backed argument integration, infographic generation (PIL + AntV Chart MCP), and publication preparation. Use when user wants to write a tech article, expand notes into a blog post, add images to an article, or mentions "写文章", "扩写博文", "添加配图", "技术文章".
 ---
 
