@@ -3,7 +3,7 @@
     "excalidraw": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "excalidraw-render"]
+      "args": ["-y", "excalidraw-mcp-server"]
     },
     "mcp-mermaid": {
       "type": "stdio",
