@@ -22,6 +22,8 @@
 
 每一次跃迁，变的不只是工具，而是**谁在看代码、AI 能独立跑多久、人类靠什么保证方向正确**。
 
+![AI Coding 演化链总览：三个阶段的主对象、自主回合与人类介入模式](images/fig1-evolution-mindmap.png)
+
 ---
 
 ## 一、为什么不是 Tab Coding 或 AI-assisted Coding？
@@ -257,6 +259,8 @@ METR（Model Evaluation and Threat Research）定义了一个关键指标——*
 
 这个指标正在指数增长，**每 7 个月翻倍**：
 
+![AI 自主工作时长指数增长（METR 50% Time Horizon）](images/fig2-metr-time-horizon.png)
+
 | 时间节点 | 模型 | 50% Time Horizon |
 |---------|------|-----------------|
 | 2019 | GPT-2 | ~2 秒 |
@@ -291,6 +295,8 @@ AWS CTO Werner Vogels 在 re:Invent 2025 上提出了一个精确的概念——
 这就是当前范式的核心矛盾：**AI 的能力在指数增长，但人类的监督模式还停留在逐步审批阶段。**
 
 ### 三个阶段如何分别回应这个矛盾
+
+![三阶段核心维度对比：AI 自主时长上升，人类介入频率下降](images/fig3-three-stages-comparison.png)
 
 理解了"延长自主回合、减少碎片消耗"这一驱动力，三个阶段的演进逻辑就变得非常清晰：
 
