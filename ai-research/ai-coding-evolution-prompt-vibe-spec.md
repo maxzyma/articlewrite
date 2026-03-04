@@ -22,7 +22,7 @@
 
 每一次跃迁，变的不只是工具，而是**谁在看代码、AI 能独立跑多久、人类靠什么保证方向正确**。
 
-![AI Coding 演化链总览：三个阶段的主对象、自主回合与人类介入模式](images/fig1-evolution-mindmap.png)
+![AI Coding 演化链总览：三个阶段的主对象、自主回合与人类介入模式](images/fig1-evolution-chain.png)
 
 ---
 
