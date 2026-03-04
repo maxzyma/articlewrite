@@ -11,12 +11,14 @@ _调研日期: 2026-03-04_
 | 维度 | 评估 |
 |------|------|
 | **Claude Code 原生能力** | 工具端数据丰富（API + OTEL + Dashboard），但**贡献指标仅支持 GitHub，不支持 GitLab** |
-| **最快落地方案** | Co-Authored-By trailer 解析 + Analytics API — **1-2 周可上线** |
-| **最精确方案** | Git AI 行级归因 或 快手编辑距离法 |
-| **商业平台选项** | GitClear / DX / Exceeds AI 支持 GitLab + 多工具，值得 POC |
+| **Cursor Team Dashboard** | **零开发成本**即开即用，commit 级 AI 代码占比统计，**不依赖 git 平台**，但偏高估 |
+| **最快落地方案** | **Cursor Dashboard 直读**（0 天）+ Claude Code OTEL/API 看板（1-2 周）— 双工具互补 |
+| **最可信方案** | 双工具 API 关联：Claude Code 保守值（下界）+ Cursor 上界 = **置信区间** |
+| **最精确方案** | Git AI 行级归因（跨工具统一）或快手编辑距离法 |
+| **面向未来** | Agent Trace 开放标准 — 若 Claude Code 加入，可替代所有自建方案 |
 | **核心建议** | **不要只看"比例"**，需建立覆盖质量、交付速度、技术债务的多维 AI 效能度量体系 |
 
-**推荐路线**：Phase 1（OTEL + API 看板，1-2 周）→ Phase 2（GitLab Webhook 关联分析，2-4 周）→ Phase 3（行级归因，可选）
+**推荐路线**：Phase 1（Cursor Dashboard 即开 + Claude Code OTEL/API 看板，1-2 周）→ Phase 2（双工具 API + GitLab Webhook 关联分析，给出置信区间，2-4 周）→ Phase 3（Git AI 行级归因 + Agent Trace 跟踪评估，可选）
 
 **一个关键警告**：
 
@@ -24,7 +26,7 @@ _调研日期: 2026-03-04_
 
 业界头部数据：DX 报告 22% 合并代码为 AI 生成、GitClear 分析 2.11 亿行得出 26.9%、腾讯报 50%（统计口径未详细披露）。不同口径结果差异巨大，报告中**必须明确标注统计口径**。
 
-**Cursor 对标发现**：Cursor 团队版使用**客户端哈希签名匹配**（本地 SQLite 存储 AI 输出签名，commit 时比对 diff），不依赖 git 标记，在 GitLab 自托管下反而**比 Claude Code 更容易落地**。但其偏高估的归因倾向（AI 标签在改写后仍保留）与 Claude Code 的保守策略形成鲜明对比。Cursor 还推动了 **Agent Trace** 开放标准，已获 Devin、Cloudflare、Vercel 等支持。
+**Cursor 对标发现**：Cursor 团队版使用**客户端哈希签名匹配**（本地 SQLite 存储 AI 输出签名，commit 时比对 diff），不依赖 git 标记，在 GitLab 自托管下反而**比 Claude Code 更容易落地**。但其偏高估的归因倾向（AI 标签在改写后仍保留）与 Claude Code 的保守策略形成鲜明对比——**正因如此，双工具组合反而能提供上下界更可信的置信区间**。Cursor 还推动了 **Agent Trace** 开放标准，已获 Devin、Cloudflare、Vercel 等支持。
 
 ---
 
@@ -455,40 +457,50 @@ git log --format='%(trailers:key=Co-Authored-By,valueonly)' | sort | uniq -c | s
 
 > 来源：[Git AI](https://github.com/git-ai-project/git-ai)、[usegitai.com](https://usegitai.com/)
 
-### 方案 C：Claude Code Analytics API + GitLab API 关联（推荐组合）
+### 方案 C：双工具 API + GitLab API 关联（推荐组合）
 
-**原理**：将 Claude Code 侧数据与 GitLab 侧数据在时间窗口内关联。
+**原理**：将 Claude Code 和 Cursor 两侧的 API 数据与 GitLab 侧数据关联，构建**多数据源交叉验证**的全景视图。
 
 ```
-Claude Code Analytics API     GitLab Commits API
-         │                           │
-         └────── 关联引擎 ──────────┘
-                    │
-              关联维度：
-              - 用户（email 匹配）
-              - 时间窗口
-              - 文件路径
-                    │
-               聚合数据库 → 看板
+Claude Code Analytics API    Cursor Team Analytics API    GitLab Commits API
+         │                           │                          │
+         └──────────────── 关联引擎 ──────────────────────────┘
+                              │
+                        关联维度：
+                        - 用户（email 匹配）
+                        - 时间窗口
+                        - 文件路径
+                        - Co-Authored-By trailer
+                              │
+                  聚合数据库 → 统一看板（Grafana）
 ```
 
 **实现步骤**：
 
 1. **定时拉取 Claude Code Analytics API 数据**：每日 cron，获取每个用户的 `lines_of_code.added`、`commits_by_claude_code`、会话数、成本
 
-2. **定时拉取 GitLab Commits API 数据**：`GET /api/v4/projects/:id/repository/commits`，获取入库代码行数
+2. **定时拉取 Cursor Team Analytics API 数据**（$40/人/月即可用，无需 Enterprise）：
+   - `GET /api/usage/ai-code` — 团队 AI 代码占比
+   - `GET /api/usage/agent-edits` — Agent 编辑量及采纳率
+   - `GET /api/usage/tabs` — Tab 补全次数
+   - `GET /api/usage/leaderboard` — 按用户排名
 
-3. **关联逻辑**：
-   - 按用户 email 匹配
-   - 对比 Claude Code 报告的 commits 数与 GitLab 实际 commit 数
-   - 结合 Co-Authored-By trailer 验证
+3. **定时拉取 GitLab Commits API 数据**：`GET /api/v4/projects/:id/repository/commits`，获取入库代码行数
 
-4. **计算指标**：
-   - AI 使用渗透率 = 使用 Claude Code 的开发者 / 全部开发者
-   - AI 辅助代码行比例（估算）= Claude Code 报告的 lines_added / GitLab 总 lines_added
-   - 人均 AI 使用成本与效能关联
+4. **关联逻辑**：
+   - 按用户 email 匹配三方数据
+   - Claude Code 侧：API 报告的 commits 数 + Co-Authored-By trailer 验证
+   - Cursor 侧：Dashboard 报告的 AI 代码百分比（偏高估上界）
+   - GitLab 侧：实际入库代码行数（真实分母）
+   - **交叉校验**：Claude Code 保守数据为**下界**，Cursor 激进数据为**上界**，真实值在区间内
 
-**优点**：利用 Claude Code 官方 API，数据可靠；不依赖 GitHub。**缺点**：是估算而非精确归因；仅能统计 Claude Code，无法覆盖 Cursor、Copilot 等其他工具。
+5. **计算指标**：
+   - AI 使用渗透率 = 使用任意 AI 工具的开发者 / 全部开发者
+   - AI 辅助代码行比例（区间估算）= [Claude Code 保守值, Cursor 上界值]
+   - 人均 AI 使用成本与效能关联（两工具合计）
+   - 工具偏好分布：Claude Code vs Cursor 使用占比
+
+**优点**：利用双工具官方 API 交叉校验，比单工具更可信；不依赖 GitHub；提供置信区间而非单一数字。**缺点**：需同时维护两个 API 集成；Cursor API 需要 Team 订阅。
 
 ### 方案 D：SonarQube AI Code Assurance（代码质量视角）
 
@@ -543,57 +555,132 @@ SonarQube Server 2025.1+ 提供 **AI Code Assurance** 功能：
 
 > 来源：[Exceeds AI](https://blog.exceeds.ai/)、[Jellyfish AI Impact](https://thenewstack.io/jellyfish-tracks-ai-impact-across-four-major-coding-tools/)、[DX AI Measurement Hub](https://getdx.com/blog/ai-measurement-hub/)、[GitClear Research](https://www.gitclear.com/ai_assistant_code_quality_2025_research)、[LinearB Framework](https://linearb.io/blog/ai-measurement-framework)
 
+### 方案 H：Cursor Team Dashboard 直读（零开发成本）
+
+**前提**：团队同时使用 Cursor（Team $40/人/月）。
+
+**原理**：Cursor 的 AI 代码统计完全基于 IDE 遥测，**不依赖 git 平台**。只要团队成员在 Cursor 内编码和提交，Dashboard 即自动显示 AI 代码占比——**无需任何开发工作**。
+
+**直接可用的指标**：
+- AI Share of Committed Code（按 Tab 补全 / Composer/Agent / 人工三分类）
+- 按仓库的 AI 代码占比
+- 按用户排名（chat 数、Tab 次数、Agent 行数）
+- 每日活跃用户
+
+**适用场景**：
+- 团队已在使用或计划使用 Cursor → **直接启用 Dashboard，零开发成本获取 AI 代码统计**
+- 作为快速验证手段：先用 Cursor Dashboard 建立基线数据，再投入开发自建方案
+
+**关键注意**：
+- Cursor 统计**偏高估**（AI 标签在改写后仍保留），不适合作为唯一数据源
+- 仅追踪在 Cursor IDE 内完成的提交，外部终端/其他 IDE 的 commit 不计入
+- 格式化工具（Prettier 等）可能干扰签名匹配
+- Enterprise 版本提供更细粒度的 AI Code Tracking API（per-commit、per-file）
+
+**优点**：**零开发成本**，开箱即用；commit 级粒度比 Claude Code 的 PR 级更细；不依赖 GitHub。**缺点**：仅覆盖 Cursor 内的编码活动；归因偏高估；Team 版 API 为团队聚合级，无 per-commit 明细。
+
+### 方案 I：Agent Trace 开放标准（面向未来）
+
+**原理**：采用 Cursor 主导的 Agent Trace 开放规范，建立跨工具的统一 AI 代码归因层。
+
+**当前支持状态**（2026 年 3 月）：
+
+| 工具 | Agent Trace 支持 |
+|------|----------------|
+| Cursor | 原生支持（规范发起者） |
+| Devin (Cognition) | 已支持 |
+| Cloudflare Workers AI | 已支持 |
+| Vercel v0 | 已支持 |
+| Git AI | 已支持 |
+| Google Jules | 已支持 |
+| Amp / OpenCode | 已支持 |
+| **Claude Code** | **未支持** — 值得关注 |
+
+**为什么值得关注**：
+- 如果 Agent Trace 成为事实标准，将**一次性解决多工具归因不兼容问题**
+- 行级精度 + 4 种贡献者类型（human/ai/mixed/unknown）+ 模型标识
+- 基于内容哈希（murmur3），位置无关追踪
+- 支持 git、Jujutsu、Mercurial、SVN
+
+**现阶段建议**：
+- **不建议现在投入开发**，标准仍在 alpha 阶段
+- 持续关注 Claude Code 是否加入 Agent Trace 生态
+- 若 Claude Code 加入，可替代方案 A-C 成为统一解决方案
+
+> 来源：[Agent Trace 规范](https://agent-trace.dev/)、[GitHub: cursor/agent-trace](https://github.com/cursor/agent-trace)
+
 ---
 
 ## 六、推荐实施路线图
 
-基于自托管 GitLab 环境和 Claude Code Team 订阅的约束，推荐**分阶段递进**：
+基于自托管 GitLab 环境、Claude Code Team + Cursor Team 双工具组合的约束，推荐**分阶段递进**：
 
 ### Phase 1：快速起步（1-2 周）
 
 **目标**：回答"团队中谁在用 AI？用了多少？"
 
-1. 统一 Claude Code 配置，确保所有用户的 `settings.json` 开启 Co-Authored-By
+**Claude Code 侧**：
+1. 统一配置 `settings.json`，确保所有用户开启 Co-Authored-By
 2. 配置 OpenTelemetry 导出至公司 Prometheus/Grafana
 3. 启用 Analytics API 定时拉取，写入数据库
-4. 搭建基础 Grafana 看板：每日活跃用户、会话数、代码行数、成本
 
-**交付物**：Claude Code 使用看板（工具侧视角）
+**Cursor 侧**（如果团队同时使用）：
+4. 启用 Cursor Team Dashboard — **零开发成本，直接获取 AI 代码占比**
+5. Cursor Dashboard 数据作为**快速基线**：立即可见的 "AI Share of Committed Code"
+
+**统一看板**：
+6. Grafana 展示：Claude Code DAU/会话数/成本 + Cursor AI 代码占比基线
+
+**交付物**：双工具 AI 使用看板（Cursor Dashboard 即开即用 + Claude Code Grafana 看板）
 
 ### Phase 2：关联分析（2-4 周）
 
-**目标**：回答"入库代码中多少与 AI 相关？"
+**目标**：回答"入库代码中多少与 AI 相关？"（给出置信区间）
 
 1. 部署 GitLab Push Webhook 监听服务
-2. 解析 commit message 中的 Co-Authored-By trailer
+2. 解析 commit message 中的 Co-Authored-By trailer（Claude Code 标记）
 3. 通过 GitLab API 获取 commit diff 行数
-4. 将 Claude Code API 数据与 GitLab commit 数据按用户+时间关联
-5. 扩展 Grafana 看板：AI commit 占比、AI 代码行估算比例、按团队/人切分
+4. **双工具 API 关联**：
+   - Claude Code Analytics API 数据（保守下界）
+   - Cursor Team Analytics API 数据（激进上界）
+   - GitLab commit 数据（真实分母）
+5. **交叉校验计算**：AI 代码占比 = [Claude Code 保守值, Cursor 上界值] 区间
+6. 扩展 Grafana 看板：AI commit 占比、AI 代码行**区间估算**、按团队/人/工具切分
 
-**交付物**：AI Coding 关联分析看板（双侧视角）
+**交付物**：AI Coding 多源关联分析看板（三方数据交叉验证）
 
-### Phase 3：精确归因（可选，4-8 周）
+### Phase 3：精确归因 + 标准化（可选，4-8 周）
 
-**目标**：回答"具体哪些代码行来自 AI？"
+**目标**：回答"具体哪些代码行来自 AI？"+ 建立长期统一标准
 
-1. 评估 Git AI 工具 POC — 在试点团队安装
-2. 或评估 Exceeds AI 商业平台 POC
+**精确归因（二选一）**：
+1. 评估 Git AI 工具 POC — 在试点团队安装，**跨工具行级归因**（同时支持 Claude Code 和 Cursor）
+2. 或评估商业平台 POC（GitClear / Exceeds AI）
+
+**深度度量**：
 3. 建立编辑距离比对服务（参考快手方法论）
-4. 构建完整的 AI 效能度量体系（不仅统计比例，还包括质量、交付速度、技术债务）
+4. 构建多维 AI 效能度量体系（比例 + 质量 + 交付速度 + 技术债务）
 
-**交付物**：行级 AI 代码归因系统
+**面向未来**：
+5. 持续关注 **Agent Trace** 开放标准 — 若 Claude Code 加入，可替代自建方案成为统一归因层
+6. 评估 Cursor Enterprise AI Code Tracking API（per-commit、per-file 粒度）是否值得升级
+
+**交付物**：行级 AI 代码归因系统 + Agent Trace 跟踪评估报告
 
 ---
 
 ## 七、统计口径对比
 
-| 口径 | 定义 | 精度 | 实现难度 |
-|------|------|------|---------|
-| **工具端采纳率** | AI 建议被用户 accept 的比例 | 低 — 不反映最终入库 | 最低（Claude Code 原生） |
-| **commit 级归因** | 含 AI Co-Authored-By 的 commit 数占比 | 中 — 整个 commit 归因，粒度粗 | 低（webhook + 解析） |
-| **行级估算** | Claude Code API lines_added / GitLab 总 lines_added | 中 — 时间窗口关联，有误差 | 中（API 关联） |
-| **行级精确** | 逐行比对 AI 输出与入库代码（编辑距离 <50%） | 高 — 快手级严格度量 | 高（需双端数据+离线计算） |
-| **行级报告** | AI Agent 主动报告生成的行（Git AI） | 最高 — Agent 精确标记 | 中高（需推广安装） |
+| 口径 | 定义 | 精度 | 归因倾向 | 实现难度 |
+|------|------|------|---------|---------|
+| **工具端采纳率** | AI 建议被用户 accept 的比例 | 低 — 不反映最终入库 | 偏高 | 最低（Claude Code 原生） |
+| **commit 级归因** | 含 AI Co-Authored-By 的 commit 数占比 | 中 — 整个 commit 归因，粒度粗 | 取决于 commit 粒度 | 低（webhook + 解析） |
+| **IDE 哈希签名匹配** | AI 输出哈希 vs commit diff 比对（Cursor 方案） | 中高 — 行级，但格式化干扰 | **偏高估** — 改写后仍保留 AI 标签 | 零（Cursor Dashboard 即开即用） |
+| **服务端 PR 回溯匹配** | 合并时回溯匹配 AI 会话 diff（Claude Code 方案） | 中高 — 行级归一化匹配 | **偏保守** — >20% 改写不归因 | 零（仅限 GitHub） |
+| **双工具区间估算** | Claude Code 保守值为下界 + Cursor 上界 = 置信区间 | 中 — 区间而非点值 | 上下界明确 | 中（双 API 关联） |
+| **行级精确** | 逐行比对 AI 输出与入库代码（编辑距离 <50%） | 高 — 快手级严格度量 | 最准确 | 高（需双端数据+离线计算） |
+| **行级报告** | AI Agent 主动报告生成的行（Git AI） | 最高 — Agent 精确标记 | 准确 | 中高（需推广安装） |
+| **跨工具标准** | Agent Trace 开放规范（行级 + 模型标识） | 最高 — 跨工具统一 | 标准化 | 未来（标准 alpha 阶段） |
 
 ---
 
@@ -634,9 +721,21 @@ SonarQube Server 2025.1+ 提供 **AI Code Assurance** 功能：
 
 **建议**：AI 代码比例统计应与**代码质量指标联动**，避免产生"追求比例"的错误激励。
 
-### 7.4 多工具覆盖
+### 7.4 多工具覆盖与归因冲突
 
-如果团队同时使用 Claude Code、Cursor、Copilot 等多个 AI 工具，单一的 Claude Code 统计无法覆盖全貌。Git AI 工具或 Exceeds AI 平台可以跨工具追踪。
+如果团队同时使用 Claude Code 和 Cursor（常见组合），需注意**两套归因体系的哲学冲突**：
+
+| 维度 | Claude Code | Cursor | 冲突影响 |
+|------|------------|--------|---------|
+| 归因倾向 | 保守（>20% 改写不归因） | 激进（改写后仍保留 AI 标签） | 同一段代码两工具给出不同结论 |
+| 追踪机制 | 服务端回溯匹配 | 客户端前向哈希 | 无法直接合并 |
+| 数据范围 | 仅 Claude Code 生成 | 仅 Cursor 内生成 | 跨工具编辑不可追踪 |
+
+**应对策略**：
+- **短期**：分别统计，向管理层报告置信区间（Claude Code 下界 ~ Cursor 上界）
+- **中期**：通过 Git AI 工具建立统一的行级归因（支持两工具）
+- **长期**：关注 Agent Trace 标准是否被 Claude Code 采纳，实现真正的跨工具统一归因
+- **永远不要**：简单相加两工具的数据（会重复计算）
 
 ### 7.5 GitLab 贡献指标的缺失
 
