@@ -24,6 +24,8 @@ _调研日期: 2026-03-04_
 
 业界头部数据：DX 报告 22% 合并代码为 AI 生成、GitClear 分析 2.11 亿行得出 26.9%、腾讯报 50%（统计口径未详细披露）。不同口径结果差异巨大，报告中**必须明确标注统计口径**。
 
+**Cursor 对标发现**：Cursor 团队版使用**客户端哈希签名匹配**（本地 SQLite 存储 AI 输出签名，commit 时比对 diff），不依赖 git 标记，在 GitLab 自托管下反而**比 Claude Code 更容易落地**。但其偏高估的归因倾向（AI 标签在改写后仍保留）与 Claude Code 的保守策略形成鲜明对比。Cursor 还推动了 **Agent Trace** 开放标准，已获 Devin、Cloudflare、Vercel 等支持。
+
 ---
 
 ## 背景与需求
@@ -172,9 +174,130 @@ Claude Code 原生支持 OTLP 导出，是粒度最细的监控选项。
 
 ---
 
-## 三、业界 AI Coding 度量方法论
+## 三、Cursor 团队版的统计机制（对比参考）
 
-### 3.1 快手：严格编辑距离法
+Cursor 的 AI 代码统计与 Claude Code 采用了**完全不同的技术路径**，是目前 IDE 类工具中统计粒度最细的方案，值得深入拆解作为对标参考。
+
+### 3.1 核心机制：客户端哈希签名匹配
+
+Cursor 的追踪**不依赖 git 标记**（不添加 Co-Authored-By），而是在 IDE 侧完成全部归因计算：
+
+```
+AI 生成代码 → 哈希签名存入本地 SQLite → 用户 commit 时比对 diff → 计算归因比例 → 同步到 Cursor 服务器
+```
+
+**具体流程**：
+
+1. **生成时记录**：每次 AI 生成代码（Tab 补全或 Composer/Agent），Cursor 对生成的行创建哈希签名
+2. **本地存储**：签名存入 `~/.cursor/ai-tracking/ai-code-tracking.db`（SQLite，通常 4-8 MB）
+3. **提交时比对**：用户 commit 时，Cursor 拦截 diff，将变更行与存储的 AI 签名比对
+4. **三分类归因**：每行代码被归为 `tabLines`（Tab 补全）、`composerLines`（Composer/Agent）、`nonAiLines`（人工）
+5. **上报服务器**：归因结果同步至 Cursor Dashboard
+
+### 3.2 本地数据库结构（逆向工程揭示）
+
+`ai-code-tracking.db` 包含 6 张表，核心两张：
+
+**`ai_code_hashes` — AI 输出签名表**：
+
+| 字段 | 说明 |
+|------|------|
+| `hash` | AI 输出的哈希签名（主键） |
+| `source` | 来源类型：`"composer"` / `"autocomplete"` |
+| `model` | 使用的模型：`"claude-4.5-sonnet"` / `"gpt-4o"` 等 |
+| `fileExtension` | 文件扩展名 |
+| `conversationId` | 关联的对话 ID |
+| `timestamp` | 生成时间 |
+
+**`scored_commits` — 已评分提交表**：
+
+| 字段 | 说明 |
+|------|------|
+| `commitHash` + `branchName` | 联合主键 |
+| `tabLinesAdded/Deleted` | Tab 补全贡献行数 |
+| `composerLinesAdded/Deleted` | Composer/Agent 贡献行数 |
+| `humanLinesAdded/Deleted` | 人工贡献行数 |
+| `v1AiPercentage` / `v2AiPercentage` | AI 贡献比例（两个版本的算法） |
+
+> `v1` / `v2` 的存在说明 Cursor 已迭代过评分算法，社区曾报告历史指标变化。
+
+> 来源：[I Reverse-Engineered Cursor's AI Agent (DEV Community)](https://dev.to/vikram_ray/i-reverse-engineered-cursors-ai-agent-heres-everything-it-does-behind-the-scenes-3d0a)
+
+### 3.3 Dashboard 提供的指标
+
+| 图表 | 度量内容 |
+|------|---------|
+| **AI Share of Committed Code** | AI 贡献行占提交代码的百分比（Tab + Composer vs Human） |
+| **Agent Edits** | Agent/Cmd+K 的代码修改量及采纳率 |
+| **Tab Completions** | Tab 补全次数 |
+| **Messages Sent** | 按模式和模型分类的用户消息数 |
+| **Active Users** | 每日活跃用户 |
+| **Repository Insights** | 按仓库的 AI 代码占比 |
+| **Usage Leaderboard** | 按用户排名（chat 数、Tab 次数、Agent 行数） |
+
+- 支持按用户（最多 10 人）、AD 组、日期范围（最多 90 天连续）、时区过滤
+- Enterprise 额外提供 **Conversation Insights**：将对话分类为 Bug 修复、重构、代码解释等
+
+### 3.4 API 层次
+
+| API | 可用版本 | 粒度 | 关键字段 |
+|-----|---------|------|---------|
+| **Team Analytics API** | Team ($40/人/月) | 团队聚合 | agent-edits、tabs、dau、models、leaderboard 等 12 个端点 |
+| **AI Code Tracking API** | Enterprise only (alpha) | 每 commit、每 change | `tabLinesAdded`、`composerLinesAdded`、`nonAiLinesAdded`、`model`、per-file 明细 |
+
+Enterprise 的 AI Code Tracking API 还提供 **commit 详情端点**：返回 `rangeAnnotations`（文件级 blame 数据）和关联的 `conversations`（含标题、摘要、TLDR）。
+
+### 3.5 关键限制
+
+| 限制 | 影响 |
+|------|------|
+| **同机要求** | 必须在生成 AI 代码的同一台机器上 commit，否则归因丢失 |
+| **仅 Cursor 内提交** | 外部终端、其他 IDE、GUI 工具的 commit 不被追踪 |
+| **格式化干扰** | 自动格式化工具（Prettier 等）运行后，AI 签名失效 |
+| **过度归因倾向** | AI 生成的代码即使被大幅改写，仍保留 AI 标签 |
+| **单工作区限制** | 多根工作区只追踪第一个项目 |
+| **隐私问题** | 企业订阅下遥测无法关闭，包括个人侧项目也会被收集 |
+
+### 3.6 Cursor vs Claude Code：两种统计哲学
+
+| 维度 | Cursor | Claude Code |
+|------|--------|-------------|
+| **追踪时机** | **生成时**（前向匹配到 commit） | **合并时**（后向匹配到会话） |
+| **追踪机制** | 客户端哈希签名 + 本地 SQLite | 服务端会话-PR diff 匹配 |
+| **git 标记** | **无** — 不修改 git 历史 | **有** — Co-Authored-By trailer + PR 标签 |
+| **归因粒度** | 行级、每 commit、每 change、含模型+来源 | PR 级（GitHub）；commit 级仅限 trailer |
+| **归因倾向** | **偏高估** — AI 标签在改写后仍保留 | **偏保守** — 改写 >20% 则不归因 |
+| **格式化韧性** | **差** — 格式化后签名失效 | **好** — 归一化空格/引号/大小写后匹配 |
+| **平台依赖** | 无 — IDE 遥测，与 git 平台无关 | GitHub — 贡献指标需 GitHub App |
+| **GitLab 自托管** | **可用**（IDE 遥测不依赖平台） | **部分可用**（API+OTEL 可用，贡献指标不可用） |
+| **隐私控制** | 企业版无法关闭 | 可配置禁用归因 |
+
+**核心洞察**：
+
+- Cursor 的方案在 **GitLab 自托管环境下反而有优势** — 其追踪完全基于 IDE 遥测，不需要 git 平台集成
+- 但 Cursor 的 **精确度存疑** — 格式化干扰 + 过度归因会导致数据偏高
+- Claude Code 的方案更 **保守可信** — 但在 GitLab 下损失了最强大的 PR 级归因能力
+- 如果团队同时使用两个工具，需要 Git AI 或 Agent Trace 等**跨工具方案**来统一归因
+
+### 3.7 Agent Trace：Cursor 推动的行业开放标准
+
+2026 年 1 月，Cursor 发布了 **Agent Trace** 规范，试图建立跨工具的 AI 代码归因标准：
+
+- **行级精度**，4 种贡献者类型：`human`、`ai`、`mixed`、`unknown`
+- **模型标识**：`provider/model-name` 格式（如 `anthropic/claude-opus-4-5`）
+- **内容哈希**：`murmur3:9f2e8a1b`，位置无关追踪
+- **多 VCS 支持**：git、Jujutsu、Mercurial、SVN
+- **已获支持**：Cursor、Cognition (Devin)、Cloudflare、Vercel、git-ai、Google Jules、Amp、OpenCode
+
+如果 Agent Trace 成为事实标准，将解决当前各工具归因机制不兼容的问题。**Claude Code 目前未加入**，值得关注后续动向。
+
+> 来源：[Agent Trace 规范](https://agent-trace.dev/)、[GitHub: cursor/agent-trace](https://github.com/cursor/agent-trace)
+
+---
+
+## 四、业界 AI Coding 度量方法论（含 Cursor 对照）
+
+### 4.1 快手：严格编辑距离法
 
 快手 AI 研发团队提出了目前**公开披露最严格的企业级度量方法**：
 
@@ -187,7 +310,7 @@ Claude Code 原生支持 OTLP 导出，是粒度最细的监控选项。
 
 > 来源：[快手 AI 研发范式升级 - InfoQ](https://www.infoq.cn/article/9rX1Ov951gKtaTmQb8Jq)
 
-### 3.2 腾讯：CodeBuddy + WeDev 工具链统计
+### 4.2 腾讯：CodeBuddy + WeDev 工具链统计
 
 《2025 腾讯研发大数据报告》披露：
 - 50% 的新增代码由 AI 辅助生成
@@ -199,7 +322,7 @@ Claude Code 原生支持 OTLP 导出，是粒度最细的监控选项。
 
 > 来源：[腾讯 2025 研发大数据报告](https://cloud.tencent.com/developer/news/3143570)
 
-### 3.3 思码逸（Merico）：区分"接受"与"采纳"
+### 4.3 思码逸（Merico）：区分"接受"与"采纳"
 
 思码逸提出了更精细的度量框架，区分两个容易混淆的概念：
 
@@ -212,7 +335,7 @@ Claude Code 原生支持 OTLP 导出，是粒度最细的监控选项。
 
 > 来源：[思码逸 AI 效能度量](https://www.merico.cn/blog/ai-metrics-and-measuring-ai-in-ee)
 
-### 3.4 行业量化基准
+### 4.4 行业量化基准
 
 | 来源 | AI 代码比例 | 统计方法 |
 |------|-----------|---------|
@@ -225,7 +348,7 @@ Claude Code 原生支持 OTLP 导出，是粒度最细的监控选项。
 
 > 来源：[DX Q4 Impact Report](https://getdx.com/blog/ai-assisted-engineering-q4-impact-report-2025/)、[GitClear 2025 Research](https://www.gitclear.com/ai_assistant_code_quality_2025_research)
 
-### 3.5 行业研究的"反面数据"
+### 4.5 行业研究的"反面数据"
 
 | 来源 | 关键发现 |
 |------|---------|
@@ -241,7 +364,7 @@ Claude Code 原生支持 OTLP 导出，是粒度最细的监控选项。
 
 ---
 
-## 四、适配自托管 GitLab 的技术方案
+## 五、适配自托管 GitLab 的技术方案
 
 ### 方案 A：Co-Authored-By Trailer 解析（最小成本落地）
 
@@ -422,7 +545,7 @@ SonarQube Server 2025.1+ 提供 **AI Code Assurance** 功能：
 
 ---
 
-## 五、推荐实施路线图
+## 六、推荐实施路线图
 
 基于自托管 GitLab 环境和 Claude Code Team 订阅的约束，推荐**分阶段递进**：
 
@@ -462,7 +585,7 @@ SonarQube Server 2025.1+ 提供 **AI Code Assurance** 功能：
 
 ---
 
-## 六、统计口径对比
+## 七、统计口径对比
 
 | 口径 | 定义 | 精度 | 实现难度 |
 |------|------|------|---------|
@@ -474,7 +597,7 @@ SonarQube Server 2025.1+ 提供 **AI Code Assurance** 功能：
 
 ---
 
-## 七、关键风险与注意事项
+## 八、关键风险与注意事项
 
 ### 7.1 推荐度量指标体系
 
@@ -541,6 +664,14 @@ Claude Code 的 Contribution Metrics（最精确的官方归因）**当前仅支
 - [DX AI Measurement Framework](https://getdx.com/blog/how-to-implement-ai-measurement-framework/)
 - [GitClear 2025 AI Code Quality Research](https://www.gitclear.com/ai_assistant_code_quality_2025_research)
 - [Veracode GenAI Security Report](https://www.veracode.com/blog/genai-code-security-report/)
+
+### Cursor 官方文档
+- [Cursor Team Analytics Dashboard](https://cursor.com/docs/account/teams/analytics)
+- [Cursor Analytics API](https://cursor.com/docs/account/teams/analytics-api)
+- [Cursor AI Code Tracking API (Enterprise)](https://cursor.com/docs/account/teams/ai-code-tracking-api)
+- [Agent Trace Specification](https://agent-trace.dev/)
+- [Agent Trace GitHub](https://github.com/cursor/agent-trace)
+- [I Reverse-Engineered Cursor's AI Agent](https://dev.to/vikram_ray/i-reverse-engineered-cursors-ai-agent-heres-everything-it-does-behind-the-scenes-3d0a)
 
 ### 工具与平台
 - [Git AI - Track AI Code](https://github.com/git-ai-project/git-ai)
