@@ -20,6 +20,8 @@
 - **第二代** (`/v1/chat/completions`): 对话交互接口
 - **第三代** (`/v1/responses`): **Agent 推理接口**
 
+![LLM API 三代演进：从文本补全到推理智能体](images/fig1-api-evolution.png)
+
 这场演进的驱动力是：**模型能力的提升倒逼 API 设计必须演进**
 
 从 GPT-4 到 GPT-5，模型从"聊天伙伴"进化为"推理智能体"，API 必须支持：
@@ -241,6 +243,8 @@ response2 = client.responses.create(
                   (推理状态在循环中保留)
 ```
 
+![Chat Completions 回合制 vs Responses API Agentic Loop](images/fig2-agentic-loop.png)
+
 对比 Chat Completions：
 - **Chat Completions**: 推理状态每次都丢失（像侦探每次离开房间都忘记线索）
 - **Responses API**: 推理状态持久化（像侦探保留笔记本）
@@ -373,6 +377,8 @@ if response.stop_reason == "tool_use":
 | **学习曲线** | 陡峭（概念多） | 平缓（直观） |
 | **灵活性** | 高度集成 | 高度可定制 |
 | **适用场景** | 复杂 Agent 应用 | 可控、可审计的场景 |
+
+![OpenAI vs Anthropic API 设计哲学雷达图对比](images/fig3-design-philosophy.png)
 
 ### Anthropic 的官方建议
 
