@@ -2,6 +2,30 @@
 
 _调研日期: 2026-03-04_
 
+## TL;DR
+
+**场景**：公司使用自托管 GitLab + Claude Code Team，需统计 AI Coding 代码比例。
+
+**结论**：
+
+| 维度 | 评估 |
+|------|------|
+| **Claude Code 原生能力** | 工具端数据丰富（API + OTEL + Dashboard），但**贡献指标仅支持 GitHub，不支持 GitLab** |
+| **最快落地方案** | Co-Authored-By trailer 解析 + Analytics API — **1-2 周可上线** |
+| **最精确方案** | Git AI 行级归因 或 快手编辑距离法 |
+| **商业平台选项** | GitClear / DX / Exceeds AI 支持 GitLab + 多工具，值得 POC |
+| **核心建议** | **不要只看"比例"**，需建立覆盖质量、交付速度、技术债务的多维 AI 效能度量体系 |
+
+**推荐路线**：Phase 1（OTEL + API 看板，1-2 周）→ Phase 2（GitLab Webhook 关联分析，2-4 周）→ Phase 3（行级归因，可选）
+
+**一个关键警告**：
+
+> "目前大家在业界看到的'代码生成率'指标，基本都是不置信的。" — 快手 AI 研发团队
+
+业界头部数据：DX 报告 22% 合并代码为 AI 生成、GitClear 分析 2.11 亿行得出 26.9%、腾讯报 50%（统计口径未详细披露）。不同口径结果差异巨大，报告中**必须明确标注统计口径**。
+
+---
+
 ## 背景与需求
 
 公司正在使用自托管 GitLab 服务器，需要建立一套可量化的 AI Coding 统计体系，回答核心问题：**团队中有多少代码是由 AI 辅助生成的？** 本调研聚焦 Claude Code Team 订阅版的能力边界，同时覆盖业界通用方案和自托管 GitLab 的适配路径。
@@ -494,20 +518,6 @@ SonarQube Server 2025.1+ 提供 **AI Code Assurance** 功能：
 ### 7.5 GitLab 贡献指标的缺失
 
 Claude Code 的 Contribution Metrics（最精确的官方归因）**当前仅支持 GitHub**。这是自托管 GitLab 环境的最大限制。建议关注 Anthropic 后续是否扩展 GitLab 支持。
-
----
-
-## 八、总结
-
-| 维度 | 评估 |
-|------|------|
-| **Claude Code 原生能力** | 工具端数据丰富（API + OTEL），但贡献指标不支持 GitLab |
-| **最快落地方案** | Co-Authored-By trailer 解析 + Analytics API |
-| **最精确方案** | Git AI 行级归因 或 快手编辑距离法 |
-| **商业平台选项** | Exceeds AI 支持 GitLab + 多工具，值得 POC |
-| **核心建议** | 不要只看"比例"，需建立多维 AI 效能度量体系 |
-
-Claude Code Team 已经为企业提供了相当完整的 AI 使用数据基础设施（API + OTEL + Dashboard），但在自托管 GitLab 场景下，需要额外建设 commit 解析和数据关联能力。推荐按 Phase 1→2→3 递进实施，快速产出价值的同时逐步提升精度。
 
 ---
 
