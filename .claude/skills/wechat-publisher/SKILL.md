@@ -29,7 +29,7 @@ Powered by [`@wenyan-md/core`](https://github.com/caol64/wenyan-core) — Markdo
 ---
 title: 文章标题
 cover: ./cover.jpg
-author: Magoo
+author: Mazy
 description: 文章摘要（显示在公众号消息列表）
 source_url: https://original-url.com
 ---
@@ -158,8 +158,9 @@ Report to user:
 
 ### Step 6: Post-publish
 
-- Record `media_id` in front-matter for future updates
-- Optionally git commit the front-matter changes
+- **Record `media_id` in front-matter** (`wechat_media_id: xxx`) for future updates — this is mandatory, not optional
+- If re-published due to `40007` (old draft deleted), **update front-matter with the new `media_id`** — stale IDs cause repeated failures
+- Git commit the front-matter changes
 
 ## Error Handling
 
@@ -170,6 +171,7 @@ Report to user:
 | `access_token expired` | Token cache stale | `rm -f ~/.config/wenyan-md/token.json` and retry |
 | `require subscribe` | Account type limitation | Some APIs require verified service account (认证服务号) |
 | `45166: invalid content` | **HTML 中含有 `<a href="#xxx">` 锚点链接** | 脚本已自动处理：`stripAnchorLinks()` 将 `#` 锚点转为 `<span>`。如仍报此错，检查是否有其他微信不支持的 HTML 元素 |
+| `40007: invalid media_id` | 目标草稿已被删除或 media_id 错误 | 草稿被手动删除后 media_id 失效，需重新用 `publish`（不带 `--media-id`）新建草稿，**并更新 front-matter 中的 `wechat_media_id`** |
 | No cover image | No `cover` in front-matter and no images in content | Add `cover:` field or include at least one image |
 | Title shows "Untitled" | Missing `title` in front-matter | Add front-matter with `title:` field |
 
@@ -198,3 +200,6 @@ scripts/wechat-publish.mjs          CLI entry point
 - Cover path is **relative to the Markdown file**, not the project root
 - WeChat article content limit ~20000 chars; very long articles may need splitting
 - The rendering engine converts all CSS to inline styles (微信 requirement): no `<style>`, no `class`, no CSS variables, no pseudo-elements — all handled automatically
+- `--media-id` 更新时，author/source_url 等字段优先取 front-matter 原始值（脚本已修复），不依赖临时草稿读回的值
+- 更新草稿后，mp.weixin.qq.com 草稿箱可能有**浏览器缓存**，可通过 `draft/get` API 验证实际内容
+- front-matter 中的 `wechat_media_id` 是后续更新的唯一凭据，**发布/重发后必须同步更新**
