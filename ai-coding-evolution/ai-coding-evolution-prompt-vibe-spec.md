@@ -1,3 +1,10 @@
+---
+title: AI Coding 方式演进：从 Prompt Coding 到 Vibe Coding 再到 Spec Coding
+author: Magoo
+description: 每一次范式跃迁，都在做同一件事——让 AI 自主工作得更久，让人类介入得更少、更精准。
+cover: ./cover-ai-coding-evolution.png
+---
+
 # AI Coding 方式演进：从 Prompt Coding 到 Vibe Coding 再到 Spec Coding
 
 > 每一次范式跃迁，都在做同一件事——让 AI 自主工作得更久，让人类介入得更少、更精准。
