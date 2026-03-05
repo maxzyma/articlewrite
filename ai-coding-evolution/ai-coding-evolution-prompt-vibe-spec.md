@@ -1,8 +1,9 @@
 ---
 title: AI Coding 方式演进：从 Prompt Coding 到 Vibe Coding 再到 Spec Coding
-author: Magoo
+author: Mazy
 description: 每一次范式跃迁，都在做同一件事——让 AI 自主工作得更久，让人类介入得更少、更精准。
 cover: ./cover-ai-coding-evolution.png
+wechat_media_id: Kp3yNKpaOwwGup4XjiOi2tvRnNyA8GhFg8eN1ANJkMt92BI3AWzJVGumx7xoEmAX
 ---
 
 # AI Coding 方式演进：从 Prompt Coding 到 Vibe Coding 再到 Spec Coding
@@ -288,7 +289,7 @@ METR（Model Evaluation and Threat Research）定义了一个关键指标——*
 
 AWS CTO Werner Vogels 在 re:Invent 2025 上提出了一个精确的概念——**"Verification Debt"（验证债务）**：
 
-> "You will write less code, 'cause generation is so fast. You will review more code, because understanding it takes time. When you write code yourself, comprehension comes with the act of creation. When the machine writes it, you'll have to rebuild that comprehension during review. That's verification debt."
+> "You will write less code, 'cause generation is so fast. You will review more code, because understanding it takes time. When you write code yourself, comprehension comes with creation. When the machine writes it, you have to rebuild that comprehension during review. That's verification debt."
 
 这个概念揭示了一个反直觉的现实：**AI 加速了代码生成，却在人类端创造了对等的验证负担。** 如果范式不演进，开发者只是从"写代码"转变为"审代码"——总工时并未减少，只是重新分配了。
 
