@@ -101,58 +101,69 @@ async function updateWechatDraft(mediaId, articleOptions, publishOptions) {
   }
   const accessToken = tokenData.access_token
 
-  // Step 3: Get the temp draft's content (with WeChat CDN image URLs)
-  const getRes = await fetch(
-    `https://api.weixin.qq.com/cgi-bin/draft/get?access_token=${accessToken}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ media_id: tempMediaId }),
+  // Helper: always clean up temp draft
+  async function cleanupTempDraft() {
+    try {
+      await fetch(
+        `https://api.weixin.qq.com/cgi-bin/draft/delete?access_token=${accessToken}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ media_id: tempMediaId }),
+        }
+      )
+    } catch {
+      // Best-effort cleanup, don't fail on this
     }
-  )
-  const draftData = await getRes.json()
-  if (draftData.errcode) {
-    throw new Error(`Get draft error: ${draftData.errcode} ${draftData.errmsg}`)
-  }
-  const article = draftData.news_item[0]
-
-  // Step 4: Update the target draft with the new content
-  console.log(`Updating draft: ${mediaId}`)
-  const updateRes = await fetch(
-    `${DRAFT_UPDATE_URL}?access_token=${accessToken}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        media_id: mediaId,
-        index: 0,
-        articles: {
-          title: article.title,
-          content: article.content,
-          thumb_media_id: article.thumb_media_id,
-          author: article.author || "",
-          content_source_url: article.content_source_url || "",
-        },
-      }),
-    }
-  )
-  const updateData = await updateRes.json()
-  if (updateData.errcode && updateData.errcode !== 0) {
-    throw new Error(`Update error: ${updateData.errcode} ${updateData.errmsg}`)
   }
 
-  // Step 5: Delete the temp draft
-  console.log("Cleaning up temp draft...")
-  await fetch(
-    `https://api.weixin.qq.com/cgi-bin/draft/delete?access_token=${accessToken}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ media_id: tempMediaId }),
+  try {
+    // Step 3: Get the temp draft's content (with WeChat CDN image URLs)
+    const getRes = await fetch(
+      `https://api.weixin.qq.com/cgi-bin/draft/get?access_token=${accessToken}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ media_id: tempMediaId }),
+      }
+    )
+    const draftData = await getRes.json()
+    if (draftData.errcode) {
+      throw new Error(`Get draft error: ${draftData.errcode} ${draftData.errmsg}`)
     }
-  )
+    const article = draftData.news_item[0]
 
-  return { media_id: mediaId }
+    // Step 4: Update the target draft with the new content
+    console.log(`Updating draft: ${mediaId}`)
+    const updateRes = await fetch(
+      `${DRAFT_UPDATE_URL}?access_token=${accessToken}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          media_id: mediaId,
+          index: 0,
+          articles: {
+            title: article.title,
+            content: article.content,
+            thumb_media_id: article.thumb_media_id,
+            author: articleOptions.author || article.author || "",
+            content_source_url: articleOptions.source_url || article.content_source_url || "",
+          },
+        }),
+      }
+    )
+    const updateData = await updateRes.json()
+    if (updateData.errcode && updateData.errcode !== 0) {
+      throw new Error(`Update error: ${updateData.errcode} ${updateData.errmsg}`)
+    }
+
+    return { media_id: mediaId }
+  } finally {
+    // Always clean up temp draft, even if update fails
+    console.log("Cleaning up temp draft...")
+    await cleanupTempDraft()
+  }
 }
 
 async function listThemes() {
