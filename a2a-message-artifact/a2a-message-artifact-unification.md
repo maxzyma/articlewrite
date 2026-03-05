@@ -1,3 +1,11 @@
+---
+title: A2A 协议 Message 与 Artifact 统一提案讨论总结
+author: Mazy
+description: 基于 GitHub Issue #1313，讨论 A2A 协议中 Message 与 Artifact 的统一方案。
+created: 2026-01-21
+published: {}
+---
+
 # A2A 协议 Message 与 Artifact 统一提案讨论总结
 
 > 基于 GitHub Issue #1313: "[Feat]: Unify `Message` and `Artifact` to simplify streaming and semantics"

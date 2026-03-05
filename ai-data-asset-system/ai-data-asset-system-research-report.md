@@ -1,3 +1,11 @@
+---
+title: AI 时代数据资产系统构建调研报告
+author: Mazy
+description: 基于 Ontology 模式的企业级数据资产管理架构研究。
+created: 2026-02-04
+published: {}
+---
+
 # AI 时代数据资产系统构建调研报告
 
 > 基于 Ontology 模式的企业级数据资产管理架构研究

@@ -19,3 +19,4 @@ articlewrite/
 - 图片必须放在各自文章目录内，不共享 `images/`
 - 封面迭代只保留最终版，废弃版本不提交
 - 新增文章：`mkdir <slug> && 写 <slug>/<slug>.md`
+- **作者名固定为 `Mazy`** —— front-matter 中 `author: Mazy`，不使用其他名称

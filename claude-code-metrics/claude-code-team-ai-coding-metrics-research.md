@@ -1,3 +1,11 @@
+---
+title: Claude Code Team 订阅版 AI Coding 代码比例统计方法调研
+author: Mazy
+description: 公司使用自托管 GitLab + Claude Code Team，统计 AI Coding 代码比例的方法调研。
+created: 2026-03-04
+published: {}
+---
+
 # Claude Code Team 订阅版 AI Coding 代码比例统计方法调研
 
 _调研日期: 2026-03-04_

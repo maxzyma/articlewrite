@@ -1,3 +1,11 @@
+---
+title: AI取代软件工程师：Anthropic与DeepMind CEO达沃斯访谈调研报告
+author: Mazy
+description: Dario Amodei 与 Demis Hassabis 在达沃斯论坛讨论 AI 对软件工程师职业的影响。
+created: 2026-01-20
+published: {}
+---
+
 # AI取代软件工程师：Anthropic与DeepMind CEO达沃斯访谈调研报告
 
 ## 一、访谈基本信息

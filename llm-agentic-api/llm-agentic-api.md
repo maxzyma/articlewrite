@@ -3,7 +3,9 @@ title: LLM API 形态演进：从 /chat/completions 到 Agentic API
 author: Mazy
 description: LLM API 正经历从"对话接口"向"代理接口"的范式转变——从文本补全到对话交互再到 Agent 推理接口。
 cover: ./images/cover-llm-api-evolution.png
-wechat_media_id: Kp3yNKpaOwwGup4XjiOi2oA-a7zoGyDEcK43yjq_cVl3KfW_IqSDKP5aaKClua19
+created: 2026-02-28
+published:
+  wechat: 2026-03-03
 ---
 
 # LLM API 形态演进调研报告：从 /chat/completions 到 Agentic API

@@ -3,7 +3,9 @@ title: AI Coding 方式演进：从 Prompt Coding 到 Vibe Coding 再到 Spec Co
 author: Mazy
 description: 每一次范式跃迁，都在做同一件事——让 AI 自主工作得更久，让人类介入得更少、更精准。
 cover: ./cover-ai-coding-evolution.png
-wechat_media_id: Kp3yNKpaOwwGup4XjiOi2tvRnNyA8GhFg8eN1ANJkMt92BI3AWzJVGumx7xoEmAX
+created: 2026-03-01
+published:
+  wechat: 2026-03-04
 ---
 
 # AI Coding 方式演进：从 Prompt Coding 到 Vibe Coding 再到 Spec Coding

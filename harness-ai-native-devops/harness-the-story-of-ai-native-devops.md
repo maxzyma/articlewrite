@@ -1,3 +1,11 @@
+---
+title: Harness 前世今生：从 CD-as-a-Service 到 AI 原生 DevSecOps 平台
+author: Mazy
+description: AppDynamics 创始人的二次创业，8 年构建估值 55 亿美元的 DevOps 平台。
+created: 2026-01-22
+published: {}
+---
+
 # Harness 前世今生：从 CD-as-a-Service 到 AI 原生 DevSecOps 平台
 
 > 一个 AppDynamics 创始人的"二次创业"，如何用 8 年时间、8 次收购，构建出估值 55 亿美元的 DevOps 平台？
