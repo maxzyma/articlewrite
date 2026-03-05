@@ -45,29 +45,52 @@ async function extractFrontMatter(filePath) {
   return fm
 }
 
+const SKIP_DIRS = new Set(['node_modules', 'scripts', 'skills', '.claude', '.git'])
+
+async function tryReadArticle(dirPath, slug) {
+  const files = await readdir(dirPath)
+  const mdFile = files.find(f => f.endsWith('.md'))
+  if (!mdFile) return null
+
+  const fm = await extractFrontMatter(join(dirPath, mdFile))
+  if (!fm?.title) return null
+
+  return {
+    slug,
+    title: fm.title,
+    author: fm.author || 'Mazy',
+    created: fm.created || '?',
+    published: typeof fm.published === 'object' ? fm.published : {},
+  }
+}
+
 async function scanArticles() {
-  const entries = await readdir(ROOT, { withFileTypes: true })
   const articles = []
+  const years = await readdir(ROOT, { withFileTypes: true })
 
-  for (const entry of entries) {
-    if (!entry.isDirectory()) continue
-    if (['node_modules', 'scripts', 'skills', '.claude', '.git'].includes(entry.name)) continue
+  for (const entry of years) {
+    if (!entry.isDirectory() || SKIP_DIRS.has(entry.name)) continue
 
-    const dirPath = join(ROOT, entry.name)
-    const files = await readdir(dirPath)
-    const mdFile = files.find(f => f.endsWith('.md'))
-    if (!mdFile) continue
+    // YYYY/ directory — scan months
+    if (/^\d{4}$/.test(entry.name)) {
+      const yearPath = join(ROOT, entry.name)
+      const months = await readdir(yearPath, { withFileTypes: true })
+      for (const month of months) {
+        if (!month.isDirectory()) continue
+        const monthPath = join(yearPath, month.name)
+        const slugs = await readdir(monthPath, { withFileTypes: true })
+        for (const slug of slugs) {
+          if (!slug.isDirectory()) continue
+          const article = await tryReadArticle(join(monthPath, slug.name), slug.name)
+          if (article) articles.push(article)
+        }
+      }
+      continue
+    }
 
-    const fm = await extractFrontMatter(join(dirPath, mdFile))
-    if (!fm?.title) continue
-
-    articles.push({
-      slug: entry.name,
-      title: fm.title,
-      author: fm.author || 'Mazy',
-      created: fm.created || '?',
-      published: typeof fm.published === 'object' ? fm.published : {},
-    })
+    // Legacy: flat article directory at root
+    const article = await tryReadArticle(join(ROOT, entry.name), entry.name)
+    if (article) articles.push(article)
   }
 
   return articles.sort((a, b) => (b.created || '').localeCompare(a.created || ''))
