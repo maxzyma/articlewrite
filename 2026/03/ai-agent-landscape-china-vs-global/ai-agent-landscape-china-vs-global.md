@@ -6,7 +6,8 @@ cover: ./images/cover-wechat.png
 created: 2026-03-10
 updated: 2026-03-11
 wechat_media_id: Kp3yNKpaOwwGup4XjiOi2uXp_Xa_ILY10zsx7RHpEEE3z4xGWF7iYgG2LDDHa6J6
-published: {}
+published:
+  wechat: 2026-03-11
 ---
 
 # 中外 AI Agent 产品层对标全景图：从 Claude Code/Cowork 到国内大厂的追赶与分化
