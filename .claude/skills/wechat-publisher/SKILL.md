@@ -42,6 +42,17 @@ source_url: https://original-url.com
 
 If `title` or `cover` is missing, **proactively提醒用户补充**，不要直接发布。
 
+**WeChat 正文清理规则（MUST，发布前自动执行）：**
+
+微信文章标题由 front-matter `title` 字段控制，正文不应重复。发布时必须创建临时副本并执行以下清理：
+
+1. **删除 H1 标题**（`# xxx`）— 微信标题已由 front-matter 控制，正文中的 H1 会导致重复
+2. **清空 `description` 字段**（设为 `description:`）— wenyan-md 会将 description 渲染为正文顶部引用块，与微信消息列表摘要重复
+3. **保留 TL;DR / 正文引用块** — 这些是文章内容的一部分，不应删除
+4. **修正图片路径** — 临时副本中的相对路径需改为绝对路径
+
+> 原始 Markdown 文件不修改，所有清理操作在 `/tmp/claude/wechat-publish.md` 临时副本上执行。
+
 ### Step 2: Cover Image
 
 封面图质量直接决定文章在列表页的点击率。
