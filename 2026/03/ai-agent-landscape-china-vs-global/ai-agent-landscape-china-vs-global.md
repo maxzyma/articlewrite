@@ -2,9 +2,10 @@
 title: 中外 AI Agent 产品层对标全景图：从 Claude Code/Cowork 到国内大厂的追赶与分化
 author: Mazy
 description: 以 OpenClaw 龙虾风暴和腾讯 CodeBuddy/WorkBuddy 为引子，系统梳理 2026 年初中外 AI Agent 产品六大形态、主要玩家及关键差异
-cover: ./images/cover.png
+cover: ./images/cover-wechat.png
 created: 2026-03-10
 updated: 2026-03-11
+wechat_media_id: Kp3yNKpaOwwGup4XjiOi2uXp_Xa_ILY10zsx7RHpEEE3z4xGWF7iYgG2LDDHa6J6
 published: {}
 ---
 
