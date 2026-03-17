@@ -2,8 +2,10 @@
 title: "Agent Harness：AI 从对话框走向生产力的关键架构层"
 author: Mazy
 description: 从 Scaffolding 到 Harness，AI Agent 的第三个拐点不是模型更强，而是「缰绳」更好。
+cover: ./cover.png
 created: 2026-01-22
 published: {}
+wechat_media_id: Kp3yNKpaOwwGup4XjiOi2iK0ZYTm8h_nMKUT8HfOaAjF7kJX8Pw8vIDdcR3EK9h8
 ---
 
 # Agent Harness：AI 从对话框走向生产力的关键架构层
