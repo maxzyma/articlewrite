@@ -9,8 +9,6 @@ published:
 wechat_media_id: Kp3yNKpaOwwGup4XjiOi2g9Pb0QuSE58sgrtwdkfTrN4JuhkRysBW_Pzz5Oot-KZ
 ---
 
-_调研日期: 2026-03-17_
-
 > **时效声明**：本文基于 2026 年 3 月的公开信息撰写。Salesforce 和 Palantir 都在快速迭代——Salesforce 的 Data Cloud 语义能力、Agentforce 架构、Missionforce 进展，以及 Palantir 的 OSDK 生态、AIP Bootcamp 模式、商业市场扩张，均可能在数月内发生实质性变化。文中的竞争格局判断和产品能力描述请结合阅读时的最新信息使用。
 
 ## 结论前置
