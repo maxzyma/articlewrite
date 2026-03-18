@@ -6,13 +6,7 @@ cover: ./cover.png
 created: 2026-01-22
 published:
   wechat: 2026-03-18
-wechat_media_id: Kp3yNKpaOwwGup4XjiOi2ncH3aPaZsps51I9lVavmnrfdvmv7vdzhUKh9vJWqbX8
----
-
-# Agent Harness：AI 从对话框走向生产力的关键架构层
-
-> 同一个 Opus 4.5 模型，在 Claude Code 的 Harness 下得分 78%，换一个 Harness 只有 42%。模型没变，变的是包裹它的一切。
-
+wechat_media_id: Kp3yNKpaOwwGup4XjiOi2sJ8xZwGXwyr8MlGkjIyVRo2H-5IPMWeYxMY4jMW40m1
 ---
 
 ## 引言：模型不是瓶颈，Harness 才是

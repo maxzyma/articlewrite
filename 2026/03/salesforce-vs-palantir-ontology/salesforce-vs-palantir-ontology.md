@@ -9,12 +9,6 @@ published:
 wechat_media_id: Kp3yNKpaOwwGup4XjiOi2g9Pb0QuSE58sgrtwdkfTrN4JuhkRysBW_Pzz5Oot-KZ
 ---
 
-# 为什么 Palantir 的 Ontology 是 AI 时代更好的企业架构——以及 Salesforce 为什么难以追赶
-
-_调研日期: 2026-03-17_
-
-> **时效声明**：本文基于 2026 年 3 月的公开信息撰写。Salesforce 和 Palantir 都在快速迭代——Salesforce 的 Data Cloud 语义能力、Agentforce 架构、Missionforce 进展，以及 Palantir 的 OSDK 生态、AIP Bootcamp 模式、商业市场扩张，均可能在数月内发生实质性变化。文中的竞争格局判断和产品能力描述请结合阅读时的最新信息使用。
-
 ## 结论前置
 
 Salesforce 和 Palantir 都以"对象建模"（Objects + Properties + Relationships）为核心抽象，但走出了截然不同的路径。在 AI 时代，这两条路径的适配性差异正在显现：**在需要跨系统数据融合、高安全治理、操作语义建模的场景下**，Palantir 的 Ontology 架构在语义清晰度、AI 原生集成、跨系统数据治理三个维度上具有结构性优势；而在 CRM 主导、有界操作、快速上线的场景下，Salesforce 的平台仍然是更务实的选择。
