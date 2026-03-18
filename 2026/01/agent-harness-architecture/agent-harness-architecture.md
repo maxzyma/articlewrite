@@ -6,7 +6,7 @@ cover: ./cover.png
 created: 2026-01-22
 published:
   wechat: 2026-03-18
-wechat_media_id: Kp3yNKpaOwwGup4XjiOi2iK0ZYTm8h_nMKUT8HfOaAjF7kJX8Pw8vIDdcR3EK9h8
+wechat_media_id: Kp3yNKpaOwwGup4XjiOi2ncH3aPaZsps51I9lVavmnrfdvmv7vdzhUKh9vJWqbX8
 ---
 
 # Agent Harness：AI 从对话框走向生产力的关键架构层
