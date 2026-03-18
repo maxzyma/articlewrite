@@ -4,9 +4,9 @@
  * WeChat Official Account publisher powered by @wenyan-md/core.
  *
  * Usage:
- *   node scripts/wechat-publish.mjs render  <markdown-file> [--theme <id>] [--hl-theme <id>] [--out <html-file>]
- *   node scripts/wechat-publish.mjs publish <markdown-file> [--theme <id>] [--hl-theme <id>] [--dry-run] [--media-id <id>]
- *   node scripts/wechat-publish.mjs themes
+ *   node .claude/skills/wechat-publisher/bin/wechat-publish.mjs render  <markdown-file> [--theme <id>] [--hl-theme <id>] [--out <html-file>]
+ *   node .claude/skills/wechat-publisher/bin/wechat-publish.mjs publish <markdown-file> [--theme <id>] [--hl-theme <id>] [--dry-run] [--media-id <id>]
+ *   node .claude/skills/wechat-publisher/bin/wechat-publish.mjs themes
  *
  * Options:
  *   --media-id <id>  Update an existing draft instead of creating a new one
@@ -18,9 +18,6 @@
 
 import { readFile, writeFile } from "node:fs/promises"
 import { resolve, dirname } from "node:path"
-import { fileURLToPath } from "node:url"
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const DRAFT_UPDATE_URL = "https://api.weixin.qq.com/cgi-bin/draft/update"
 
@@ -301,9 +298,9 @@ try {
       break
     default:
       console.log("Usage:")
-      console.log("  node scripts/wechat-publish.mjs themes")
-      console.log("  node scripts/wechat-publish.mjs render  <file.md> [--theme <id>] [--hl-theme <id>] [--out <preview.html>]")
-      console.log("  node scripts/wechat-publish.mjs publish <file.md> [--theme <id>] [--hl-theme <id>] [--dry-run] [--media-id <id>]")
+      console.log("  node .claude/skills/wechat-publisher/bin/wechat-publish.mjs themes")
+      console.log("  node .claude/skills/wechat-publisher/bin/wechat-publish.mjs render  <file.md> [--theme <id>] [--hl-theme <id>] [--out <preview.html>]")
+      console.log("  node .claude/skills/wechat-publisher/bin/wechat-publish.mjs publish <file.md> [--theme <id>] [--hl-theme <id>] [--dry-run] [--media-id <id>]")
       process.exit(1)
   }
 } catch (error) {

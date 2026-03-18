@@ -12,7 +12,7 @@ Powered by [`@wenyan-md/core`](https://github.com/caol64/wenyan-core) — Markdo
 ## Prerequisites
 
 - `WECHAT_APP_ID` and `WECHAT_APP_SECRET` environment variables (configured in coworkspace `open` script)
-- `@wenyan-md/core` + peer deps installed (`package.json` already configured)
+- `@wenyan-md/core` + peer deps installed (`npm install` in `.claude/skills/wechat-publisher/`)
 - WeChat Official Account with API access and **IP whitelist** configured on [微信开发者平台](https://developers.weixin.qq.com/platform)
 
 ## Workflow
@@ -82,7 +82,7 @@ export GEMINI_API_KEY=$GEMINI_API_KEY
 ### Step 3: Choose Theme
 
 ```bash
-node scripts/wechat-publish.mjs themes
+node .claude/skills/wechat-publisher/bin/wechat-publish.mjs themes
 ```
 
 | ID | Name | Style | Recommended For |
@@ -106,7 +106,7 @@ Render and preview in mobile viewport (simulating WeChat reading experience):
 
 ```bash
 mkdir -p /tmp/claude
-node scripts/wechat-publish.mjs render <markdown-file> \
+node .claude/skills/wechat-publisher/bin/wechat-publish.mjs render <markdown-file> \
   --theme <theme-id> \
   --hl-theme <hl-theme-id> \
   --out /tmp/claude/wechat-preview.html
@@ -132,7 +132,7 @@ Let user confirm styling. If adjustments needed, re-render with different theme.
 **New draft (首次发布):**
 
 ```bash
-node scripts/wechat-publish.mjs publish <markdown-file> \
+node .claude/skills/wechat-publisher/bin/wechat-publish.mjs publish <markdown-file> \
   --theme <theme-id> \
   --hl-theme <hl-theme-id>
 ```
@@ -140,7 +140,7 @@ node scripts/wechat-publish.mjs publish <markdown-file> \
 **Update existing draft (修改已有草稿):**
 
 ```bash
-node scripts/wechat-publish.mjs publish <markdown-file> \
+node .claude/skills/wechat-publisher/bin/wechat-publish.mjs publish <markdown-file> \
   --theme <theme-id> \
   --hl-theme <hl-theme-id> \
   --media-id <draft-media-id>
@@ -193,7 +193,7 @@ Report to user:
 ## Architecture
 
 ```
-scripts/wechat-publish.mjs          CLI entry point
+.claude/skills/wechat-publisher/bin/wechat-publish.mjs   CLI entry point
   ├── @wenyan-md/core/wrapper       renderStyledContent() — Markdown → styled HTML
   │     ├── marked + highlight.js   Markdown parsing + code highlighting
   │     ├── css-tree                CSS AST → inline styles (微信不支持 <style> 和 class)
