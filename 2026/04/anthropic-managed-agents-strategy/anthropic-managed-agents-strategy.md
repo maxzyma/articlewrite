@@ -4,7 +4,8 @@ author: Mazy
 description:
 cover: ./cover.png
 created: 2026-04-09
-published: {}
+published:
+  wechat: 2026-04-10
 wechat_media_id: Kp3yNKpaOwwGup4XjiOi2mzhtDzzULkCBusTZp7_gE91E2DanCmfiQOjYsbwJFe-
 ---
 
