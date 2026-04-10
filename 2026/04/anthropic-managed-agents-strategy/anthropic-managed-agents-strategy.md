@@ -1,9 +1,11 @@
 ---
-title: "Anthropic Managed Agents 深度解读：从三层解耦架构看 AI Agent 平台战略"
+title: "模型是 CPU，我们要做 OS —— Anthropic Managed Agents 深度解读"
 author: Mazy
-description: 基于 Anthropic 6 篇官方工程博客的系统分析，拆解 Managed Agents 的 Session/Harness/Sandbox 三层解耦架构，并大胆推测 Anthropic 的平台化战略意图。
+description:
+cover: ./cover.png
 created: 2026-04-09
 published: {}
+wechat_media_id: Kp3yNKpaOwwGup4XjiOi2mzhtDzzULkCBusTZp7_gE91E2DanCmfiQOjYsbwJFe-
 ---
 
 ## 引言：一篇工程博客背后的战略野心
@@ -12,9 +14,9 @@ published: {}
 
 但把这篇文章放进 Anthropic 过去 14 个月发布的 6 篇 Agent 工程文章的时间线里看，画面完全不同——**这不是一次架构重构的技术复盘，而是一份 Agent 平台化的施工蓝图。**
 
-本文基于对 25 篇业界 Agent Harness 文献的系统调研（详见 `notes/02-调研/harness/analysis.md`），聚焦 Anthropic 的 6 篇官方文章，拆解其技术路径，并推测其战略意图。
+本文基于对 25 篇业界 Agent Harness 文献的系统调研，聚焦 Anthropic 的 6 篇官方文章，拆解其技术路径，并推测其战略意图。
 
-> **信源说明**：文中 `[#N]` 编号对应调研索引 `notes/02-调研/harness/README.md` 中的文章编号。所有引文均来自原文，非转述。
+> **信源说明**：文中 `[#N]` 编号对应文末「信源索引」表中的文章编号。所有引文均来自原文，非转述。
 
 ---
 
@@ -51,25 +53,7 @@ Anthropic 在 [#15] 中开篇就点出了一个被业界普遍忽视的问题：
 
 ### 三层解耦
 
-```
-┌──────────────────────────────────────────┐
-│  Session（会话层）                         │
-│  append-only 事件流，活在 context window 外  │
-│  接口：getEvents() — 灵活切片/回溯/重读      │
-└──────────────┬───────────────────────────┘
-               │ 读/写事件
-┌──────────────▼───────────────────────────┐
-│  Harness（控制层）                         │
-│  无状态控制循环：调用 Claude + 路由 tool calls │
-│  崩溃后 wake(sessionId) 即可恢复            │
-└──────────────┬───────────────────────────┘
-               │ execute(name, input) → string
-┌──────────────▼───────────────────────────┐
-│  Sandbox（执行层）                         │
-│  代码执行环境，通过统一接口调用               │
-│  provision({resources}) 按需创建            │
-└──────────────────────────────────────────┘
-```
+![Managed Agents 三层解耦架构](./images/fig1-architecture.png)
 
 三个关键设计决策：
 
@@ -125,6 +109,8 @@ Anthropic 在文中反复使用 OS 类比：
 ## 四、大胆推测：Anthropic 的平台战略
 
 以下是基于公开信源的推测，**无信源，基于推断**。
+
+![Anthropic Agent OS 战略推测全景](./images/fig2-strategy-mindmap.png)
 
 ### 推测 1：Managed Agents 是 Anthropic 的 "AWS for AI Agents"
 
